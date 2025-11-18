@@ -63,21 +63,21 @@
     margin-bottom: 1.5rem;
 }
 
-/* Community Gallery Cards */
+/* Community Gallery Cards - Blue and White */
 .admonition.success {
-    border-left: 5px solid #4caf50;
-    background: linear-gradient(to right, #f1f8f4 0%, #ffffff 100%);
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.1);
+    border-left: 5px solid #1976d2;
+    background: linear-gradient(to right, #e3f2fd 0%, #ffffff 100%);
+    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .admonition.success:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.2);
+    box-shadow: 0 6px 20px rgba(25, 118, 210, 0.2);
 }
 
 .admonition.success .admonition-title {
-    background: #4caf50;
+    background: #1976d2;
     color: white;
     font-weight: 700;
     font-size: 1.1rem;
@@ -141,7 +141,7 @@
 }
 
 .community-cta a {
-    color: #ffeb3b;
+    color: #bbdefb;
     text-decoration: underline;
     font-weight: 600;
 }
@@ -169,15 +169,15 @@
     font-weight: 600;
 }
 
-/* Final CTA */
+/* Final CTA - Blue and White */
 .final-cta {
     text-align: center;
     padding: 3rem 2rem;
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
     color: white;
     border-radius: 12px;
     margin: 3rem 0;
-    box-shadow: 0 10px 40px rgba(240, 147, 251, 0.3);
+    box-shadow: 0 10px 40px rgba(25, 118, 210, 0.3);
 }
 
 .final-cta h1,
@@ -271,8 +271,8 @@
 }
 
 .md-typeset .admonition.quote {
-    background: linear-gradient(to right, #fff9e6 0%, #ffffff 100%);
-    border-left: 5px solid #ffc107;
+    background: linear-gradient(to right, #e3f2fd 0%, #ffffff 100%);
+    border-left: 5px solid #1976d2;
 }
 
 /* Code blocks - Softer styling */
