@@ -1,0 +1,296 @@
+#!/usr/bin/env bash
+# ansai-fabric - AI-powered text processing with Fabric patterns
+# Part of ANSAI AI Integration Building Blocks
+# https://ansai.dev
+
+set -euo pipefail
+
+# Configuration
+LITELLM_BASE_URL="${LITELLM_BASE_URL:-http://localhost:4000}"
+FABRIC_PATTERNS_DIR="${FABRIC_PATTERNS_DIR:-$HOME/.config/fabric/patterns}"
+
+# Default models (customize based on your LiteLLM config)
+DEFAULT_MODEL="${DEFAULT_MODEL:-gpt-4}"
+FAST_MODEL="${FAST_MODEL:-gpt-3.5-turbo}"
+REASONING_MODEL="${REASONING_MODEL:-gpt-4}"
+
+# Colors
+BLUE='\033[0;34m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m'
+
+print_info() {
+    echo -e "${BLUE}[ANSAI-Fabric]${NC} $1" >&2
+}
+
+print_success() {
+    echo -e "${GREEN}[ANSAI-Fabric]${NC} $1" >&2
+}
+
+print_warning() {
+    echo -e "${YELLOW}[ANSAI-Fabric]${NC} $1" >&2
+}
+
+print_error() {
+    echo -e "${RED}[ANSAI-Fabric]${NC} $1" >&2
+}
+
+show_help() {
+    cat << EOF
+ansai-fabric - AI-powered text processing with Fabric patterns
+
+USAGE:
+    ansai-fabric <command> [options]
+
+COMMANDS:
+    analyze       Analyze text for insights and patterns
+    summarize     Create concise summaries
+    extract       Extract key information
+    redact        Redact sensitive information
+    translate     Translate between languages
+    explain       Explain complex concepts
+    logs          Analyze log files for issues
+    
+    start-proxy   Start LiteLLM proxy
+    check         Check if LiteLLM proxy is running
+    models        List available models
+    patterns      List available Fabric patterns
+
+OPTIONS:
+    -m, --model MODEL    Use specific model (default: gpt-4)
+    -f, --fast           Use faster, cheaper model
+    -i, --input FILE     Read from file instead of stdin
+    -h, --help           Show this help
+
+ENVIRONMENT VARIABLES:
+    LITELLM_BASE_URL     LiteLLM proxy URL (default: http://localhost:4000)
+    DEFAULT_MODEL        Default model to use (default: gpt-4)
+    FAST_MODEL           Fast model for simple tasks (default: gpt-3.5-turbo)
+    FABRIC_PATTERNS_DIR  Custom patterns directory
+
+EXAMPLES:
+    # Analyze a log file
+    cat /var/log/app.log | ansai-fabric analyze
+
+    # Summarize a document (fast model)
+    ansai-fabric summarize -f < document.txt
+
+    # Extract key points from a meeting transcript
+    ansai-fabric extract -i meeting-notes.txt
+
+    # Explain a complex error message
+    echo "SegmentationFault: Core dumped" | ansai-fabric explain
+
+    # Redact sensitive data
+    cat customer-data.txt | ansai-fabric redact > sanitized.txt
+
+PREREQUISITES:
+    1. LiteLLM proxy running (ansai-fabric start-proxy)
+    2. Fabric patterns installed (pip install fabric-ai)
+    3. LLM API keys configured (OPENAI_API_KEY, etc.)
+
+See: https://github.com/danielmiessler/fabric
+EOF
+}
+
+# Check if litellm is running
+check_litellm() {
+    if ! curl -s "$LITELLM_BASE_URL/health" >/dev/null 2>&1; then
+        print_error "LiteLLM proxy not running at $LITELLM_BASE_URL"
+        print_info "Start it with: ansai-fabric start-proxy"
+        print_info "Or: ansai-litellm-proxy"
+        return 1
+    fi
+    return 0
+}
+
+# Start litellm if not running
+start_litellm() {
+    print_info "Starting LiteLLM proxy..."
+    if command -v ansai-litellm-proxy >/dev/null 2>&1; then
+        ansai-litellm-proxy &
+        sleep 3
+    elif command -v litellm >/dev/null 2>&1; then
+        litellm --port 4000 --host 0.0.0.0 &
+        sleep 3
+    else
+        print_error "LiteLLM not installed"
+        print_info "Install with: pip install 'litellm[proxy]'"
+        return 1
+    fi
+    
+    if check_litellm; then
+        print_success "LiteLLM proxy started successfully"
+    else
+        print_error "Failed to start LiteLLM proxy"
+        return 1
+    fi
+}
+
+# Check if fabric is installed
+check_fabric() {
+    if ! command -v fabric >/dev/null 2>&1; then
+        print_error "Fabric not installed"
+        print_info "Install with: pip install fabric-ai"
+        return 1
+    fi
+    return 0
+}
+
+# Run fabric with litellm backend
+run_fabric() {
+    local pattern="$1"
+    shift
+    local model="$1"
+    shift
+    
+    # Check if pattern exists
+    if [[ -d "$FABRIC_PATTERNS_DIR/$pattern" ]]; then
+        print_info "Using pattern: $pattern"
+    else
+        print_warning "Pattern '$pattern' not found, using default processing"
+    fi
+    
+    # Set environment for fabric to use litellm
+    export OPENAI_API_BASE="$LITELLM_BASE_URL/v1"
+    
+    # Run fabric
+    fabric -p "$pattern" -m "$model" "$@" 2> >(grep -v "Warning:" >&2)
+}
+
+# Parse options
+MODEL="$DEFAULT_MODEL"
+INPUT_FILE=""
+USE_FAST=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -m|--model)
+            MODEL="$2"
+            shift 2
+            ;;
+        -f|--fast)
+            MODEL="$FAST_MODEL"
+            shift
+            ;;
+        -i|--input)
+            INPUT_FILE="$2"
+            shift 2
+            ;;
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+# Main command dispatch
+COMMAND="${1:-help}"
+shift 2>/dev/null || true
+
+case "$COMMAND" in
+    analyze)
+        check_fabric || exit 1
+        check_litellm || start_litellm || exit 1
+        if [[ -n "$INPUT_FILE" ]]; then
+            cat "$INPUT_FILE" | run_fabric "analyze_claims" "$MODEL"
+        else
+            run_fabric "analyze_claims" "$MODEL"
+        fi
+        ;;
+    summarize|brief)
+        check_fabric || exit 1
+        check_litellm || start_litellm || exit 1
+        if [[ -n "$INPUT_FILE" ]]; then
+            cat "$INPUT_FILE" | run_fabric "summarize" "$MODEL"
+        else
+            run_fabric "summarize" "$MODEL"
+        fi
+        ;;
+    extract)
+        check_fabric || exit 1
+        check_litellm || start_litellm || exit 1
+        if [[ -n "$INPUT_FILE" ]]; then
+            cat "$INPUT_FILE" | run_fabric "extract_wisdom" "$MODEL"
+        else
+            run_fabric "extract_wisdom" "$MODEL"
+        fi
+        ;;
+    redact)
+        check_fabric || exit 1
+        check_litellm || start_litellm || exit 1
+        if [[ -n "$INPUT_FILE" ]]; then
+            cat "$INPUT_FILE" | run_fabric "find_hidden" "$MODEL"
+        else
+            run_fabric "find_hidden" "$MODEL"
+        fi
+        ;;
+    translate)
+        check_fabric || exit 1
+        check_litellm || start_litellm || exit 1
+        if [[ -n "$INPUT_FILE" ]]; then
+            cat "$INPUT_FILE" | run_fabric "translate" "$MODEL"
+        else
+            run_fabric "translate" "$MODEL"
+        fi
+        ;;
+    explain)
+        check_fabric || exit 1
+        check_litellm || start_litellm || exit 1
+        if [[ -n "$INPUT_FILE" ]]; then
+            cat "$INPUT_FILE" | run_fabric "explain" "$MODEL"
+        else
+            run_fabric "explain" "$MODEL"
+        fi
+        ;;
+    logs)
+        check_fabric || exit 1
+        check_litellm || start_litellm || exit 1
+        if [[ -n "$INPUT_FILE" ]]; then
+            cat "$INPUT_FILE" | run_fabric "analyze_logs" "$MODEL"
+        else
+            run_fabric "analyze_logs" "$MODEL"
+        fi
+        ;;
+    start-proxy)
+        start_litellm
+        ;;
+    check)
+        if check_litellm; then
+            print_success "LiteLLM proxy is running"
+            exit 0
+        else
+            exit 1
+        fi
+        ;;
+    models)
+        if check_litellm || start_litellm; then
+            print_info "Available models via LiteLLM:"
+            curl -s "$LITELLM_BASE_URL/models" | jq -r '.data[].id' | sort
+        fi
+        ;;
+    patterns)
+        if check_fabric; then
+            print_info "Available Fabric patterns:"
+            if [[ -d "$FABRIC_PATTERNS_DIR" ]]; then
+                ls -1 "$FABRIC_PATTERNS_DIR"
+            else
+                fabric --list-patterns
+            fi
+        fi
+        ;;
+    help|--help|-h)
+        show_help
+        ;;
+    *)
+        print_error "Unknown command: $COMMAND"
+        print_info "Run 'ansai-fabric help' for usage"
+        exit 1
+        ;;
+esac
+
