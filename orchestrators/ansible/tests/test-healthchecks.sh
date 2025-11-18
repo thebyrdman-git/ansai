@@ -10,7 +10,7 @@ echo "========================================"
 echo ""
 
 # Configuration
-TEST_HOST="${1:-miraclemax.local}"
+TEST_HOST="${1:-your-server.local}"
 HEALTHCHECK_URL="${2:-YOUR_HEALTHCHECK_URL}"
 
 echo "📋 Test Configuration:"
@@ -146,7 +146,7 @@ echo "🌐 Manual verification required:"
 echo ""
 echo "  1. Go to https://healthchecks.io"
 echo "  2. Log in to your account"
-echo "  3. Find check: miraclemax.local"
+echo "  3. Find check: your-server.local"
 echo "  4. Verify last ping timestamp is recent"
 echo "  5. Check if status is 'Up' or shows any issues"
 echo ""

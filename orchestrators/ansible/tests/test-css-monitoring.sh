@@ -11,7 +11,7 @@ echo ""
 
 # Configuration
 TEST_APP="${1:-story-stages}"
-TEST_HOST="${2:-miraclemax.local}"
+TEST_HOST="${2:-your-server.local}"
 TEST_EMAIL="${3:-jimmykbyrd@gmail.com}"
 TEMPLATE_PATH="/home/jbyrd/$TEST_APP/templates"
 

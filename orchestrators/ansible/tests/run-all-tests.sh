@@ -10,7 +10,7 @@ echo "╚═══════════════════════�
 echo ""
 
 # Configuration
-TEST_HOST="${1:-miraclemax.local}"
+TEST_HOST="${1:-your-server.local}"
 TEST_EMAIL="${2:-jimmykbyrd@gmail.com}"
 TEST_APP="${3:-story-stages}"
 

@@ -3,7 +3,7 @@
 # External monitoring for self-healing system
 
 # Owner email for alerts
-healthcheck_alert_email: jimmykbyrd@gmail.com
+healthcheck_alert_email: your-email@example.com
 
 # Healthchecks.io configuration
 # You'll get this after signing up at https://healthchecks.io
@@ -11,21 +11,20 @@ healthcheck_alert_email: jimmykbyrd@gmail.com
 # (You can upgrade to API management later)
 
 # Server heartbeat configuration
-healthcheck_name: "MiracleMax Server"
+healthcheck_name: "My Server"
 healthcheck_interval: 300  # 5 minutes in seconds
 healthcheck_grace: 600     # 10 minutes grace period before alert
 
 # Ping URL - will be set after first deployment
 # Get this from healthchecks.io after creating your check
-healthcheck_ping_url: "https://hc-ping.com/f983ddb5-4e25-4aa4-9c64-0c8e52f86c50"
+healthcheck_ping_url: "https://hc-ping.com/YOUR-UNIQUE-PING-ID"
 
 # Enable/disable
 healthcheck_enabled: true
 
 # What to monitor
 healthcheck_services:
-  - story-stages
-  - passgo
+  - my-flask-app
+  - my-api
   - traefik
-  - actual-budget
 

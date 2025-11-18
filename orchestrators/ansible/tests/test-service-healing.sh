@@ -11,7 +11,7 @@ echo ""
 
 # Configuration
 TEST_SERVICE="${1:-passgo}"
-TEST_HOST="${2:-miraclemax.local}"
+TEST_HOST="${2:-your-server.local}"
 TEST_EMAIL="${3:-jimmykbyrd@gmail.com}"
 
 echo "📋 Test Configuration:"
