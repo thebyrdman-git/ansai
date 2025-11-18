@@ -9,7 +9,7 @@ owner_email: jimmykbyrd@gmail.com
 smtp_server: smtp.gmail.com
 smtp_port: 587
 smtp_user: jimmykbyrd@gmail.com
-smtp_password: "***REMOVED***"
+smtp_password: "{{ lookup('env', 'ANSAI_SMTP_PASSWORD') }}"
 
 # Services to monitor and self-heal
 # Add any service here to enable automatic healing
