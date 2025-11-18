@@ -1,0 +1,19 @@
+ANSAI: Comprehensive Automation Framework for Modern Infrastructure
+
+Introduction to ANSAI (Ansible-Native System Automation Infrastructure) - a modular, extensible framework for IT automation and system resilience.
+
+In this talk:
+• Framework overview and architecture
+• Live demo: Automated infrastructure management in action (featuring v1.0 self-healing capabilities)
+• Current features and roadmap (workflow orchestration, IaC patterns, integrations)
+• Hands-on: Deploy your first module in 10 minutes
+
+ANSAI is a complete automation ecosystem built with Ansible. v1.0 focuses on infrastructure resilience; future releases will add workflow orchestration, database automation, multi-host management, and more.
+
+Perfect for: DevOps engineers, SREs, and system administrators
+
+MIT Licensed | Community-Driven
+GitHub: https://github.com/thebyrdman-git/ansai
+
+Q&A included!
+
