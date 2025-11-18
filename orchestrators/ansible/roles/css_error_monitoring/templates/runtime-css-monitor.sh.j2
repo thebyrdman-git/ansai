@@ -1,0 +1,145 @@
+#!/bin/bash
+# Runtime CSS Error Monitor
+# Checks for CSS errors reported from production
+# Part of the miraclemax self-healing infrastructure
+
+set -euo pipefail
+
+# Configuration
+ERROR_LOG_DIR="/var/log/css-runtime-errors"
+CONSOLIDATED_LOG="${ERROR_LOG_DIR}/consolidated.log"
+ALERT_LOG="${ERROR_LOG_DIR}/alerts_sent.log"
+ALERT_COOLDOWN=3600  # 1 hour between alerts for same error
+
+# Email configuration
+OWNER_EMAIL="{{ owner_email }}"
+SMTP_SERVER="{{ smtp_server }}"
+SMTP_PORT="{{ smtp_port }}"
+SMTP_USER="{{ smtp_user }}"
+SMTP_PASSWORD="{{ smtp_password }}"
+
+# Thresholds
+MAX_ERRORS={{ max_errors_before_alert }}
+LOOKBACK_MINUTES={{ error_lookback_minutes }}
+
+# Ensure log directory exists
+mkdir -p "${ERROR_LOG_DIR}"
+touch "${CONSOLIDATED_LOG}"
+touch "${ALERT_LOG}"
+
+# Function to send email alert
+send_alert() {
+    local subject="$1"
+    local body="$2"
+    
+    python3 << PYEOF
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+try:
+    msg = MIMEMultipart()
+    msg['From'] = "${SMTP_USER}"
+    msg['To'] = "${OWNER_EMAIL}"
+    msg['Subject'] = "${subject}"
+    
+    body = """${body}"""
+    msg.attach(MIMEText(body, 'plain'))
+    
+    server = smtplib.SMTP("${SMTP_SERVER}", ${SMTP_PORT})
+    server.starttls()
+    server.login("${SMTP_USER}", "${SMTP_PASSWORD}")
+    server.send_message(msg)
+    server.quit()
+    
+    print("✅ Alert sent successfully")
+except Exception as e:
+    print(f"❌ Failed to send alert: {e}")
+PYEOF
+}
+
+# Function to check for recent CSS errors
+check_css_errors() {
+    local app_name="$1"
+    local app_log="${ERROR_LOG_DIR}/${app_name}_errors.log"
+    
+    if [[ ! -f "${app_log}" ]]; then
+        return 0
+    fi
+    
+    # Count errors in the last X minutes
+    local cutoff_time=$(date -d "${LOOKBACK_MINUTES} minutes ago" '+%Y-%m-%d %H:%M:%S')
+    local recent_errors=$(awk -v cutoff="${cutoff_time}" '$0 >= cutoff' "${app_log}" | wc -l)
+    
+    if [[ ${recent_errors} -ge ${MAX_ERRORS} ]]; then
+        # Get error details
+        local error_summary=$(tail -n 20 "${app_log}" | head -n 10)
+        
+        # Check if we've already alerted for this recently
+        local last_alert=$(grep "${app_name}" "${ALERT_LOG}" | tail -n 1 | awk '{print $1}' || echo "0")
+        local current_time=$(date +%s)
+        local time_since_alert=$((current_time - last_alert))
+        
+        if [[ ${time_since_alert} -gt ${ALERT_COOLDOWN} ]]; then
+            send_alert \
+                "🎨 CSS Errors Detected in ${app_name}" \
+                "Multiple CSS errors detected in ${app_name} (${recent_errors} errors in last ${LOOKBACK_MINUTES} minutes).
+
+ERROR SUMMARY
+═════════════
+${error_summary}
+
+SYSTEM INFO
+═══════════
+Application: ${app_name}
+Error Count: ${recent_errors}
+Time Window: ${LOOKBACK_MINUTES} minutes
+Threshold: ${MAX_ERRORS} errors
+Timestamp: $(date '+%Y-%m-%d %H:%M:%S')
+
+ERROR LOG
+═════════
+Full log: ${app_log}
+
+RECOMMENDED ACTION
+══════════════════
+1. Check for missing CSS files in static directories
+2. Verify CSS references in templates are correct
+3. Check browser console for detailed CSS errors
+4. Run the CSS validator: /usr/local/bin/css-validator.sh
+
+Your ansai workflows detected this issue! 🛡️"
+            
+            # Record alert
+            echo "${current_time} ${app_name} ${recent_errors}_css_errors" >> "${ALERT_LOG}"
+            
+            return 1
+        fi
+    fi
+    
+    return 0
+}
+
+# Main monitoring loop
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "🎨 Runtime CSS Error Monitor"
+echo "   $(date '+%Y-%m-%d %H:%M:%S')"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+ISSUES_FOUND=0
+
+{% for app in monitored_apps %}
+echo "Checking {{ app.name }} CSS..."
+if ! check_css_errors "{{ app.name }}"; then
+    ISSUES_FOUND=$((ISSUES_FOUND + 1))
+fi
+{% endfor %}
+
+if [[ ${ISSUES_FOUND} -eq 0 ]]; then
+    echo "✅ No CSS runtime errors detected"
+else
+    echo "⚠️  Found issues in ${ISSUES_FOUND} application(s)"
+fi
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+

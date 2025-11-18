@@ -1,0 +1,31 @@
+---
+# Healthchecks.io Monitoring Configuration
+# External monitoring for self-healing system
+
+# Owner email for alerts
+healthcheck_alert_email: jimmykbyrd@gmail.com
+
+# Healthchecks.io configuration
+# You'll get this after signing up at https://healthchecks.io
+# For now, we'll use the FREE tier's anonymous ping URL
+# (You can upgrade to API management later)
+
+# Server heartbeat configuration
+healthcheck_name: "MiracleMax Server"
+healthcheck_interval: 300  # 5 minutes in seconds
+healthcheck_grace: 600     # 10 minutes grace period before alert
+
+# Ping URL - will be set after first deployment
+# Get this from healthchecks.io after creating your check
+healthcheck_ping_url: "https://hc-ping.com/f983ddb5-4e25-4aa4-9c64-0c8e52f86c50"
+
+# Enable/disable
+healthcheck_enabled: true
+
+# What to monitor
+healthcheck_services:
+  - story-stages
+  - passgo
+  - traefik
+  - actual-budget
+

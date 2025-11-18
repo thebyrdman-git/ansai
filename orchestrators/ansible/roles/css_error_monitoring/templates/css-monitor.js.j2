@@ -1,0 +1,223 @@
+/**
+ * CSS Runtime Monitor
+ * Detects CSS loading failures and styling issues in production
+ * Part of the miraclemax self-healing infrastructure
+ */
+
+(function() {
+    'use strict';
+    
+    // Configuration
+    const CSS_ERROR_ENDPOINT = '/api/log-css-error';
+    const CHECK_INTERVAL = 5000; // Check every 5 seconds
+    
+    // Error buffer
+    const cssErrors = [];
+    let checksPerformed = 0;
+    
+    // Session info
+    const sessionInfo = {
+        userAgent: navigator.userAgent,
+        url: window.location.href,
+        viewport: {
+            width: window.innerWidth,
+            height: window.innerHeight
+        }
+    };
+    
+    /**
+     * Check for failed CSS resources
+     */
+    function checkCSSResources() {
+        const resources = performance.getEntriesByType('resource');
+        
+        resources.forEach(resource => {
+            // Only check CSS files
+            if (!resource.name.endsWith('.css')) return;
+            
+            // Check if resource failed to load (transferSize === 0 usually means 404)
+            if (resource.transferSize === 0 && resource.decodedBodySize === 0) {
+                const error = {
+                    type: 'CSS_LOAD_FAILURE',
+                    message: `Failed to load CSS: ${resource.name}`,
+                    url: resource.name,
+                    duration: resource.duration,
+                    timestamp: new Date().toISOString(),
+                    session: sessionInfo
+                };
+                
+                // Only log each failed CSS once
+                if (!cssErrors.some(e => e.url === error.url)) {
+                    cssErrors.push(error);
+                    console.error('🎨 CSS Load Error:', error);
+                    reportCSSError(error);
+                }
+            }
+        });
+    }
+    
+    /**
+     * Check for missing fonts
+     */
+    function checkFonts() {
+        if (!document.fonts) return;
+        
+        document.fonts.ready.then(() => {
+            const fontFaces = Array.from(document.fonts);
+            
+            fontFaces.forEach(font => {
+                if (font.status === 'unloaded' || font.status === 'loading') {
+                    const error = {
+                        type: 'FONT_LOAD_FAILURE',
+                        message: `Font failed to load: ${font.family}`,
+                        fontFamily: font.family,
+                        fontWeight: font.weight,
+                        fontStyle: font.style,
+                        status: font.status,
+                        timestamp: new Date().toISOString(),
+                        session: sessionInfo
+                    };
+                    
+                    console.warn('🎨 Font Load Warning:', error);
+                    reportCSSError(error);
+                }
+            });
+        });
+    }
+    
+    /**
+     * Check for broken background images in CSS
+     */
+    function checkBackgroundImages() {
+        const elements = document.querySelectorAll('*');
+        
+        elements.forEach(el => {
+            const bgImage = window.getComputedStyle(el).backgroundImage;
+            
+            if (bgImage && bgImage !== 'none' && bgImage.includes('url(')) {
+                // Extract URL
+                const urlMatch = bgImage.match(/url\(['"]?([^'"]+)['"]?\)/);
+                if (!urlMatch) return;
+                
+                const imageUrl = urlMatch[1];
+                
+                // Try to load the image to check if it exists
+                const img = new Image();
+                img.onerror = () => {
+                    const error = {
+                        type: 'CSS_BACKGROUND_IMAGE_FAILURE',
+                        message: `Failed to load background image: ${imageUrl}`,
+                        url: imageUrl,
+                        element: el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + (el.className ? '.' + el.className.split(' ').join('.') : ''),
+                        timestamp: new Date().toISOString(),
+                        session: sessionInfo
+                    };
+                    
+                    console.error('🎨 Background Image Error:', error);
+                    reportCSSError(error);
+                };
+                img.src = imageUrl;
+            }
+        });
+    }
+    
+    /**
+     * Monitor for CORS errors with CSS
+     */
+    function monitorCSSCORS() {
+        const stylesheets = document.styleSheets;
+        
+        try {
+            for (let i = 0; i < stylesheets.length; i++) {
+                const sheet = stylesheets[i];
+                
+                // Try to access cssRules (will throw CORS error if blocked)
+                try {
+                    const rules = sheet.cssRules || sheet.rules;
+                } catch (e) {
+                    if (e.name === 'SecurityError') {
+                        const error = {
+                            type: 'CSS_CORS_ERROR',
+                            message: `CORS error accessing stylesheet: ${sheet.href}`,
+                            url: sheet.href,
+                            error: e.message,
+                            timestamp: new Date().toISOString(),
+                            session: sessionInfo
+                        };
+                        
+                        console.error('🎨 CSS CORS Error:', error);
+                        reportCSSError(error);
+                    }
+                }
+            }
+        } catch (e) {
+            console.warn('CSS CORS monitoring error:', e);
+        }
+    }
+    
+    /**
+     * Report CSS error to backend
+     */
+    function reportCSSError(error) {
+        const payload = JSON.stringify({ errors: [error] });
+        
+        if (navigator.sendBeacon) {
+            navigator.sendBeacon(CSS_ERROR_ENDPOINT, payload);
+        } else {
+            fetch(CSS_ERROR_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: payload,
+                keepalive: true
+            }).catch(err => {
+                console.error('Failed to report CSS error:', err);
+            });
+        }
+    }
+    
+    /**
+     * Periodic CSS health check
+     */
+    function performHealthCheck() {
+        checksPerformed++;
+        
+        // Only check resources on first few checks (they don't change after page load)
+        if (checksPerformed <= 3) {
+            checkCSSResources();
+            checkFonts();
+        }
+        
+        // Check background images less frequently
+        if (checksPerformed === 2) {
+            setTimeout(checkBackgroundImages, 2000);
+        }
+        
+        // Check CORS once
+        if (checksPerformed === 1) {
+            setTimeout(monitorCSSCORS, 1000);
+        }
+    }
+    
+    /**
+     * Initialize monitoring
+     */
+    function init() {
+        // Wait for page to load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+            return;
+        }
+        
+        // Perform initial check after a delay
+        setTimeout(performHealthCheck, 1000);
+        
+        // Periodic checks
+        setInterval(performHealthCheck, CHECK_INTERVAL);
+        
+        console.log('✅ CSS Monitor initialized');
+    }
+    
+    // Start monitoring
+    init();
+})();
+

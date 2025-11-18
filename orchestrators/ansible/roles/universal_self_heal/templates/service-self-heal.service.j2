@@ -1,0 +1,20 @@
+[Unit]
+Description=Self-Healing for {{ service.name }}
+Documentation=https://github.com/jbyrd/miraclemax-infrastructure
+After={{ service.name }}.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/self-heal/{{ service.name }}-self-heal.sh
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier={{ service.name }}-self-heal
+
+# Only run if main service has actually failed
+# (not on manual stops)
+StartLimitBurst=5
+StartLimitIntervalSec=300
+
+[Install]
+WantedBy=multi-user.target
+

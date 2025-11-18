@@ -1,0 +1,37 @@
+---
+- name: Deploy CSS Error Monitoring System
+  hosts: miraclemax.local
+  become: yes
+  
+  pre_tasks:
+    - name: Display deployment banner
+      debug:
+        msg:
+          - "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          - "🎨 CSS ERROR MONITORING DEPLOYMENT"
+          - "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          - ""
+          - "Deploying comprehensive CSS error detection:"
+          - "  ✓ Template validation (missing files, broken references)"
+          - "  ✓ CSS syntax validation (braces, colors, syntax)"
+          - "  ✓ Runtime error monitoring (404s, CORS, fonts)"
+          - "  ✓ Automated email alerts"
+          - "  ✓ Integration with self-healing infrastructure"
+          - ""
+          - "Target: miraclemax.local"
+          - "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+  roles:
+    - css_error_monitoring
+
+  post_tasks:
+    - name: Verify timers are running
+      shell: systemctl list-timers | grep -E '(css-validation|css-runtime-monitor)'
+      register: timer_status
+      changed_when: false
+
+    - name: Display timer status
+      debug:
+        msg: "{{ timer_status.stdout_lines }}"
+      when: timer_status.stdout_lines is defined
+

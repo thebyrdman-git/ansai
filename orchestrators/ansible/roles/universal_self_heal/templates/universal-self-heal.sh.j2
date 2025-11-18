@@ -1,0 +1,410 @@
+#!/bin/bash
+# Universal Self-Healing System for MiracleMax
+# Applies to: {{ service.name }}
+# Auto-detects, fixes, and reports issues
+
+set -e
+
+# Service configuration
+SERVICE_NAME="{{ service.name }}"
+SERVICE_PORT="{{ service.port }}"
+SERVICE_DOMAIN="{{ service.domain | default('N/A') }}"
+OWNER_EMAIL="{{ owner_email }}"
+CRITICAL="{{ service.critical | default('false') }}"
+
+# Paths
+LOG_FILE="/var/log/self-heal-{{ service.name }}.log"
+REPORT_FILE="/tmp/self-heal-{{ service.name }}-$(date +%s).txt"
+STATUS_FILE="/var/run/{{ service.name }}-heal-status"
+
+# SMTP Configuration
+SMTP_SERVER="{{ smtp_server }}"
+SMTP_PORT="{{ smtp_port }}"
+SMTP_USER="{{ smtp_user }}"
+SMTP_PASS="{{ smtp_password }}"
+
+# Logging
+log() {
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] [$SERVICE_NAME] $*" | tee -a "$LOG_FILE"
+}
+
+# Report builder
+report() {
+    echo "$*" | tee -a "$REPORT_FILE"
+}
+
+# Initialize report
+init_report() {
+    cat > "$REPORT_FILE" <<EOF
+═══════════════════════════════════════════════════════
+🤖 MiracleMax Self-Healing Report
+═══════════════════════════════════════════════════════
+
+Service: $SERVICE_NAME
+{% if service.domain %}Domain: $SERVICE_DOMAIN{% endif %}
+Port: $SERVICE_PORT
+Priority: $([ "$CRITICAL" = "true" ] && echo "CRITICAL" || echo "Standard")
+
+Time: $(date)
+Host: $(hostname)
+
+AUTOMATIC ISSUE RESOLUTION
+
+═══════════════════════════════════════════════════════
+
+EOF
+}
+
+# Send email report
+send_email_report() {
+    local subject="$1"
+    local success="$2"
+    
+    if [ "$success" = "true" ]; then
+        icon="✅"
+        status="RESOLVED"
+        priority="info"
+    else
+        icon="❌"
+        status="FAILED"
+        priority="crit"
+    fi
+    
+    # Add system status to report
+    cat >> "$REPORT_FILE" <<EOF
+
+═══════════════════════════════════════════════════════
+Post-Healing System Status
+═══════════════════════════════════════════════════════
+
+Service: $(systemctl is-active $SERVICE_NAME 2>/dev/null || echo "UNKNOWN")
+Enabled: $(systemctl is-enabled $SERVICE_NAME 2>/dev/null || echo "UNKNOWN")
+Uptime: $(systemctl show $SERVICE_NAME --property=ActiveEnterTimestamp --value 2>/dev/null | cut -d' ' -f2-4 || echo "N/A")
+
+Recent Logs:
+$(journalctl -u $SERVICE_NAME -n 5 --no-pager 2>/dev/null || echo "No logs available")
+
+═══════════════════════════════════════════════════════
+
+All MiracleMax Services Status:
+$(systemctl list-units --type=service --state=running --no-pager | grep -E "{{ monitored_services | map(attribute='name') | join('|') }}" || echo "Unable to list services")
+
+═══════════════════════════════════════════════════════
+End Report - MiracleMax Self-Healing System
+═══════════════════════════════════════════════════════
+
+View all healing logs: journalctl -t miraclemax-self-heal
+Check service: systemctl status $SERVICE_NAME
+View this service logs: journalctl -u $SERVICE_NAME -n 100
+EOF
+
+    # Send via Python SMTP
+    python3 << PYPYTHON
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import sys
+
+try:
+    with open("$REPORT_FILE", "r") as f:
+        body = f.read()
+    
+    msg = MIMEMultipart()
+    msg['From'] = "$SMTP_USER"
+    msg['To'] = "$OWNER_EMAIL"
+    msg['Subject'] = "$icon MiracleMax: $SERVICE_NAME - $status"
+    msg.attach(MIMEText(body, 'plain'))
+    
+    server = smtplib.SMTP("$SMTP_SERVER", $SMTP_PORT)
+    server.starttls()
+    server.login("$SMTP_USER", "$SMTP_PASS")
+    server.send_message(msg)
+    server.quit()
+    print("Email sent successfully")
+    sys.exit(0)
+except Exception as e:
+    print(f"Failed to send email: {e}")
+    sys.exit(1)
+PYPYTHON
+    
+    local email_result=$?
+    
+    if [ $email_result -eq 0 ]; then
+        log "Email report sent to $OWNER_EMAIL"
+    else
+        log "WARNING: Failed to send email report"
+    fi
+    
+    # Always log to systemd journal
+    systemd-cat -t miraclemax-self-heal -p $priority < "$REPORT_FILE"
+    
+    # Save status
+    echo "last_heal=$(date +%s)" > "$STATUS_FILE"
+    echo "last_status=$status" >> "$STATUS_FILE"
+    echo "service=$SERVICE_NAME" >> "$STATUS_FILE"
+}
+
+# Healing Strategy: Service Restart
+heal_service_restart() {
+    report "══════════════════════════════════════════════════"
+    report "ISSUE DETECTED: $SERVICE_NAME is not running"
+    report "══════════════════════════════════════════════════"
+    report ""
+    report "DIAGNOSIS:"
+    report "  • Service status: $(systemctl is-active $SERVICE_NAME 2>&1 || echo 'inactive')"
+    report "  • Last exit status: $(systemctl show $SERVICE_NAME --property=ExecMainStatus --value 2>/dev/null || echo 'unknown')"
+    report "  • Memory usage: $(systemctl show $SERVICE_NAME --property=MemoryCurrent --value 2>/dev/null | awk '{print $1/1024/1024 " MB"}' || echo 'unknown')"
+    report ""
+    report "HEALING STRATEGY: Standard Service Restart"
+    report "  Action: systemctl restart $SERVICE_NAME"
+    report ""
+    
+    log "Attempting service restart for $SERVICE_NAME..."
+    
+    local restart_output=$(systemctl restart $SERVICE_NAME 2>&1)
+    report "Restart command output:"
+    report "$restart_output"
+    report ""
+    
+    sleep 5
+    
+    if systemctl is-active --quiet $SERVICE_NAME; then
+        report "✅ SUCCESS: Service restarted and is now active"
+        report ""
+        report "HOW IT WAS FIXED:"
+        report "  1. Detected $SERVICE_NAME was inactive/failed"
+        report "  2. Executed: systemctl restart $SERVICE_NAME"
+        report "  3. Waited 5 seconds for startup"
+        report "  4. Verified service is active"
+        {% if service.port %}report "  5. Service listening on port $SERVICE_PORT"{% endif %}
+        report ""
+        report "ROOT CAUSE: Service crash or unexpected termination"
+        report "  Possible reasons:"
+        report "    • Out of memory (OOM killer)"
+        report "    • Unhandled exception in application"
+        report "    • External signal (SIGTERM/SIGKILL)"
+        report "    • Configuration error"
+        report ""
+        report "RESOLUTION: Standard systemd restart restored functionality"
+        report "HEALING TIME: ~5 seconds"
+        report "CONFIDENCE: High"
+        report ""
+        report "RECOMMENDATION:"
+        report "  Check recent logs for root cause: journalctl -u $SERVICE_NAME -n 100"
+        
+        log "✅ Service restart successful for $SERVICE_NAME"
+        send_email_report "Service Restarted" "true"
+        return 0
+    else
+        report "❌ Service restart completed but service is still not active"
+        report "  Current status: $(systemctl status $SERVICE_NAME --no-pager | head -n 20)"
+        log "❌ Service restart failed for $SERVICE_NAME"
+        return 1
+    fi
+}
+
+# Healing Strategy: Port Conflict Resolution
+heal_port_conflict() {
+    {% if service.port %}
+    report "══════════════════════════════════════════════════"
+    report "ISSUE DETECTED: Port conflict on $SERVICE_PORT"
+    report "══════════════════════════════════════════════════"
+    report ""
+    
+    local port_user=$(lsof -ti :$SERVICE_PORT 2>/dev/null || echo "")
+    
+    if [ -z "$port_user" ]; then
+        report "Port $SERVICE_PORT is not occupied - no conflict"
+        return 1
+    fi
+    
+    local proc_name=$(ps -p "$port_user" -o comm= 2>/dev/null || echo "unknown")
+    local proc_user=$(ps -p "$port_user" -o user= 2>/dev/null || echo "unknown")
+    
+    report "DIAGNOSIS:"
+    report "  • Port $SERVICE_PORT is occupied"
+    report "  • Occupying PID: $port_user"
+    report "  • Process name: $proc_name"
+    report "  • Process owner: $proc_user"
+    report "  • Expected service: $SERVICE_NAME"
+    report ""
+    
+    # Check if it's a stale process of the same service
+    if ps -p "$port_user" -o cmd= | grep -q "$SERVICE_NAME"; then
+        report "HEALING STRATEGY: Kill Stale Process"
+        report "  Detected: Stale $SERVICE_NAME process"
+        report "  Action: Kill PID $port_user and restart service"
+        report ""
+        
+        log "Killing stale $SERVICE_NAME process (PID: $port_user)"
+        kill -9 "$port_user" 2>&1 | tee -a "$REPORT_FILE"
+        sleep 2
+        
+        systemctl restart $SERVICE_NAME
+        sleep 5
+        
+        if systemctl is-active --quiet $SERVICE_NAME; then
+            report ""
+            report "✅ SUCCESS: Stale process removed, service restarted"
+            report ""
+            report "HOW IT WAS FIXED:"
+            report "  1. Detected stale $SERVICE_NAME process on port $SERVICE_PORT"
+            report "  2. Forcefully terminated stale process (PID $port_user)"
+            report "  3. Restarted $SERVICE_NAME service"
+            report "  4. Service successfully claimed port $SERVICE_PORT"
+            report ""
+            report "ROOT CAUSE: Previous service instance didn't terminate cleanly"
+            report "RESOLUTION: Stale process killed, fresh instance started"
+            report "HEALING TIME: ~7 seconds"
+            report "CONFIDENCE: High"
+            
+            log "✅ Port conflict resolved for $SERVICE_NAME"
+            send_email_report "Port Conflict Resolved (Stale Process)" "true"
+            return 0
+        fi
+    else
+        report "HEALING STRATEGY: Identify and Report Conflict"
+        report "  WARNING: Port occupied by different service ($proc_name)"
+        report "  Action: Report conflict - manual review needed"
+        report ""
+        report "❌ REQUIRES MANUAL INTERVENTION:"
+        report "  Port $SERVICE_PORT is occupied by: $proc_name (PID $port_user)"
+        report "  This may be:"
+        report "    • A configuration error (wrong port assignment)"
+        report "    • A rogue process that needs investigation"
+        report "    • A service that should be using a different port"
+        report ""
+        report "  To resolve manually:"
+        report "    1. Investigate: ps -p $port_user -f"
+        report "    2. Check config: Check if $SERVICE_NAME should use a different port"
+        report "    3. If safe to kill: sudo kill $port_user && sudo systemctl restart $SERVICE_NAME"
+        report ""
+        
+        log "Port conflict requires manual intervention (different service)"
+        send_email_report "Port Conflict - Manual Review Required" "false"
+        return 1
+    fi
+    {% else %}
+    return 1
+    {% endif %}
+}
+
+# Healing Strategy: Configuration Validation
+heal_config_validation() {
+    report "══════════════════════════════════════════════════"
+    report "ISSUE DETECTED: Configuration may be invalid"
+    report "══════════════════════════════════════════════════"
+    report ""
+    
+    # Service-specific config validation
+    case "$SERVICE_NAME" in
+        traefik)
+            report "HEALING STRATEGY: Traefik Configuration Validation"
+            if command -v traefik &> /dev/null; then
+                local config_check=$(traefik --configFile=/etc/traefik/traefik.yml --dry-run 2>&1 || echo "FAILED")
+                report "  Config validation: $config_check"
+                
+                if echo "$config_check" | grep -q "Configuration loaded"; then
+                    report "  ✅ Configuration is valid"
+                    systemctl restart $SERVICE_NAME
+                    sleep 3
+                    
+                    if systemctl is-active --quiet $SERVICE_NAME; then
+                        report ""
+                        report "✅ SUCCESS: Service restarted with valid config"
+                        log "✅ Traefik config validated and service restarted"
+                        send_email_report "Configuration Validated" "true"
+                        return 0
+                    fi
+                else
+                    report "  ❌ Configuration has errors"
+                    report "  Manual fix required - check config files"
+                    send_email_report "Invalid Configuration - Manual Fix Required" "false"
+                    return 1
+                fi
+            fi
+            ;;
+        *)
+            report "  No specific config validation for $SERVICE_NAME"
+            return 1
+            ;;
+    esac
+}
+
+# Main healing orchestration
+main() {
+    log "🤖 Self-healing check initiated for $SERVICE_NAME"
+    init_report
+    
+    # Check if service is actually down
+    if systemctl is-active --quiet $SERVICE_NAME; then
+        log "$SERVICE_NAME is running - no healing needed"
+        exit 0
+    fi
+    
+    log "⚠️  $SERVICE_NAME is DOWN - beginning healing procedures"
+    report "ALERT: $SERVICE_NAME has stopped responding"
+    report ""
+    
+    # Try enabled healing strategies in order
+    {% for strategy in service.healing_strategies %}
+    {% if strategy == 'service_restart' %}
+    if heal_service_restart; then
+        exit 0
+    fi
+    {% elif strategy == 'port_conflict' %}
+    if heal_port_conflict; then
+        exit 0
+    fi
+    {% elif strategy == 'config_validation' %}
+    if heal_config_validation; then
+        exit 0
+    fi
+    {% endif %}
+    {% endfor %}
+    
+    # All strategies failed
+    report ""
+    report "══════════════════════════════════════════════════"
+    report "❌ ALL HEALING STRATEGIES FAILED"
+    report "══════════════════════════════════════════════════"
+    report ""
+    report "Service: $SERVICE_NAME"
+    report "Status: STILL DOWN after healing attempts"
+    report ""
+    report "MANUAL INTERVENTION REQUIRED:"
+    report ""
+    report "1. SSH to server:"
+    report "   ssh {{ ansible_user }}@miraclemax.local"
+    report ""
+    report "2. Check service status:"
+    report "   sudo systemctl status $SERVICE_NAME"
+    report ""
+    report "3. View recent logs:"
+    report "   sudo journalctl -u $SERVICE_NAME -n 100"
+    report ""
+    report "4. Check system resources:"
+    report "   free -h && df -h"
+    report ""
+    report "5. Try manual restart:"
+    report "   sudo systemctl restart $SERVICE_NAME"
+    report ""
+    report "6. If still failing, check:"
+    report "   • Configuration files"
+    report "   • Dependencies (database, network, etc.)"
+    report "   • System logs: journalctl -xe"
+    report "   • Disk space and permissions"
+    report ""
+    {% if service.critical %}
+    report "⚠️  CRITICAL SERVICE - IMMEDIATE ATTENTION REQUIRED"
+    report ""
+    {% endif %}
+    
+    log "❌ Self-healing failed for $SERVICE_NAME - escalating to owner"
+    send_email_report "Self-Healing Failed - Urgent Manual Action Required" "false"
+    exit 1
+}
+
+# Execute
+main
+

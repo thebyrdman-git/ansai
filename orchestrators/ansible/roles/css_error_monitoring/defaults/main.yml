@@ -1,0 +1,40 @@
+---
+# CSS Error Monitoring Configuration
+
+# Email configuration for alerts
+owner_email: jimmykbyrd@gmail.com
+smtp_server: smtp.gmail.com
+smtp_port: 587
+smtp_user: jimmykbyrd@gmail.com
+smtp_password: "***REMOVED***"
+
+# Applications to monitor
+monitored_apps:
+  - name: story-stages
+    app_path: /home/jbyrd/story-stages
+    template_dirs:
+      - /home/jbyrd/story-stages/templates
+    static_dirs:
+      - /home/jbyrd/story-stages/static/css
+    port: 5002
+    domain: books.jbyrd.org
+    
+  - name: passgo
+    app_path: /home/jbyrd/passgo
+    template_dirs:
+      - /home/jbyrd/passgo/templates
+    static_dirs:
+      - /home/jbyrd/passgo/static/css
+    port: 5001
+    domain: passgo.jbyrd.org
+
+# Validation schedule (cron format)
+validation_schedule: "*/30 * * * *"  # Every 30 minutes
+
+# Runtime error check schedule
+runtime_check_schedule: "*/15 * * * *"  # Every 15 minutes
+
+# Error thresholds
+max_errors_before_alert: 3
+error_lookback_minutes: 60
+

@@ -1,0 +1,8 @@
+---
+# Handlers for universal self-healing system
+
+- name: reload systemd
+  systemd:
+    daemon_reload: yes
+  listen: reload systemd
+

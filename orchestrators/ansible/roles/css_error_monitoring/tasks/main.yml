@@ -1,0 +1,160 @@
+---
+# CSS Error Monitoring Deployment
+
+- name: Create CSS validation directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: jbyrd
+    group: jbyrd
+  loop:
+    - /usr/local/bin
+    - /var/log/css-validation
+    - /var/log/css-runtime-errors
+
+- name: Deploy CSS validator script
+  template:
+    src: css-validator.sh.j2
+    dest: /usr/local/bin/css-validator.sh
+    mode: '0755'
+  register: validator_deployed
+
+- name: Deploy runtime CSS monitor script
+  template:
+    src: runtime-css-monitor.sh.j2
+    dest: /usr/local/bin/runtime-css-monitor.sh
+    mode: '0755'
+  register: monitor_deployed
+
+- name: Deploy CSS monitor JavaScript
+  template:
+    src: css-monitor.js.j2
+    dest: "{{ item.app_path }}/static/js/css-monitor.js"
+    owner: jbyrd
+    group: jbyrd
+    mode: '0644'
+  loop: "{{ monitored_apps }}"
+  register: css_monitor_deployed
+
+- name: Create systemd service for CSS validation
+  copy:
+    dest: /etc/systemd/system/css-validation.service
+    content: |
+      [Unit]
+      Description=CSS Template Validation
+      After=network.target
+
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/local/bin/css-validator.sh
+      StandardOutput=journal
+      StandardError=journal
+      User=root
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: '0644'
+
+- name: Create systemd timer for CSS validation
+  copy:
+    dest: /etc/systemd/system/css-validation.timer
+    content: |
+      [Unit]
+      Description=CSS Template Validation Timer
+      
+      [Timer]
+      OnBootSec=3min
+      OnUnitActiveSec={{ validation_schedule }}
+      Persistent=true
+      
+      [Install]
+      WantedBy=timers.target
+    mode: '0644'
+
+- name: Create systemd service for runtime CSS monitoring
+  copy:
+    dest: /etc/systemd/system/css-runtime-monitor.service
+    content: |
+      [Unit]
+      Description=CSS Runtime Error Monitor
+      After=network.target
+
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/local/bin/runtime-css-monitor.sh
+      StandardOutput=journal
+      StandardError=journal
+      User=root
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: '0644'
+
+- name: Create systemd timer for runtime CSS monitoring
+  copy:
+    dest: /etc/systemd/system/css-runtime-monitor.timer
+    content: |
+      [Unit]
+      Description=CSS Runtime Error Monitor Timer
+      
+      [Timer]
+      OnBootSec=5min
+      OnUnitActiveSec={{ runtime_check_schedule }}
+      Persistent=true
+      
+      [Install]
+      WantedBy=timers.target
+    mode: '0644'
+
+- name: Reload systemd daemon
+  systemd:
+    daemon_reload: yes
+
+- name: Enable and start CSS validation timer
+  systemd:
+    name: css-validation.timer
+    enabled: yes
+    state: started
+
+- name: Enable and start runtime CSS monitor timer
+  systemd:
+    name: css-runtime-monitor.timer
+    enabled: yes
+    state: started
+
+- name: Run initial CSS validation
+  command: /usr/local/bin/css-validator.sh
+  register: initial_validation
+  ignore_errors: yes
+
+- name: Display initial validation results
+  debug:
+    msg: "{{ initial_validation.stdout_lines }}"
+  when: initial_validation.stdout_lines is defined
+
+- name: Display deployment summary
+  debug:
+    msg:
+      - "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      - "✅ CSS Error Monitoring Deployed"
+      - "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      - ""
+      - "📊 MONITORING ACTIVE:"
+      - "  • CSS Template Validation: Every {{ validation_schedule }}"
+      - "  • Runtime CSS Monitoring: Every {{ runtime_check_schedule }}"
+      - "  • Email Alerts: {{ owner_email }}"
+      - ""
+      - "🔧 MANUAL COMMANDS:"
+      - "  • Run CSS validator: sudo /usr/local/bin/css-validator.sh"
+      - "  • Check runtime errors: sudo /usr/local/bin/runtime-css-monitor.sh"
+      - "  • View validation log: sudo journalctl -u css-validation.service"
+      - "  • View monitor log: sudo journalctl -u css-runtime-monitor.service"
+      - ""
+      - "📝 NEXT STEPS:"
+      - "  1. Add Flask endpoint to each app (see below)"
+      - "  2. Add css-monitor.js to templates"
+      - "  3. Test by visiting your sites"
+      - ""
+      - "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+

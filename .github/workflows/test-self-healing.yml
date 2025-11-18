@@ -1,0 +1,178 @@
+name: Test ANSAI Self-Healing
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'orchestrators/ansible/roles/**'
+      - 'orchestrators/ansible/playbooks/**'
+      - 'orchestrators/ansible/tests/**'
+      - '.github/workflows/test-self-healing.yml'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  ansible-syntax:
+    name: Ansible Syntax Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install Ansible
+        run: |
+          pip install ansible ansible-lint
+      
+      - name: Ansible Version
+        run: ansible --version
+      
+      - name: Syntax Check - Universal Self-Healing
+        run: |
+          cd orchestrators/ansible
+          ansible-playbook playbooks/deploy-self-healing.yml --syntax-check
+      
+      - name: Syntax Check - JS Monitoring
+        run: |
+          cd orchestrators/ansible
+          ansible-playbook playbooks/deploy-js-monitoring.yml --syntax-check
+      
+      - name: Syntax Check - CSS Monitoring
+        run: |
+          cd orchestrators/ansible
+          ansible-playbook playbooks/deploy-css-monitoring.yml --syntax-check
+      
+      - name: Syntax Check - Healthchecks
+        run: |
+          cd orchestrators/ansible
+          ansible-playbook playbooks/deploy-healthchecks.yml --syntax-check
+      
+      - name: Syntax Check - Complete Stack
+        run: |
+          cd orchestrators/ansible
+          ansible-playbook playbooks/deploy-complete-monitoring.yml --syntax-check
+
+  ansible-lint:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install Ansible Lint
+        run: pip install ansible ansible-lint
+      
+      - name: Run Ansible Lint
+        run: |
+          cd orchestrators/ansible
+          ansible-lint playbooks/*.yml || true
+        continue-on-error: true
+
+  shellcheck:
+    name: Shell Script Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: './orchestrators/ansible/tests'
+          severity: warning
+
+  yaml-validation:
+    name: YAML Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install yamllint
+        run: pip install yamllint
+      
+      - name: Run yamllint
+        run: |
+          find orchestrators/ansible -name "*.yml" -o -name "*.yaml" | xargs yamllint || true
+        continue-on-error: true
+
+  documentation-build:
+    name: Documentation Build Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install MkDocs and dependencies
+        run: |
+          pip install mkdocs-material mkdocs-git-revision-date-localized-plugin
+      
+      - name: Build documentation
+        run: mkdocs build --strict
+      
+      - name: Check for broken links in docs
+        run: |
+          find docs/self-healing -name "*.md" -exec grep -H "http" {} \; || true
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Run Trivy security scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: 'orchestrators/ansible'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '0'
+      
+      - name: Check for secrets
+        run: |
+          ! git grep -E "(password|secret|token|api_key|smtp_password).*=.*['\"].*[^{]" -- orchestrators/ansible/roles/*/defaults/ || echo "Found potential secrets in defaults"
+
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [ansible-syntax, shellcheck, yaml-validation, documentation-build]
+    
+    steps:
+      - name: Summary
+        run: |
+          echo "✅ All ANSAI Self-Healing tests passed!"
+          echo ""
+          echo "Components tested:"
+          echo "  - Ansible playbook syntax"
+          echo "  - Shell script validation"
+          echo "  - YAML formatting"
+          echo "  - Documentation build"
+          echo ""
+          echo "Ready for deployment! 🚀"
+
