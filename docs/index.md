@@ -184,6 +184,19 @@ ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
 
 ---
 
+## 🔌 IDE Integration
+
+**Using Cursor IDE?** ANSAI integrates directly into your editor!
+
+- AI-powered log analysis in chat
+- Context-aware rules auto-generated
+- Natural language automation
+- Cost-optimized multi-model routing
+
+**[Setup Guide: ANSAI + Cursor →](integrations/CURSOR_IDE.md)**
+
+---
+
 ## 🎨 Build Inspiration
 
 **Not sure where to start? Try these ideas:**
