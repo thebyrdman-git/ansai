@@ -141,6 +141,9 @@ nav:
     - Overview: integrations/index.md
     - Cursor IDE: integrations/CURSOR_IDE.md
   
+  - 💡 Examples & Showcase:
+    - Overview: examples/index.md
+  
   - 🎨 Community:
     - What Builders Want: COMMUNITY_SELF_HEALING_PRIORITIES.md
     - Scaling Strategy: SCALING_STRATEGY.md
