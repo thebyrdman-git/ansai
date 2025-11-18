@@ -1,0 +1,331 @@
+/* ANSAI Creative Platform Styling */
+
+/* Hero Section - Make it pop */
+.hero-section {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px;
+    margin-bottom: 3rem;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+}
+
+.hero-section h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.hero-section p {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    opacity: 0.95;
+}
+
+/* Building Examples - Creative tabs */
+.building-examples {
+    background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+    padding: 2rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+    border-left: 5px solid #667eea;
+}
+
+.building-examples h3 {
+    color: #667eea;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Community Gallery Cards */
+.admonition.success {
+    border-left: 5px solid #4caf50;
+    background: linear-gradient(to right, #f1f8f4 0%, #ffffff 100%);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.admonition.success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.2);
+}
+
+.admonition.success .admonition-title {
+    background: #4caf50;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* Grid Cards - More playful */
+.md-typeset .grid.cards>:-webkit-any(ol,ul)>li {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.md-typeset .grid.cards>:-webkit-any(ol,ul)>li:hover {
+    border-color: #667eea;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+}
+
+.md-typeset .grid.cards>:is(ol,ul)>li {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.md-typeset .grid.cards>:is(ol,ul)>li:hover {
+    border-color: #667eea;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+}
+
+/* Icons in cards - Make them colorful */
+.md-typeset .grid.cards .lg {
+    color: #667eea;
+}
+
+/* Community CTA */
+.community-cta {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem;
+    border-radius: 12px;
+    text-align: center;
+    margin: 3rem 0;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+}
+
+.community-cta h3 {
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.community-cta a {
+    color: #ffeb3b;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.community-cta a:hover {
+    color: #fff;
+}
+
+/* Stats section */
+.stats {
+    background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
+    padding: 2rem;
+    border-radius: 12px;
+    border-left: 5px solid #667eea;
+}
+
+.stats ul {
+    list-style: none;
+    padding: 0;
+}
+
+.stats li {
+    font-size: 1.2rem;
+    padding: 0.5rem 0;
+    font-weight: 600;
+}
+
+/* Final CTA */
+.final-cta {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border-radius: 12px;
+    margin: 3rem 0;
+    box-shadow: 0 10px 40px rgba(240, 147, 251, 0.3);
+}
+
+.final-cta p {
+    font-size: 1.4rem;
+    line-height: 2;
+    margin: 0.5rem 0;
+    font-weight: 600;
+}
+
+/* Tagline */
+.tagline {
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+    opacity: 0.7;
+}
+
+.tagline p {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+}
+
+/* Build Inspiration Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.grid li {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #2196f3;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.grid li:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+}
+
+/* Buttons - More prominent */
+.md-button {
+    border-radius: 8px;
+    font-weight: 700;
+    padding: 0.8rem 2rem;
+    transition: all 0.3s ease;
+}
+
+.md-button--primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+
+.md-button--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.md-button--large {
+    font-size: 1.2rem;
+    padding: 1rem 2.5rem;
+}
+
+/* Quote blocks - More creative */
+.md-typeset blockquote {
+    border-left: 5px solid #667eea;
+    background: linear-gradient(to right, #f8f9fa 0%, #ffffff 100%);
+    padding: 1.5rem;
+    border-radius: 8px;
+    font-style: italic;
+}
+
+/* Admonitions - Playful styling */
+.md-typeset .admonition {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.md-typeset .admonition.quote {
+    background: linear-gradient(to right, #fff9e6 0%, #ffffff 100%);
+    border-left: 5px solid #ffc107;
+}
+
+/* Code blocks - Softer styling */
+.md-typeset pre>code {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Navigation - Emphasize creative sections */
+.md-nav__link[href*="show-and-tell"],
+.md-nav__link[href*="community"] {
+    color: #667eea;
+    font-weight: 700;
+}
+
+/* Page title - Make it bigger */
+.md-typeset h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Section headers - More colorful */
+.md-typeset h2 {
+    color: #667eea;
+    font-weight: 800;
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 0.5rem;
+}
+
+/* Horizontal rules - More stylish */
+.md-typeset hr {
+    border: none;
+    height: 3px;
+    background: linear-gradient(to right, transparent 0%, #667eea 50%, transparent 100%);
+    margin: 3rem 0;
+}
+
+/* Link styling - More prominent */
+.md-typeset a {
+    color: #667eea;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.md-typeset a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .hero-section h2 {
+        font-size: 2rem;
+    }
+    
+    .hero-section p {
+        font-size: 1.1rem;
+    }
+    
+    .md-typeset h1 {
+        font-size: 2rem;
+    }
+    
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Add playful emoji sizing */
+.md-typeset h1:before,
+.md-typeset h2:before,
+.md-typeset h3:before {
+    font-size: 1.2em;
+}
+
+/* Make the docs feel alive with subtle animations */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.hero-section {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Community showcase special styling */
+.md-typeset .admonition.success::before {
+    content: "🎨";
+    font-size: 2rem;
+    float: left;
+    margin-right: 1rem;
+}
+

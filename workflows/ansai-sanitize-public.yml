@@ -1,0 +1,364 @@
+---
+# ANSAI Public Sanitization Workflow
+# Prepares a sanitized version of ANSAI for public GitHub release
+#
+# Usage:
+#   ansible-playbook workflows/ansai-sanitize-public.yml
+#
+# This workflow:
+# - Copies ANSAI to a clean directory
+# - Removes personal/work data and configurations
+# - Removes Red Hat internal references
+# - Removes large binary files
+# - Replaces with generic examples
+# - Initializes git repository for public release
+
+- name: Sanitize ANSAI for Public Release
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  vars:
+    source_dir: "{{ playbook_dir }}/.."
+    output_dir: "/home/jbyrd/ansai-public"
+    github_repo: "thebyrdman-git/ansai"
+    
+  tasks:
+    - name: 🗑️  Remove existing output directory
+      ansible.builtin.file:
+        path: "{{ output_dir }}"
+        state: absent
+
+    - name: 📁 Create clean output directory
+      ansible.builtin.file:
+        path: "{{ output_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: 📋 Copy ANSAI core components
+      ansible.builtin.synchronize:
+        src: "{{ source_dir }}/"
+        dest: "{{ output_dir }}/"
+        delete: no
+        rsync_opts:
+          # Exclude git and build artifacts
+          - "--exclude=.git"
+          - "--exclude=__pycache__"
+          - "--exclude=*.pyc"
+          - "--exclude=.pytest_cache"
+          - "--exclude=node_modules"
+          - "--exclude=dist"
+          - "--exclude=build"
+          - "--exclude=*.egg-info"
+          
+          # Exclude large binary files
+          - "--exclude=*.exe"
+          - "--exclude=*.dmg"
+          - "--exclude=*.AppImage"
+          - "--exclude=*.deb"
+          - "--exclude=*.rpm"
+          - "--exclude=releases/"
+          - "--exclude=taminator/"
+          
+          # Exclude personal data
+          - "--exclude=*.db"
+          - "--exclude=*.sqlite"
+          - "--exclude=*.log"
+          - "--exclude=.env"
+          - "--exclude=*.key"
+          - "--exclude=*.pem"
+          - "--exclude=*.crt"
+          
+          # Exclude work-specific content
+          - "--exclude=customer-work/"
+          - "--exclude=case-work/"
+          - "--exclude=extracts/"
+          - "--exclude=passgo.archived*"
+          - "--exclude=hatter-*"
+          
+          # Exclude internal docs
+          - "--exclude=*FANNIE-MAE*"
+          - "--exclude=*REDHAT*"
+          - "--exclude=*TAM*"
+          - "--exclude=*TAMINATOR*"
+          - "--exclude=*gitlab*"
+          - "--exclude=*RFE*"
+          - "--exclude=*HANDOFF*"
+          
+          # Exclude site builds
+          - "--exclude=site/"
+      delegate_to: localhost
+
+    - name: 🧹 Remove Red Hat internal references from docs
+      ansible.builtin.shell: |
+        find {{ output_dir }}/docs -type f -name "*.md" -exec sed -i \
+          -e 's/jbyrd@redhat.com/contact@ansai.dev/g' \
+          -e 's/gitlab.cee.redhat.com/github.com/g' \
+          -e 's/Jimmy Byrd/ANSAI Community/g' \
+          -e '/Red Hat Internal/d' \
+          -e '/TAM Tools/d' \
+          {} \;
+      args:
+        executable: /bin/bash
+
+    - name: 🏷️  Create generic README
+      ansible.builtin.copy:
+        dest: "{{ output_dir }}/README.md"
+        content: |
+          # ANSAI Automation Framework
+          
+          **Everything-as-Code: Ansible-Native Intelligence Automation**
+          
+          ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+          ![Ansible](https://img.shields.io/badge/ansible-2.9%2B-red.svg)
+          
+          ## Overview
+          
+          ANSAI is a comprehensive automation framework built on Ansible that embodies the **Everything-as-Code** philosophy. It provides production-ready automation for:
+          
+          - 🛡️ **Self-Healing Infrastructure** - Automatic service remediation with intelligent healing strategies
+          - 🔍 **Comprehensive Monitoring** - JavaScript, CSS, and external monitoring
+          - 📊 **Intelligent Workflows** - Context-aware automation patterns
+          - 🏗️ **Composable Architecture** - Modular, reusable components
+          - 📚 **Complete Documentation** - Production-ready guides at [ansai.dev](https://ansai.dev)
+          
+          ## Quick Start
+          
+          ### Prerequisites
+          
+          - Ansible 2.9+
+          - Python 3.6+
+          - systemd-based Linux distribution
+          
+          ### Installation
+          
+          ```bash
+          git clone https://github.com/thebyrdman-git/ansai.git
+          cd ansai
+          pip install -e .
+          ```
+          
+          ### Deploy Self-Healing Infrastructure
+          
+          ```bash
+          cd orchestrators/ansible
+          
+          # Configure your inventory
+          cp inventory/hosts.yml.example inventory/hosts.yml
+          # Edit inventory/hosts.yml with your hosts
+          
+          # Deploy complete monitoring stack
+          ansible-playbook playbooks/deploy-complete-monitoring.yml
+          ```
+          
+          ## Features
+          
+          ### Self-Healing Infrastructure
+          
+          - **Universal Service Healing**: Automatic restart with intelligent retry logic
+          - **JavaScript Error Monitoring**: Static validation + runtime capture
+          - **CSS Error Monitoring**: Missing file detection + loading failures
+          - **External Monitoring**: Healthchecks.io integration for 100% coverage
+          
+          [Documentation →](https://ansai.dev/self-healing/)
+          
+          ### Composable Architecture
+          
+          - **Modular Roles**: Reusable Ansible components
+          - **Intelligent Workflows**: Context-aware automation
+          - **OS Agnostic**: Works across RHEL, Fedora, Ubuntu, Rocky Linux
+          
+          ### Everything-as-Code Philosophy
+          
+          - **Config-as-Code**: All configuration version controlled
+          - **Infrastructure-as-Code**: Declarative infrastructure management
+          - **Test-as-Code**: Comprehensive automated testing
+          - **Documentation-as-Code**: Generated from source
+          
+          ## Documentation
+          
+          - **Main Docs**: [ansai.dev](https://ansai.dev)
+          - **Self-Healing Guide**: [ansai.dev/self-healing](https://ansai.dev/self-healing/)
+          - **API Reference**: [ansai.dev/reference](https://ansai.dev/reference/)
+          
+          ## Repository Structure
+          
+          ```
+          ansai/
+          ├── orchestrators/
+          │   └── ansible/
+          │       ├── roles/          # Reusable Ansible roles
+          │       ├── playbooks/      # Deployment playbooks
+          │       └── tests/          # Test scripts
+          ├── docs/                   # Documentation
+          ├── workflows/              # Automation workflows
+          └── tools/                  # CLI utilities
+          ```
+          
+          ## Contributing
+          
+          We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+          
+          ## License
+          
+          MIT License - See [LICENSE](LICENSE) for details.
+          
+          ## Community
+          
+          - **GitHub Issues**: [Report bugs or request features](https://github.com/thebyrdman-git/ansai/issues)
+          - **Documentation**: [ansai.dev](https://ansai.dev)
+          
+          ---
+          
+          **Built with the Everything-as-Code Philosophy** 🚀
+          
+          *Infrastructure that heals itself, documented, tested, and ready to deploy.*
+
+    - name: 📝 Create CONTRIBUTING.md
+      ansible.builtin.copy:
+        dest: "{{ output_dir }}/CONTRIBUTING.md"
+        content: |
+          # Contributing to ANSAI
+          
+          Thank you for your interest in contributing to ANSAI!
+          
+          ## Getting Started
+          
+          1. Fork the repository
+          2. Create a feature branch: `git checkout -b feature/amazing-feature`
+          3. Make your changes
+          4. Test thoroughly
+          5. Commit: `git commit -m 'Add amazing feature'`
+          6. Push: `git push origin feature/amazing-feature`
+          7. Open a Pull Request
+          
+          ## Development Guidelines
+          
+          ### Ansible Roles
+          
+          - Follow Ansible best practices
+          - Include comprehensive README in each role
+          - Use meaningful variable names
+          - Document all variables in `defaults/main.yml`
+          
+          ### Testing
+          
+          - Write tests for new features
+          - Ensure all existing tests pass
+          - Test on multiple distributions when possible
+          
+          ### Documentation
+          
+          - Update relevant documentation
+          - Use clear, concise language
+          - Include code examples
+          - Follow markdown conventions
+          
+          ### Code Style
+          
+          - YAML: 2-space indentation
+          - Python: Follow PEP 8
+          - Shell: Follow shellcheck recommendations
+          
+          ## Pull Request Process
+          
+          1. Update documentation for any changed functionality
+          2. Add tests for new features
+          3. Ensure CI/CD passes
+          4. Request review from maintainers
+          
+          ## Code of Conduct
+          
+          - Be respectful and inclusive
+          - Welcome newcomers
+          - Focus on constructive feedback
+          - Help others learn and grow
+          
+          ## Questions?
+          
+          Open an issue or start a discussion on GitHub!
+
+    - name: 📄 Ensure MIT License
+      ansible.builtin.copy:
+        dest: "{{ output_dir }}/LICENSE"
+        content: |
+          MIT License
+          
+          Copyright (c) 2025 ANSAI Community
+          
+          Permission is hereby granted, free of charge, to any person obtaining a copy
+          of this software and associated documentation files (the "Software"), to deal
+          in the Software without restriction, including without limitation the rights
+          to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+          copies of the Software, and to permit persons to whom the Software is
+          furnished to do so, subject to the following conditions:
+          
+          The above copyright notice and this permission notice shall be included in all
+          copies or substantial portions of the Software.
+          
+          THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+          IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+          FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+          AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+          LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+          OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+          SOFTWARE.
+
+    - name: 🔧 Create example inventory
+      ansible.builtin.copy:
+        dest: "{{ output_dir }}/orchestrators/ansible/inventory/hosts.yml.example"
+        content: |
+          ---
+          # ANSAI Ansible Inventory Example
+          # Copy this file to hosts.yml and customize for your environment
+          
+          all:
+            hosts:
+              your-server.example.com:
+                ansible_user: your_username
+                ansible_python_interpreter: /usr/bin/python3
+            
+            children:
+              monitoring:
+                hosts:
+                  your-server.example.com:
+              
+              self_healing:
+                hosts:
+                  your-server.example.com:
+
+    - name: 🎯 Initialize git repository
+      ansible.builtin.shell: |
+        cd {{ output_dir }}
+        git init
+        git checkout -b main
+        git add -A
+        git commit -m "Initial commit: ANSAI Framework with Self-Healing Infrastructure
+
+        - Universal service healing
+        - JavaScript & CSS monitoring
+        - External monitoring integration
+        - Complete documentation
+        - Production-ready and tested
+        
+        Built with Everything-as-Code Philosophy"
+      args:
+        executable: /bin/bash
+
+    - name: ✅ Sanitization complete
+      ansible.builtin.debug:
+        msg:
+          - "╔════════════════════════════════════════════════════════╗"
+          - "║   ANSAI Public Release - Sanitization Complete         ║"
+          - "╚════════════════════════════════════════════════════════╝"
+          - ""
+          - "📁 Clean repository: {{ output_dir }}"
+          - "🔗 Ready for: {{ github_repo }}"
+          - ""
+          - "Next steps:"
+          - "  1. Review sanitized content"
+          - "  2. cd {{ output_dir }}"
+          - "  3. git remote add origin git@github.com:{{ github_repo }}.git"
+          - "  4. git push -u origin main"
+          - ""
+          - "🎉 Ready for public release!"
+

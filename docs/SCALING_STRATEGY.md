@@ -27,7 +27,7 @@ Scaling        │      Scaling
 - Email-based alerting
 - Manual configuration
 
-### Phase 1: Multi-Host (v1.5) - Q1 2025
+### Phase 1: Multi-Host (v1.5)
 **Goal**: Support small clusters (2-10 hosts)
 
 **Key Features**:
@@ -104,7 +104,7 @@ ansai_cluster:
 - Documentation published
 - v1.0 self-healing released
 
-### Phase 1: Early Adopters (0-100 users) - Q1 2025
+### Phase 1: Early Adopters (0-100 users)
 
 **Goals**:
 - Get first 10-20 production deployments
@@ -394,7 +394,7 @@ Community
 
 **Year 1 (2025) - Foundation**
 
-**Q1**: Community Building
+**Phase 1**: Community Building
 - Get to 100 users
 - 10 production deployments
 - 5 active contributors

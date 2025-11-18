@@ -1,0 +1,267 @@
+# Ansai Documentation - Red Hat Style
+# Styled after: https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.6
+
+site_name: ANSAI - Build Your Automation
+docs_dir: docs
+site_description: Your automation building blocks. Like Lego for Infrastructure. Like Minecraft for DevOps. Build whatever you need.
+site_author: ANSAI Builder Community
+site_url: https://ansai.dev
+
+# Repository
+repo_name: thebyrdman-git/ansai
+repo_url: https://github.com/thebyrdman-git/ansai
+edit_uri: edit/main/docs/
+
+# Copyright
+copyright: Copyright &copy; 2025 Ansai Community | Ansible® is a registered trademark of Red Hat, Inc.
+
+# Theme - Red Hat inspired
+theme:
+  name: material
+  
+  palette:
+    # Light mode - Red Hat colors
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: red
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: red
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  
+  font:
+    text: Red Hat Text
+    code: Red Hat Mono
+  
+  features:
+    # Navigation
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    
+    # Table of contents
+    - toc.follow
+    - toc.integrate
+    
+    # Search
+    - search.suggest
+    - search.highlight
+    - search.share
+    
+    # Content
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.tooltips
+    
+    # Header
+    - header.autohide
+  
+  icon:
+    repo: fontawesome/brands/github
+
+# Plugins
+plugins:
+  - search:
+      lang: en
+      separator: '[\s\-\.]+'
+  - tags
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: timeago
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      permalink_title: Link to this section
+      toc_depth: 3
+  
+  # PyMdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Navigation - Creative Platform Style
+nav:
+  - Home: index.md
+  
+  - 🚀 Start Building:
+    - get-started/index.md
+    - Your First Build: 20-workflow-catalog.md
+    - Introduction: 01-introduction.md
+  
+  - 🎨 Community Gallery:
+    - Community Priorities: COMMUNITY_SELF_HEALING_PRIORITIES.md
+    - Scaling Strategy: SCALING_STRATEGY.md
+    - Phase 1 Launch Strategy: LAUNCH_STRATEGY.md
+  
+  - 🧱 Building Blocks (Phase 1):
+    - self-healing/index.md
+    - Universal Service Healing: self-healing/UNIVERSAL_SELF_HEALING.md
+    - JavaScript Monitoring: self-healing/JS_ERROR_MONITORING.md
+    - CSS Monitoring: self-healing/CSS_ERROR_MONITORING.md
+    - External Monitoring: self-healing/HEALTHCHECKS_SETUP.md
+    - Complete Stack: self-healing/COMPLETE_MONITORING_STACK.md
+  
+  - 📚 Building Philosophy:
+    - philosophy/index.md
+    - Everything as Code: EVERYTHING-AS-CODE-PHILOSOPHY.md
+    - Container Deployment: CONTAINER-FIRST-PHILOSOPHY.md
+    - Intelligence Patterns: INTELLIGENCE-LAYER-PATTERNS.md
+    - Tool Development: TOOL-DEVELOPMENT-PHILOSOPHY.md
+  
+  - 🔧 Core Architecture:
+    - core-concepts/index.md
+    - Composable Services: COMPOSABLE-SERVICE-ARCHITECTURE.md
+    - Centralized Config: CENTRALIZED-CONFIG-ARCHITECTURE.md
+    - Ansible Framework: ANSIBLE-FRAMEWORK-ARCHITECTURE.md
+    - OS Agnostic: OS-AGNOSTIC-FRAMEWORK.md
+  
+  - 🎯 Build Patterns:
+    - patterns/index.md
+    - Industry Patterns: INDUSTRY-PATTERNS-INTEGRATION.md
+    - Resilience Strategy: RESILIENCE-STRATEGY.md
+    - Retrospection Framework: RETROSPECTION-FRAMEWORK.md
+    - GitLab Webhook: GITLAB-WEBHOOK-SETUP.md
+    - Modular VPN: MODULAR-VPN-CONFIGURATOR.md
+  
+  - Integration:
+    - Ansible Lightspeed: 18-lightspeed.md
+    - Cursor IDE: CURSOR-LIMITATIONS-AND-SOLUTIONS.md
+  
+  - TAM Deployment:
+    - tam-deployment/01-QUICK-START-GUIDE.md
+    - tam-deployment/02-COMPLETE-SETUP-GUIDE.md
+    - tam-deployment/03-SYSTEM-ARCHITECTURE.md
+    - tam-deployment/04-TROUBLESHOOTING-GUIDE.md
+    - tam-deployment/05-ROI-TRACKING-GUIDE.md
+    - tam-deployment/06-DEPLOYMENT-CHECKLIST.md
+  
+  - Developer Guide:
+    - developer-guide/index.md
+  
+  - Administration:
+    - administration/index.md
+  
+  - Reference:
+    - reference/index.md
+
+# Extra configuration
+extra:
+  version:
+    provider: mike
+    default: stable
+  
+  # Analytics
+  analytics:
+    provider: google
+    property: G-XXXXXXXXXX
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >-
+            Thanks for your feedback! Help us improve by
+            <a href="https://github.com/thebyrdman-git/ansai/issues/new/?title=[Feedback]+{title}+-+{url}" target="_blank" rel="noopener">telling us what you're looking for</a>.
+  
+  # Social links
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/thebyrdman-git/ansai
+      name: Ansai on GitHub
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/company/ansai
+      name: Ansai on LinkedIn
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/ansaiframework
+      name: Ansai on Twitter
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/u/ansai
+      name: Ansai on Docker Hub
+  
+  # Consent
+  consent:
+    title: Cookie consent
+    description: |
+      We use cookies to recognize your repeated visits and preferences, as well
+      as to measure the effectiveness of our documentation and whether users
+      find what they're searching for. With your consent, you're helping us to
+      make our documentation better.
+    actions:
+      - accept
+      - reject
+      - manage
+
+# Extra CSS
+extra_css:
+  - stylesheets/extra.css
+  - stylesheets/redhat.css
+  - stylesheets/creative.css
+
+# Extra JavaScript
+extra_javascript:
+  - javascripts/extra.js
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+# Validation
+validation:
+  nav:
+    omitted_files: warn
+    not_found: warn
+    absolute_links: warn
+  links:
+    not_found: warn
+    absolute_links: warn
+    unrecognized_links: warn

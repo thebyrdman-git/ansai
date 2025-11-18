@@ -267,7 +267,7 @@ cd tests
 - **[GitHub Discussions](https://github.com/thebyrdman-git/ansai/discussions)**: Ask questions, share ideas
 - **[Issue Tracker](https://github.com/thebyrdman-git/ansai/issues)**: Known problems
 - **[Show & Tell](https://github.com/thebyrdman-git/ansai/discussions/categories/show-and-tell)**: Community creations
-- **[Roadmap](docs/Q1_2025_GROWTH_PLAN.md)**: What's coming
+- **[Launch Strategy](docs/LAUNCH_STRATEGY.md)**: Phase 1 growth plan
 
 ## ❓ Questions?
 

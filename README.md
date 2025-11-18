@@ -257,7 +257,7 @@ React intelligently to system events:
 
 - **[Complete Documentation](docs/)**: Full guides and references
 - **[Self-Healing Infrastructure](docs/self-healing/)**: v1.0 feature documentation
-- **[Q1 2025 Growth Plan](docs/Q1_2025_GROWTH_PLAN.md)**: Roadmap and priorities
+- **[Phase 1 Launch Strategy](docs/LAUNCH_STRATEGY.md)**: Community growth plan
 - **[Community Priorities](docs/COMMUNITY_PRIORITIES.md)**: What's coming next
 - **[Scaling Strategy](docs/SCALING_STRATEGY.md)**: Long-term vision
 
@@ -282,7 +282,7 @@ React intelligently to system events:
 - **Phase 2**: 🚧 System Administration Blocks - In Development (Community-Requested)
 - **Phase 3+**: 📋 Workflow, Patterns, Integrations, Intelligence - Roadmap
 
-**Community Growth** (Q1 2025 Goals)
+**Community Growth** (Phase 1 Goals)
 - ⭐ Platform Adopters: 50+ stars
 - 🎨 Community Creations: 10+ shared builds
 - 👥 Active Builders: 5+ contributors
