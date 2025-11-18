@@ -123,58 +123,22 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
 
-# Navigation - Creative Platform Style
+# Navigation - Simple & Focused for Launch
 nav:
-  - Home: index.md
+  - 🏠 Home: index.md
   
-  - 🚀 Start Building:
-    - get-started/index.md
-    - Your First Build: 20-workflow-catalog.md
-    - Introduction: 01-introduction.md
-  
-  - 🎨 Community Gallery:
-    - Community Priorities: COMMUNITY_SELF_HEALING_PRIORITIES.md
-    - Scaling Strategy: SCALING_STRATEGY.md
-    - Phase 1 Launch Strategy: LAUNCH_STRATEGY.md
-  
-  - 🧱 Building Blocks (Phase 1):
-    - self-healing/index.md
+  - 🧱 Building Blocks:
+    - Overview: self-healing/index.md
     - Universal Service Healing: self-healing/UNIVERSAL_SELF_HEALING.md
     - JavaScript Monitoring: self-healing/JS_ERROR_MONITORING.md
     - CSS Monitoring: self-healing/CSS_ERROR_MONITORING.md
     - External Monitoring: self-healing/HEALTHCHECKS_SETUP.md
-    - Complete Stack: self-healing/COMPLETE_MONITORING_STACK.md
+    - Complete Monitoring Stack: self-healing/COMPLETE_MONITORING_STACK.md
   
-  - 📚 Building Philosophy:
-    - philosophy/index.md
-    - Everything as Code: EVERYTHING-AS-CODE-PHILOSOPHY.md
-    - Container Deployment: CONTAINER-FIRST-PHILOSOPHY.md
-    - Intelligence Patterns: INTELLIGENCE-LAYER-PATTERNS.md
-    - Tool Development: TOOL-DEVELOPMENT-PHILOSOPHY.md
-  
-  - 🔧 Core Architecture:
-    - core-concepts/index.md
-    - Composable Services: COMPOSABLE-SERVICE-ARCHITECTURE.md
-    - Centralized Config: CENTRALIZED-CONFIG-ARCHITECTURE.md
-    - Ansible Framework: ANSIBLE-FRAMEWORK-ARCHITECTURE.md
-    - OS Agnostic: OS-AGNOSTIC-FRAMEWORK.md
-  
-  - 🎯 Build Patterns:
-    - patterns/index.md
-    - Industry Patterns: INDUSTRY-PATTERNS-INTEGRATION.md
-    - Resilience Strategy: RESILIENCE-STRATEGY.md
-    - Retrospection Framework: RETROSPECTION-FRAMEWORK.md
-    - GitLab Webhook: GITLAB-WEBHOOK-SETUP.md
-    - Modular VPN: MODULAR-VPN-CONFIGURATOR.md
-  
-  - Developer Guide:
-    - developer-guide/index.md
-  
-  - Administration:
-    - administration/index.md
-  
-  - Reference:
-    - reference/index.md
+  - 🎨 Community:
+    - What Builders Want: COMMUNITY_SELF_HEALING_PRIORITIES.md
+    - Scaling Strategy: SCALING_STRATEGY.md
+    - Launch Plan: LAUNCH_STRATEGY.md
 
 # Extra configuration
 extra:
