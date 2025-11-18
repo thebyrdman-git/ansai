@@ -1,5 +1,4 @@
-# Ansai Documentation - Red Hat Style
-# Styled after: https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.6
+# ANSAI Documentation - Creative Platform Style
 
 site_name: ANSAI - Build Your Automation
 docs_dir: docs
@@ -15,16 +14,16 @@ edit_uri: edit/main/docs/
 # Copyright
 copyright: Copyright &copy; 2025 Ansai Community | Ansible® is a registered trademark of Red Hat, Inc.
 
-# Theme - Red Hat inspired
+# Theme - Material with creative customization
 theme:
   name: material
   
   palette:
-    # Light mode - Red Hat colors
+    # Light mode - Creative platform colors
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: red
-      accent: deep orange
+      primary: deep purple
+      accent: pink
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
@@ -32,15 +31,15 @@ theme:
     # Dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: red
-      accent: deep orange
+      primary: deep purple
+      accent: pink
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
   
   font:
-    text: Red Hat Text
-    code: Red Hat Mono
+    text: Roboto
+    code: Roboto Mono
   
   features:
     # Navigation
@@ -168,18 +167,6 @@ nav:
     - GitLab Webhook: GITLAB-WEBHOOK-SETUP.md
     - Modular VPN: MODULAR-VPN-CONFIGURATOR.md
   
-  - Integration:
-    - Ansible Lightspeed: 18-lightspeed.md
-    - Cursor IDE: CURSOR-LIMITATIONS-AND-SOLUTIONS.md
-  
-  - TAM Deployment:
-    - tam-deployment/01-QUICK-START-GUIDE.md
-    - tam-deployment/02-COMPLETE-SETUP-GUIDE.md
-    - tam-deployment/03-SYSTEM-ARCHITECTURE.md
-    - tam-deployment/04-TROUBLESHOOTING-GUIDE.md
-    - tam-deployment/05-ROI-TRACKING-GUIDE.md
-    - tam-deployment/06-DEPLOYMENT-CHECKLIST.md
-  
   - Developer Guide:
     - developer-guide/index.md
   
@@ -245,7 +232,6 @@ extra:
 # Extra CSS
 extra_css:
   - stylesheets/extra.css
-  - stylesheets/redhat.css
   - stylesheets/creative.css
 
 # Extra JavaScript

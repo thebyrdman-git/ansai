@@ -33,7 +33,7 @@
   - Q&A (help builders succeed)
   - General
   - Announcements
-- [ ] Add issue templates (bug reports, not feature requests)
+- [ ] Add issue templates (issues, ideas, questions)
 - [ ] Set up GitHub Projects for "Building Blocks Roadmap"
 - [ ] Configure GitHub Actions badges
 
@@ -348,8 +348,8 @@ Track every Friday:
 - Newsletter signups (if applicable)
 
 **Quality**:
-- Bug reports
-- Feature requests
+- Issues and questions
+- Building block requests
 - User satisfaction (survey)
 - Contributor retention
 
@@ -400,7 +400,7 @@ Track every Friday:
 **Mitigation**: 20 hour/week max, sustainable pace, ask for help
 
 **Risk**: Quality issues
-**Mitigation**: Ship small, test thoroughly, responsive to bugs
+**Mitigation**: Ship small, test thoroughly, responsive to issues
 
 **Risk**: Community toxicity
 **Mitigation**: Code of conduct, quick moderation, positive culture
