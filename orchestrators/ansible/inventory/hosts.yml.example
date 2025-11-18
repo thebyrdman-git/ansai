@@ -1,0 +1,19 @@
+---
+# ANSAI Ansible Inventory Example
+# Copy this file to hosts.yml and customize for your environment
+
+all:
+  hosts:
+    your-server.example.com:
+      ansible_user: your_username
+      ansible_python_interpreter: /usr/bin/python3
+  
+  children:
+    monitoring:
+      hosts:
+        your-server.example.com:
+    
+    self_healing:
+      hosts:
+        your-server.example.com:
+

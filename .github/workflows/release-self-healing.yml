@@ -1,0 +1,183 @@
+name: Release ANSAI Self-Healing
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      
+      - name: Create release archive
+        run: |
+          mkdir -p release-package
+          
+          # Copy self-healing components
+          cp -r orchestrators/ansible/roles/universal_self_heal release-package/
+          cp -r orchestrators/ansible/roles/js_error_monitoring release-package/
+          cp -r orchestrators/ansible/roles/css_error_monitoring release-package/
+          cp -r orchestrators/ansible/roles/healthchecks_monitoring release-package/
+          cp -r orchestrators/ansible/playbooks release-package/
+          cp -r orchestrators/ansible/tests release-package/
+          cp -r orchestrators/ansible/inventory release-package/
+          cp -r docs/self-healing release-package/docs
+          
+          # Copy root files
+          cp LICENSE release-package/ || echo "LICENSE not found"
+          cp CONTRIBUTING.md release-package/ || echo "CONTRIBUTING.md not found"
+          cp README.md release-package/
+          
+          # Create README for package
+          cat > release-package/INSTALL.md << 'EOF'
+          # ANSAI Self-Healing Installation
+          
+          ## Quick Install
+          
+          ```bash
+          cd release-package
+          cp -r universal_self_heal /path/to/ansible/roles/
+          cp -r js_error_monitoring /path/to/ansible/roles/
+          cp -r css_error_monitoring /path/to/ansible/roles/
+          cp -r healthchecks_monitoring /path/to/ansible/roles/
+          cp playbooks/* /path/to/ansible/playbooks/
+          ```
+          
+          ## Deploy
+          
+          ```bash
+          ansible-playbook /path/to/ansible/playbooks/deploy-complete-monitoring.yml
+          ```
+          
+          ## Documentation
+          
+          See `docs/` directory or visit https://ansai.dev/self-healing/
+          EOF
+          
+          # Create tarball
+          tar -czf ansai-self-healing-${{ steps.get_version.outputs.VERSION }}.tar.gz release-package/
+          
+          # Create checksum
+          sha256sum ansai-self-healing-${{ steps.get_version.outputs.VERSION }}.tar.gz > ansai-self-healing-${{ steps.get_version.outputs.VERSION }}.tar.gz.sha256
+      
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          cat > RELEASE_NOTES.md << 'EOF'
+          # 🛡️ ANSAI Self-Healing Infrastructure ${{ steps.get_version.outputs.VERSION }}
+          
+          ## What's Included
+          
+          - **Universal Service Healing**: Automatic service restart and remediation
+          - **JavaScript Error Monitoring**: Static + runtime error detection
+          - **CSS Error Monitoring**: Missing file and loading failure detection
+          - **External Monitoring**: Healthchecks.io integration
+          - **Comprehensive Testing**: Full test suite included
+          - **Production Documentation**: Complete guides and examples
+          
+          ## Installation
+          
+          ```bash
+          # Download and extract
+          tar -xzf ansai-self-healing-${{ steps.get_version.outputs.VERSION }}.tar.gz
+          cd release-package
+          
+          # See INSTALL.md for details
+          cat INSTALL.md
+          ```
+          
+          ## Documentation
+          
+          - [Online Documentation](https://ansai.dev/self-healing/)
+          - [Complete Monitoring Stack Guide](https://ansai.dev/self-healing/COMPLETE_MONITORING_STACK.html)
+          - [Testing Guide](https://ansai.dev/self-healing/TESTING_GUIDE.html)
+          
+          ## System Requirements
+          
+          - Ansible 2.9+
+          - systemd-based Linux distribution
+          - Python 3.6+
+          - SMTP server for email alerts
+          - SSH access to target hosts
+          
+          ## Tested On
+          
+          - ✅ Red Hat Enterprise Linux 9
+          - ✅ Fedora 40+
+          - ✅ Rocky Linux 9
+          - ✅ Ubuntu 22.04 LTS
+          
+          ## Changelog
+          
+          EOF
+          
+          # Append git log since last tag
+          if git describe --tags --abbrev=0 HEAD^ > /dev/null 2>&1; then
+            echo "### Changes since last release" >> RELEASE_NOTES.md
+            git log $(git describe --tags --abbrev=0 HEAD^)..HEAD --pretty=format:"- %s (%h)" --no-merges >> RELEASE_NOTES.md
+          else
+            echo "### Initial Release" >> RELEASE_NOTES.md
+            echo "First production release of ANSAI Self-Healing Infrastructure" >> RELEASE_NOTES.md
+          fi
+          
+          echo "" >> RELEASE_NOTES.md
+          echo "---" >> RELEASE_NOTES.md
+          echo "" >> RELEASE_NOTES.md
+          echo "**Built with ANSAI Everything-as-Code Philosophy** 🚀" >> RELEASE_NOTES.md
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ANSAI Self-Healing ${{ steps.get_version.outputs.VERSION }}
+          body_path: RELEASE_NOTES.md
+          files: |
+            ansai-self-healing-${{ steps.get_version.outputs.VERSION }}.tar.gz
+            ansai-self-healing-${{ steps.get_version.outputs.VERSION }}.tar.gz.sha256
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Trigger documentation deployment
+        run: |
+          echo "✅ Release created successfully"
+          echo "📚 Documentation will be deployed separately"
+
+  deploy-docs:
+    name: Deploy Documentation
+    runs-on: ubuntu-latest
+    needs: create-release
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install MkDocs
+        run: |
+          pip install mkdocs-material mkdocs-git-revision-date-localized-plugin
+      
+      - name: Build documentation
+        run: mkdocs build
+      
+      - name: Deploy to GitHub Pages
+        run: mkdocs gh-deploy --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

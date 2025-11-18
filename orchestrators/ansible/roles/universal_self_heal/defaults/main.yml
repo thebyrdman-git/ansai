@@ -1,0 +1,74 @@
+---
+# Universal Self-Healing System Configuration
+# Applies to ALL services on miraclemax
+
+# Owner email for all healing reports
+owner_email: jimmykbyrd@gmail.com
+
+# SMTP configuration for email alerts
+smtp_server: smtp.gmail.com
+smtp_port: 587
+smtp_user: jimmykbyrd@gmail.com
+smtp_password: "trft dfqc uoeh banw"
+
+# Services to monitor and self-heal
+# Add any service here to enable automatic healing
+monitored_services:
+  - name: story-stages
+    port: 5002
+    domain: books.jbyrd.org
+    critical: true
+    healing_strategies:
+      - service_restart
+      - database_check
+      - port_conflict
+      - environment_check
+    
+  - name: passgo
+    port: 5001
+    domain: passgo.jbyrd.org
+    critical: true
+    healing_strategies:
+      - service_restart
+      - database_check
+      - port_conflict
+      - environment_check
+  
+  - name: traefik
+    port: 80
+    domain: null
+    critical: true
+    healing_strategies:
+      - service_restart
+      - config_validation
+      - port_conflict
+  
+  - name: actual-budget
+    port: 5006
+    domain: actual.jbyrd.org
+    critical: false
+    healing_strategies:
+      - service_restart
+      - port_conflict
+  
+  # Add more services as needed
+  # - name: service-name
+  #   port: port-number
+  #   domain: domain.jbyrd.org
+  #   critical: true/false
+  #   healing_strategies:
+  #     - service_restart
+  #     - custom_strategy
+
+# Healing check interval (minutes)
+check_interval: 2
+
+# Failure threshold before healing attempt
+failure_threshold: 3
+
+# Self-healing enabled/disabled
+self_healing_enabled: true
+
+# Alert on every healing attempt (true) or only failures (false)
+alert_on_success: true
+

@@ -1,0 +1,79 @@
+---
+# Deploy Universal Self-Healing to ALL Services on MiracleMax
+#
+# Usage:
+#   ansible-playbook playbooks/deploy-self-healing.yml
+#   ansible-playbook playbooks/deploy-self-healing.yml --check --diff  # Dry run
+#
+# Philosophy: Ansai - Self-Healing, Observable, Config-as-Code
+
+- name: Deploy Universal Self-Healing System
+  hosts: miraclemax
+  become: yes
+  
+  pre_tasks:
+    - name: Display deployment banner
+      debug:
+        msg:
+          - "🤖 ═══════════════════════════════════════"
+          - "   MiracleMax Universal Self-Healing"
+          - "   Deployment Starting..."
+          - "═══════════════════════════════════════"
+          - ""
+          - "Target: {{ inventory_hostname }}"
+          - "Services: {{ monitored_services | map(attribute='name') | list | join(', ') }}"
+          - "Owner: {{ owner_email }}"
+          - ""
+    
+    - name: Verify target host is reachable
+      ping:
+    
+    - name: Check systemd availability
+      command: systemctl --version
+      register: systemd_version
+      changed_when: false
+    
+    - name: Display systemd version
+      debug:
+        msg: "Systemd version: {{ systemd_version.stdout_lines[0] | default('check mode') }}"
+      when: systemd_version.stdout_lines | length > 0
+  
+  roles:
+    - role: universal_self_heal
+      tags: ['self-heal', 'monitoring']
+  
+  post_tasks:
+    - name: Verify self-healing deployment
+      stat:
+        path: "/usr/local/bin/self-heal/{{ item.name }}-self-heal.sh"
+      loop: "{{ monitored_services }}"
+      register: heal_scripts
+      failed_when: not heal_scripts.stat.exists
+    
+    - name: Display deployment summary
+      debug:
+        msg:
+          - ""
+          - "✅ ═══════════════════════════════════════"
+          - "   Universal Self-Healing Deployed!"
+          - "═══════════════════════════════════════"
+          - ""
+          - "📊 Configuration:"
+          - "   • Monitored services: {{ monitored_services | length }}"
+          - "   • Self-healing: {{ 'ENABLED' if self_healing_enabled else 'DISABLED' }}"
+          - "   • Alert email: {{ owner_email }}"
+          - "   • Failure threshold: {{ failure_threshold }}"
+          - ""
+          - "🔧 Commands:"
+          - "   • View status: miraclemax-status"
+          - "   • View logs: journalctl -t miraclemax-self-heal"
+          - "   • Test healing: sudo systemctl stop story-stages"
+          - ""
+          - "📧 You will receive emails when:"
+          - "   • A service fails and is automatically healed"
+          - "   • Healing fails and manual intervention is needed"
+          - "   • Any critical service experiences issues"
+          - ""
+          - "🤖 Self-healing is now active for all services!"
+          - ""
+

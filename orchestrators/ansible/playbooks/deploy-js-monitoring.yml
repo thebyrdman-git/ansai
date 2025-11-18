@@ -1,0 +1,36 @@
+---
+- name: Deploy JavaScript Error Monitoring System
+  hosts: miraclemax.local
+  become: yes
+  
+  pre_tasks:
+    - name: Display deployment banner
+      debug:
+        msg:
+          - "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          - "🔍 JAVASCRIPT ERROR MONITORING DEPLOYMENT"
+          - "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          - ""
+          - "Deploying comprehensive JavaScript error detection:"
+          - "  ✓ Template validation (pre-deployment)"
+          - "  ✓ Runtime error monitoring (production)"
+          - "  ✓ Automated email alerts"
+          - "  ✓ Integration with self-healing infrastructure"
+          - ""
+          - "Target: miraclemax.local"
+          - "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+  roles:
+    - js_error_monitoring
+
+  post_tasks:
+    - name: Verify timers are running
+      shell: systemctl list-timers | grep -E '(js-validation|js-runtime-monitor)'
+      register: timer_status
+      changed_when: false
+
+    - name: Display timer status
+      debug:
+        msg: "{{ timer_status.stdout_lines }}"
+      when: timer_status.stdout_lines is defined
+

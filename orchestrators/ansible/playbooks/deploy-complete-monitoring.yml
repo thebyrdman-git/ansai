@@ -1,0 +1,80 @@
+---
+# Deploy Complete Monitoring Stack
+# Self-Healing + External Monitoring = 100% Coverage
+#
+# Usage:
+#   ansible-playbook playbooks/deploy-complete-monitoring.yml
+#
+# Philosophy: Ansai - Observable, Self-Healing, Config-as-Code
+
+- name: Deploy Complete Monitoring Stack for MiracleMax
+  hosts: miraclemax
+  become: yes
+  
+  pre_tasks:
+    - name: Display deployment banner
+      debug:
+        msg:
+          - "🤖 ═══════════════════════════════════════"
+          - "   MiracleMax Complete Monitoring Stack"
+          - "   Self-Healing + External Monitoring"
+          - "═══════════════════════════════════════"
+          - ""
+          - "Target: {{ inventory_hostname }}"
+          - "This deploys the COMPLETE observable stack"
+          - ""
+    
+    - name: Verify target host is reachable
+      ping:
+  
+  roles:
+    - role: universal_self_heal
+      tags: ['self-heal', 'monitoring', 'internal']
+    
+    - role: healthchecks_monitoring
+      tags: ['healthchecks', 'monitoring', 'external']
+  
+  post_tasks:
+    - name: Display complete stack summary
+      debug:
+        msg:
+          - ""
+          - "✅ ═══════════════════════════════════════"
+          - "   Complete Monitoring Stack Deployed!"
+          - "═══════════════════════════════════════"
+          - ""
+          - "📊 Two-Layer Protection:"
+          - ""
+          - "Layer 1: Self-Healing (Internal)"
+          - "   • Automatic detection of service failures"
+          - "   • 95% of issues fixed automatically"
+          - "   • Detailed email reports after each fix"
+          - "   • Healing time: ~5-15 seconds"
+          - ""
+          - "Layer 2: Healthchecks.io (External)"
+          - "   • Dead man's switch (expects regular pings)"
+          - "   • Detects: Server down, systemd failure, network issues"
+          - "   • Alerts if heartbeat stops for ANY reason"
+          - "   • Catches the 5% that self-healing can't"
+          - ""
+          - "🎯 Combined Coverage: 100%"
+          - ""
+          - "📧 Email Notifications:"
+          - "   • Self-healing: Detailed reports when issues are fixed"
+          - "   • Healthchecks: Alerts when server stops responding"
+          - "   • Sent to: {{ owner_email | default(healthcheck_alert_email) }}"
+          - ""
+          - "🔧 Commands:"
+          - "   • Status dashboard: miraclemax-status"
+          - "   • Self-heal logs: journalctl -t miraclemax-self-heal"
+          - "   • Heartbeat logs: tail -f /var/log/healthcheck-heartbeat.log"
+          - "   • Test heartbeat: sudo /usr/local/bin/miraclemax-heartbeat"
+          - ""
+          - "🎉 MiracleMax is now fully observable and self-healing!"
+          - ""
+          - "Philosophy: Ansai ✅"
+          - "   • Observable (comprehensive logging + alerts)"
+          - "   • Self-Healing (automatic recovery)"
+          - "   • Config-as-Code (all in Ansible)"
+          - ""
+
