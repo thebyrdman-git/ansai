@@ -196,9 +196,9 @@ ansible-playbook playbooks/deploy-complete-monitoring.yml
 
 ## 🤝 Join the Builder Community
 
-<div class="community-cta" markdown>
-
-**We Want to See What YOU Build!**
+<div class="community-cta">
+<h3 style="color: white; text-align: center; margin-bottom: 2rem;">We Want to See What YOU Build!</h3>
+</div>
 
 <div class="grid cards" markdown>
 
@@ -233,8 +233,6 @@ ansible-playbook playbooks/deploy-complete-monitoring.yml
     Star the repo to show support and stay updated with new releases.
 
     [:octicons-arrow-right-24: GitHub Repository](https://github.com/thebyrdman-git/ansai)
-
-</div>
 
 </div>
 
