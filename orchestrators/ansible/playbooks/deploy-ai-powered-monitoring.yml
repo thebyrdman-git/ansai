@@ -1,0 +1,186 @@
+---
+# Example ANSAI Playbook: AI-Powered Monitoring
+# Demonstrates ANSAI's self-healing capabilities with AI enhancements
+#
+# Prerequisites:
+# 1. Ansible installed (pip3 install ansible)
+# 2. LiteLLM or Fabric installed for AI capabilities
+# 3. Target hosts configured in inventory/hosts.yml
+#
+# Usage:
+#   ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
+#
+# What this playbook does:
+# - Deploys universal self-healing for systemd services
+# - Sets up AI-powered log analysis
+# - Configures email alerts with intelligent diagnostics
+# - Enables external health monitoring via Healthchecks.io (optional)
+
+- name: "🚀 ANSAI: Deploy AI-Powered Monitoring"
+  hosts: all
+  become: true
+  
+  vars:
+    # Email configuration for alerts
+    owner_email: "{{ lookup('env', 'ANSAI_ADMIN_EMAIL') | default('admin@example.com', true) }}"
+    smtp_server: "{{ lookup('env', 'ANSAI_SMTP_SERVER') | default('smtp.gmail.com', true) }}"
+    smtp_port: "{{ lookup('env', 'ANSAI_SMTP_PORT') | default('587', true) }}"
+    smtp_user: "{{ lookup('env', 'ANSAI_SMTP_USER') | default('', true) }}"
+    smtp_password: "{{ lookup('env', 'ANSAI_SMTP_PASSWORD') | default('', true) }}"
+    
+    # Services to monitor (customize for your environment)
+    monitored_services:
+      - name: "sshd"
+        description: "SSH daemon"
+        critical: true
+      - name: "cron"
+        description: "Cron scheduler"
+        critical: false
+    
+    # AI configuration
+    ai_enabled: true
+    litellm_url: "{{ lookup('env', 'LITELLM_URL') | default('http://localhost:4000', true) }}"
+    
+    # Healthchecks.io configuration (optional external monitoring)
+    healthcheck_enabled: "{{ lookup('env', 'HEALTHCHECK_ENABLED') | default('false', true) | bool }}"
+    healthcheck_ping_url: "{{ lookup('env', 'HEALTHCHECK_PING_URL') | default('', true) }}"
+
+  pre_tasks:
+    - name: "📋 Display deployment information"
+      debug:
+        msg: |
+          ╔════════════════════════════════════════════════════════════╗
+          ║  ANSAI: AI-Powered Monitoring Deployment                  ║
+          ╚════════════════════════════════════════════════════════════╝
+          
+          Target Host: {{ inventory_hostname }}
+          Admin Email: {{ owner_email }}
+          AI Enabled: {{ ai_enabled }}
+          Services Monitored: {{ monitored_services | length }}
+          
+          This playbook will deploy:
+          ✓ Universal self-healing for services
+          ✓ AI-powered root cause analysis
+          ✓ Email alerts with diagnostics
+          {% if healthcheck_enabled %}
+          ✓ External monitoring (Healthchecks.io)
+          {% endif %}
+
+    - name: "🔍 Check systemd availability"
+      command: systemctl --version
+      register: systemd_check
+      changed_when: false
+      failed_when: systemd_check.rc != 0
+
+    - name: "✅ Validate email configuration"
+      assert:
+        that:
+          - owner_email != "admin@example.com"
+          - smtp_user != ""
+        fail_msg: |
+          ❌ Email not configured!
+          
+          Set environment variables:
+            export ANSAI_ADMIN_EMAIL="your-email@example.com"
+            export ANSAI_SMTP_USER="your-smtp-username"
+            export ANSAI_SMTP_PASSWORD="your-smtp-password"
+          
+          Then run again.
+        success_msg: "✅ Email configuration validated"
+      when: owner_email != "admin@example.com"
+
+  roles:
+    # Core self-healing infrastructure
+    - role: universal_self_heal
+      when: true
+      tags: ['core', 'self-healing']
+
+    # External monitoring (optional but recommended)
+    - role: healthchecks_monitoring
+      when: healthcheck_enabled and healthcheck_ping_url != ""
+      tags: ['monitoring', 'healthchecks']
+
+  post_tasks:
+    - name: "🎉 Deployment complete!"
+      debug:
+        msg: |
+          ╔════════════════════════════════════════════════════════════╗
+          ║  ✅ AI-Powered Monitoring Deployed Successfully!          ║
+          ╚════════════════════════════════════════════════════════════╝
+          
+          📊 Status Dashboard:
+            ssh {{ ansible_user }}@{{ inventory_hostname }} sudo /usr/local/bin/miraclemax-status.sh
+          
+          📝 Logs:
+            Self-healing: /var/log/self-heal/
+            Health checks: /var/log/healthcheck-heartbeat.log
+          
+          🧪 Test the system:
+            # Stop a monitored service to trigger self-healing
+            sudo systemctl stop {{ monitored_services[0].name }}
+            
+            # Check logs for AI analysis
+            sudo tail -f /var/log/self-heal/{{ monitored_services[0].name }}.log
+            
+            # You should receive an email with:
+            - Root cause analysis (AI-powered)
+            - Remediation steps taken
+            - Prevention recommendations
+          
+          📚 Documentation:
+            https://ansai.dev/self-healing/
+          
+          {% if ai_enabled %}
+          🤖 AI Features Active:
+            - Root cause analysis
+            - Predictive failure detection
+            - Intelligent event correlation
+          {% endif %}
+          
+          Next steps:
+          1. Check your email ({{ owner_email }})
+          2. Review status dashboard
+          3. Test self-healing by stopping a service
+          4. Customize monitored_services list for your needs
+
+    - name: "💡 Display customization tips"
+      debug:
+        msg: |
+          
+          🎨 Customize Your Deployment:
+          
+          1. Add more services to monitor:
+             Edit: monitored_services in this playbook
+          
+          2. Configure AI models:
+             Configure LiteLLM: ~/.config/ansai/litellm_config.yaml
+             Start proxy: ansai-litellm-proxy
+          
+          3. Enable external monitoring:
+             Sign up: https://healthchecks.io
+             Set: export HEALTHCHECK_ENABLED=true
+             Set: export HEALTHCHECK_PING_URL="your-ping-url"
+          
+          4. Deploy additional monitoring:
+             - JavaScript error monitoring
+             - CSS error monitoring
+             - System admin self-healing
+          
+             See: https://ansai.dev/self-healing/COMPLETE_MONITORING_STACK/
+          
+          5. Integrate with your IDE:
+             https://ansai.dev/integrations/CURSOR_IDE/
+
+# Example: Advanced Deployment
+# This playbook can be extended with additional roles:
+#
+# - name: "Deploy Complete Monitoring Stack"
+#   hosts: webservers
+#   roles:
+#     - universal_self_heal        # Core service healing
+#     - js_error_monitoring        # Frontend error capture
+#     - css_error_monitoring       # CSS loading/syntax errors
+#     - healthchecks_monitoring    # External health monitoring
+#
+# See docs/self-healing/COMPLETE_MONITORING_STACK.md for details
+

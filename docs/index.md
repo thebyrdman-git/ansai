@@ -153,34 +153,44 @@ Root cause analysis. Predictive failures. Context-aware actions. Cost optimizati
 
 ## 🚀 Quick Start
 
-**1. Install AI Engine (Required):**
-```bash
-# Install LiteLLM for multi-model LLM access
-pip install 'litellm[proxy]'
+### One-Line Installation
 
-# Or install Fabric for AI text processing
-pipx install fabric-ai
+```bash
+curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
 ```
 
-**2. Clone ANSAI:**
-```bash
-git clone https://github.com/thebyrdman-git/ansai.git
-cd ansai
-```
+**What this does:**
+- ✅ Installs ANSAI to `~/.ansai`
+- ✅ Adds ANSAI to your PATH
+- ✅ Optionally installs AI dependencies (LiteLLM, Fabric)
+- ✅ Creates config directories
+- ✅ Sets up your shell environment
 
-**3. Set up your LLM keys:**
-```bash
-export OPENAI_API_KEY="your-key"  # Or ANTHROPIC_API_KEY, GROQ_API_KEY
-# For local models: install Ollama (no API key needed)
-```
+### Quick Deploy (After Installation)
 
-**4. Deploy AI-powered automation:**
 ```bash
-cd orchestrators/ansible
+# 1. Start AI backend
+litellm --config ~/.config/ansai/litellm_config.yaml --port 4000 &
+
+# 2. Configure your server
+cat > ~/.ansai/orchestrators/ansible/inventory/hosts.yml << 'EOF'
+all:
+  children:
+    servers:
+      hosts:
+        my-server:
+          ansible_host: 192.168.1.100
+          ansible_user: your-username
+EOF
+
+# 3. Deploy AI-powered monitoring
+cd ~/.ansai/orchestrators/ansible
 ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
 ```
 
 **That's it.** Your AI-powered automation is thinking for you.
+
+**[📚 Full Getting Started Guide →](GETTING_STARTED.md)** (0 to AI in 5 minutes)
 
 ---
 

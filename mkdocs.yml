@@ -126,6 +126,8 @@ markdown_extensions:
 # Navigation - Simple & Focused for Launch
 nav:
   - 🏠 Home: index.md
+  - 🚀 Getting Started: GETTING_STARTED.md
+  - 🆘 Troubleshooting: TROUBLESHOOTING.md
   
   - 🧱 Building Blocks:
     - Overview: self-healing/index.md

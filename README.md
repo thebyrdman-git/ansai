@@ -47,45 +47,47 @@ Route to OpenAI, Claude, Groq, or local models. AI picks the best model for the 
 Talk to your infrastructure. Ask questions. Give commands.
 **AI understands context and intent.**
 
-## 🚀 Quick Start (AI Required)
+## 🚀 Quick Start
 
-### 1. Install AI Engine
+### One-Line Installation
 
 ```bash
-# Install LiteLLM for multi-model LLM access
-pip install 'litellm[proxy]'
-
-# Or install Fabric for AI text processing
-pipx install fabric-ai
+curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
 ```
 
-### 2. Clone ANSAI
+**The installer:**
+- ✅ Installs ANSAI to `~/.ansai`
+- ✅ Adds ANSAI to your PATH
+- ✅ Optionally installs AI dependencies (LiteLLM, Fabric)
+- ✅ Creates config directories
+- ✅ Prompts for AI backend setup
+
+### Quick Deploy (After Installation)
 
 ```bash
-git clone https://github.com/thebyrdman-git/ansai.git
-cd ansai
-```
-
-### 3. Set Up LLM Keys
-
-```bash
-# For cloud LLMs
+# 1. Start AI backend (LiteLLM example)
 export OPENAI_API_KEY="your-key"
-export ANTHROPIC_API_KEY="your-key"
-export GROQ_API_KEY="your-key"
+litellm --config ~/.config/ansai/litellm_config.yaml --port 4000 &
 
-# For local models (no API key needed)
-# Install Ollama: https://ollama.ai
-```
+# 2. Configure target server
+cat > ~/.ansai/orchestrators/ansible/inventory/hosts.yml << 'EOF'
+all:
+  children:
+    servers:
+      hosts:
+        my-server:
+          ansible_host: 192.168.1.100
+          ansible_user: your-username
+EOF
 
-### 4. Deploy AI-Powered Automation
-
-```bash
-cd orchestrators/ansible
+# 3. Deploy AI-powered monitoring
+cd ~/.ansai/orchestrators/ansible
 ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
 ```
 
 **That's it.** Your AI-powered automation is thinking for you.
+
+**[📚 Full Getting Started Guide](https://ansai.dev/GETTING_STARTED/)** (0 to AI in 5 minutes)
 
 ---
 

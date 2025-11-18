@@ -92,7 +92,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ansai-self-healing-infrastructure" class="md-skip">
+        <a href="#ansai-ai-powered-self-healing" class="md-skip">
           Skip to content
         </a>
       
@@ -270,6 +270,28 @@
     
   
   🧱 Building Blocks
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../integrations/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  🔌 Integrations
 
         </a>
       </li>
@@ -579,7 +601,7 @@
     
       
         
-      
+          
         
       
         
@@ -602,7 +624,99 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <div class="md-nav__link md-nav__container">
+            <a href="../integrations/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    🔌 Integrations
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            🔌 Integrations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/CURSOR_IDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cursor IDE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -615,8 +729,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             🎨 Community
           </label>
@@ -717,19 +831,105 @@
   
 
 
-<h1 id="ansai-self-healing-infrastructure">🛡️ ANSAI Self-Healing Infrastructure<a class="headerlink" href="#ansai-self-healing-infrastructure" title="Link to this section">&para;</a></h1>
+<h1 id="ansai-ai-powered-self-healing">🛡️ ANSAI AI-Powered Self-Healing<a class="headerlink" href="#ansai-ai-powered-self-healing" title="Link to this section">&para;</a></h1>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">&para;</a></h2>
-<p>ANSAI Self-Healing is a comprehensive, production-ready monitoring and auto-remediation system that ensures your infrastructure stays healthy 24/7. Following the <strong>Everything-as-Code</strong> philosophy, it deploys via Ansible and automatically detects, fixes, and reports on system issues.</p>
+<p><strong>Without AI, it's just restart-on-failure. With ANSAI, it's intelligent remediation.</strong></p>
+<p>ANSAI Self-Healing uses AI to analyze root causes, predict failures, and make intelligent decisions—not just follow scripts.</p>
+<h2 id="ai-powered-vs-traditional-self-healing">🧠 AI-Powered vs Traditional Self-Healing<a class="headerlink" href="#ai-powered-vs-traditional-self-healing" title="Link to this section">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th><strong>Traditional</strong></th>
+<th><strong>ANSAI (AI-Powered)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Restart service</td>
+<td>AI analyzes logs for root cause</td>
+</tr>
+<tr>
+<td>Static rules</td>
+<td>AI learns what's "normal"</td>
+</tr>
+<tr>
+<td>React to failures</td>
+<td>Predict failures before they happen</td>
+</tr>
+<tr>
+<td>"Service failed"</td>
+<td>"Service failed due to DB timeout, caused by..."</td>
+</tr>
+<tr>
+<td>Manual log analysis</td>
+<td>AI correlates events across all services</td>
+</tr>
+<tr>
+<td>Fixed thresholds</td>
+<td>AI adapts to your patterns</td>
+</tr>
+</tbody>
+</table>
 <h2 id="core-philosophy">🎯 Core Philosophy<a class="headerlink" href="#core-philosophy" title="Link to this section">&para;</a></h2>
 <blockquote>
-<p><strong>"The system heals itself, then tells you what it fixed."</strong></p>
+<p><strong>"The system heals itself intelligently, then explains what it learned."</strong></p>
 </blockquote>
-<p>ANSAI Self-Healing embodies three key principles:</p>
+<p>ANSAI Self-Healing embodies four key principles:</p>
 <ol>
-<li><strong>Config-as-Code</strong>: All monitoring rules and healing strategies are versioned and repeatable</li>
-<li><strong>Automated Remediation</strong>: Common failures are fixed automatically before you notice</li>
-<li><strong>Transparent Reporting</strong>: Detailed email alerts explain what broke, how it was fixed, and why</li>
+<li><strong>AI-Powered Analysis</strong>: Root cause analysis using LLMs (not just "service failed")</li>
+<li><strong>Predictive Intelligence</strong>: AI learns patterns and predicts failures before they happen</li>
+<li><strong>Automated Remediation</strong>: Common failures are fixed automatically with intelligent strategies</li>
+<li><strong>Transparent Reporting</strong>: AI explains what broke, why, how it was fixed, and what to prevent next time</li>
 </ol>
+<h2 id="how-ai-enhances-self-healing">🤖 How AI Enhances Self-Healing<a class="headerlink" href="#how-ai-enhances-self-healing" title="Link to this section">&para;</a></h2>
+<h3 id="1-root-cause-analysis">1. Root Cause Analysis<a class="headerlink" href="#1-root-cause-analysis" title="Link to this section">&para;</a></h3>
+<p><strong>Traditional:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Service myapp.service failed. Restarted.
+</span></code></pre></div></p>
+<p><strong>With ANSAI AI:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Service myapp.service failed.
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>AI Root Cause Analysis:
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>- Primary: Database connection timeout (10.0.1.5:5432)
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>- Contributing: DB CPU at 95% for 15min
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>- Trigger: Traffic spike (+50%) from new feature
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>- Correlation: Connection pool exhausted (100/100)
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Intelligent Remediation:
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>1. Restarted service (immediate)
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>2. Scaled DB read replicas (preventive)
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>3. Added rate limit to new endpoint (protective)
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>Recommendations:
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>- Increase connection pool to 200
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>- Add connection pool monitoring
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>- Review new feature&#39;s DB query efficiency
+</span></code></pre></div></p>
+<h3 id="2-predictive-failure-detection">2. Predictive Failure Detection<a class="headerlink" href="#2-predictive-failure-detection" title="Link to this section">&para;</a></h3>
+<p>AI learns your baselines and predicts problems:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># AI detected pattern</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Memory<span class="w"> </span>usage<span class="w"> </span>growing<span class="w"> </span>linearly<span class="w"> </span>at<span class="w"> </span>50MB/hour.
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Will<span class="w"> </span>reach<span class="w"> </span>limit<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">6</span><span class="w"> </span>hours.
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Probable<span class="w"> </span>memory<span class="w"> </span>leak<span class="w"> </span><span class="k">in</span><span class="w"> </span>new<span class="w"> </span>deployment.
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>Preventive<span class="w"> </span>Action<span class="w"> </span>Taken:
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>-<span class="w"> </span>Scheduled<span class="w"> </span>restart<span class="w"> </span>during<span class="w"> </span>low<span class="w"> </span>traffic<span class="w"> </span><span class="o">(</span><span class="m">02</span>:00<span class="o">)</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>-<span class="w"> </span>Created<span class="w"> </span>memory<span class="w"> </span>profile<span class="w"> </span><span class="k">for</span><span class="w"> </span>analysis
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>-<span class="w"> </span>Alerted<span class="w"> </span>dev<span class="w"> </span>team<span class="w"> </span>with<span class="w"> </span>leak<span class="w"> </span>signature
+</span></code></pre></div>
+<h3 id="3-event-correlation">3. Event Correlation<a class="headerlink" href="#3-event-correlation" title="Link to this section">&para;</a></h3>
+<p>AI connects the dots across services:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Multiple seemingly-unrelated events</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Event<span class="w"> </span><span class="m">1</span>:<span class="w"> </span>Web<span class="w"> </span>server<span class="w"> </span>slow<span class="w"> </span>responses
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Event<span class="w"> </span><span class="m">2</span>:<span class="w"> </span>Database<span class="w"> </span>checkpoint<span class="w"> </span>taking<span class="w"> </span>5min
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Event<span class="w"> </span><span class="m">3</span>:<span class="w"> </span>Disk<span class="w"> </span>I/O<span class="w"> </span>at<span class="w"> </span><span class="m">100</span>%
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>AI<span class="w"> </span>Correlation:
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>Root<span class="w"> </span>cause:<span class="w"> </span>Disk<span class="w"> </span>contention<span class="w"> </span>from<span class="w"> </span>backup<span class="w"> </span>job
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>All<span class="w"> </span>symptoms<span class="w"> </span>trace<span class="w"> </span>to<span class="w"> </span>storage<span class="w"> </span>bottleneck.
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>Solution:<span class="w"> </span>Rescheduled<span class="w"> </span>backup<span class="w"> </span>to<span class="w"> </span>off-peak<span class="w"> </span>hours.
+</span></code></pre></div>
 <h2 id="components">📦 Components<a class="headerlink" href="#components" title="Link to this section">&para;</a></h2>
 <h3 id="1-universal-service-healing">1. Universal Service Healing<a class="headerlink" href="#1-universal-service-healing" title="Link to this section">&para;</a></h3>
 <p>Monitors all systemd services and automatically attempts to fix failures using intelligent strategies:</p>
@@ -789,28 +989,28 @@
 <li>SSH access to target hosts</li>
 </ul>
 <h3 id="1-deploy-complete-monitoring-stack">1. Deploy Complete Monitoring Stack<a class="headerlink" href="#1-deploy-complete-monitoring-stack" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>/home/jbyrd/ansai/orchestrators/ansible
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ansible-playbook<span class="w"> </span>playbooks/deploy-complete-monitoring.yml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>/home/jbyrd/ansai/orchestrators/ansible
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>ansible-playbook<span class="w"> </span>playbooks/deploy-complete-monitoring.yml
 </span></code></pre></div>
 <h3 id="2-configure-email-alerts">2. Configure Email Alerts<a class="headerlink" href="#2-configure-email-alerts" title="Link to this section">&para;</a></h3>
 <p>Edit <code>roles/universal_self_heal/defaults/main.yml</code>:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">owner_email</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your-email@example.com&quot;</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">smtp_server</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;smtp.gmail.com&quot;</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">smtp_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">587</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nt">smtp_user</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your-email@example.com&quot;</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">smtp_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your-app-password&quot;</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">owner_email</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your-email@example.com&quot;</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">smtp_server</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;smtp.gmail.com&quot;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">smtp_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">587</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nt">smtp_user</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your-email@example.com&quot;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nt">smtp_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your-app-password&quot;</span>
 </span></code></pre></div>
 <h3 id="3-define-services-to-monitor">3. Define Services to Monitor<a class="headerlink" href="#3-define-services-to-monitor" title="Link to this section">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">monitored_services</span><span class="p">:</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;traefik&quot;</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">requires_db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">has_config</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;passgo&quot;</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">requires_db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">has_config</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;story-stages&quot;</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nt">requires_db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="nt">has_config</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">monitored_services</span><span class="p">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;traefik&quot;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">requires_db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">has_config</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;passgo&quot;</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">requires_db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">has_config</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;story-stages&quot;</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="nt">requires_db</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="nt">has_config</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </span></code></pre></div>
 <h3 id="4-set-up-external-monitoring">4. Set Up External Monitoring<a class="headerlink" href="#4-set-up-external-monitoring" title="Link to this section">&para;</a></h3>
 <ol>
@@ -819,32 +1019,32 @@
 <li>Copy the ping URL</li>
 <li>Add to <code>roles/healthchecks_monitoring/defaults/main.yml</code></li>
 </ol>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">healthcheck_ping_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://hc-ping.com/your-unique-uuid&quot;</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">healthcheck_ping_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://hc-ping.com/your-unique-uuid&quot;</span>
 </span></code></pre></div>
 <p><a href="COMPLETE_MONITORING_STACK/">Complete setup guide →</a></p>
 <h2 id="architecture">📊 Architecture<a class="headerlink" href="#architecture" title="Link to this section">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>┌─────────────────────────────────────────────────────────────┐
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>│                    ANSAI Self-Healing                        │
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>├─────────────────────────────────────────────────────────────┤
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>│                                                               │
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>│  │   Service    │  │      JS      │  │     CSS      │      │
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>│  │   Healing    │  │  Monitoring  │  │  Monitoring  │      │
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘      │
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>│         │                 │                  │               │
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>│         └─────────────────┼──────────────────┘               │
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>│                           │                                  │
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>│                    ┌──────▼───────┐                         │
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>│                    │   Email      │                         │
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>│                    │   Alerts     │                         │
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>│                    └──────────────┘                         │
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>│                                                               │
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>│  ┌──────────────────────────────────────────────────────┐  │
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>│  │           External Healthchecks.io                    │  │
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>│  │  (Dead Man&#39;s Switch for Server-Level Failures)        │  │
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>│  └──────────────────────────────────────────────────────┘  │
-</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>│                                                               │
-</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>└─────────────────────────────────────────────────────────────┘
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>┌─────────────────────────────────────────────────────────────┐
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>│                    ANSAI Self-Healing                        │
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>├─────────────────────────────────────────────────────────────┤
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>│                                                               │
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>│  │   Service    │  │      JS      │  │     CSS      │      │
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>│  │   Healing    │  │  Monitoring  │  │  Monitoring  │      │
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘      │
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>│         │                 │                  │               │
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>│         └─────────────────┼──────────────────┘               │
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>│                           │                                  │
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>│                    ┌──────▼───────┐                         │
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>│                    │   Email      │                         │
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>│                    │   Alerts     │                         │
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>│                    └──────────────┘                         │
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>│                                                               │
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>│  ┌──────────────────────────────────────────────────────┐  │
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>│  │           External Healthchecks.io                    │  │
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>│  │  (Dead Man&#39;s Switch for Server-Level Failures)        │  │
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>│  └──────────────────────────────────────────────────────┘  │
+</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>│                                                               │
+</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>└─────────────────────────────────────────────────────────────┘
 </span></code></pre></div>
 <h2 id="use-cases">🎓 Use Cases<a class="headerlink" href="#use-cases" title="Link to this section">&para;</a></h2>
 <h3 id="production-web-applications">Production Web Applications<a class="headerlink" href="#production-web-applications" title="Link to this section">&para;</a></h3>
@@ -901,18 +1101,18 @@
 </ul>
 <h2 id="testing-each-service">🧪 Testing Each Service<a class="headerlink" href="#testing-each-service" title="Link to this section">&para;</a></h2>
 <p>ANSAI includes comprehensive testing workflows:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Test Universal Self-Healing</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">cd</span><span class="w"> </span>/home/jbyrd/ansai/orchestrators/ansible
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>./tests/test-service-healing.sh
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># Test JS Monitoring</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>./tests/test-js-monitoring.sh
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="c1"># Test CSS Monitoring</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>./tests/test-css-monitoring.sh
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="c1"># Test Healthchecks Integration</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>./tests/test-healthchecks.sh
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Test Universal Self-Healing</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">cd</span><span class="w"> </span>/home/jbyrd/ansai/orchestrators/ansible
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>./tests/test-service-healing.sh
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># Test JS Monitoring</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>./tests/test-js-monitoring.sh
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="c1"># Test CSS Monitoring</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>./tests/test-css-monitoring.sh
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="c1"># Test Healthchecks Integration</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>./tests/test-healthchecks.sh
 </span></code></pre></div>
 <p>Each test:
 - ✅ Simulates real failures
@@ -922,16 +1122,16 @@
 <h2 id="packaging-for-distribution">📦 Packaging for Distribution<a class="headerlink" href="#packaging-for-distribution" title="Link to this section">&para;</a></h2>
 <h3 id="github-repository">GitHub Repository<a class="headerlink" href="#github-repository" title="Link to this section">&para;</a></h3>
 <p>The complete ANSAI Self-Healing stack is available on GitHub:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Clone the repository</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/YOUR_USERNAME/ansai.git
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nb">cd</span><span class="w"> </span>ansai/orchestrators/ansible
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># Deploy to your infrastructure</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>ansible-playbook<span class="w"> </span>playbooks/deploy-complete-monitoring.yml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Clone the repository</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/YOUR_USERNAME/ansai.git
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nb">cd</span><span class="w"> </span>ansai/orchestrators/ansible
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="c1"># Deploy to your infrastructure</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>ansible-playbook<span class="w"> </span>playbooks/deploy-complete-monitoring.yml
 </span></code></pre></div>
 <h3 id="ansible-galaxy-coming-soon">Ansible Galaxy (Coming Soon)<a class="headerlink" href="#ansible-galaxy-coming-soon" title="Link to this section">&para;</a></h3>
 <p>Install directly from Ansible Galaxy:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>ansai.self_healing
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>ansai.self_healing
 </span></code></pre></div>
 <h2 id="contributing">🤝 Contributing<a class="headerlink" href="#contributing" title="Link to this section">&para;</a></h2>
 <p>ANSAI Self-Healing is built following <strong>ansai workflows</strong> and <strong>everything-as-code</strong> principles. Contributions are welcome!</p>
@@ -990,7 +1190,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 18, 2025 16:51:46 UTC"><span class="timeago" datetime="2025-11-18T16:51:46+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 18, 2025 16:51:46 UTC">2025-11-18</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 18, 2025 19:56:34 UTC"><span class="timeago" datetime="2025-11-18T19:56:34+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 18, 2025 19:56:34 UTC">2025-11-18</span>
   </span>
 
     
