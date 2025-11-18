@@ -140,14 +140,37 @@
     margin-bottom: 1.5rem;
 }
 
+/* Cards inside Community CTA - White with blue accents */
+.community-cta .grid.cards li {
+    background: white !important;
+    border: 2px solid rgba(255,255,255,0.3);
+    text-align: left;
+}
+
+.community-cta .grid.cards li:hover {
+    border-color: #bbdefb;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.community-cta .grid.cards li .lg {
+    color: #1976d2 !important;
+}
+
+.community-cta .grid.cards li h3,
+.community-cta .grid.cards li p {
+    color: #333 !important;
+}
+
 .community-cta a {
-    color: #bbdefb;
-    text-decoration: underline;
+    color: #1976d2;
+    text-decoration: none;
     font-weight: 600;
 }
 
 .community-cta a:hover {
-    color: #fff;
+    color: #1565c0;
+    text-decoration: underline;
 }
 
 /* Stats section */
