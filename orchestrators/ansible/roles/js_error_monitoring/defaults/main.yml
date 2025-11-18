@@ -2,27 +2,27 @@
 # JavaScript Error Monitoring Configuration
 
 # Email configuration for alerts
-owner_email: jimmykbyrd@gmail.com
+owner_email: your-email@example.com
 smtp_server: smtp.gmail.com
 smtp_port: 587
-smtp_user: jimmykbyrd@gmail.com
+smtp_user: your-email@example.com
 smtp_password: "{{ lookup('env', 'ANSAI_SMTP_PASSWORD') }}"
 
 # Applications to monitor
 monitored_apps:
-  - name: story-stages
-    app_path: /home/jbyrd/story-stages
+  - name: my-flask-app
+    app_path: /var/www/my-app
     template_dirs:
-      - /home/jbyrd/story-stages/templates
-    port: 5002
-    domain: books.jbyrd.org
+      - /var/www/my-app/templates
+    port: 5000
+    domain: app.example.com
     
-  - name: passgo
-    app_path: /home/jbyrd/passgo
+  - name: my-api
+    app_path: /var/www/my-api
     template_dirs:
-      - /home/jbyrd/passgo/templates
+      - /var/www/my-api/templates
     port: 5001
-    domain: passgo.jbyrd.org
+    domain: api.example.com
 
 # Validation schedule (cron format)
 validation_schedule: "*/30 * * * *"  # Every 30 minutes

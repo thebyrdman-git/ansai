@@ -203,10 +203,28 @@ AI_*.md
 *STRATEGY*.md
 *SUMMARY*.md
 *ANALYSIS*.md
+*INTEGRATED*.md
+
+# Internal planning docs
+PUSH_TO_GITHUB*.md
+READY_FOR*.md
+PUBLIC_REPO*.md
+*LAUNCH_CONTENT*.md
+*LAUNCH_STRATEGY*.md
+*SCALING_STRATEGY*.md
+TALK_*.md
+TALK_*.txt
+*INVITE*.txt
 
 # Keep intentional documentation
 !README.md
 !CONTRIBUTING.md
 !LICENSE.md
 !CHANGELOG.md
+
+# ============================================
+# BFG Repo-Cleaner Reports
+# ============================================
+.bfg-report/
+..bfg-report/
 
