@@ -59,37 +59,73 @@ Not a product. **A platform.**
 
 ---
 
-## 🧱 Available Blocks (Phase 1)
+## 🧱 Core Building Blocks (Phase 1)
 
 <div class="grid cards" markdown>
 
--   ### 🛡️ **Service Healing**
+-   ### 🛡️ **Service Healing Framework**
     
-    Monitors services, diagnoses failures (ports, config, database, environment), applies intelligent fixes, sends detailed reports.
+    Intelligent service monitoring and auto-remediation. Detects failures, diagnoses root causes (ports, config, database, environment), applies fixes, sends detailed reports.
     
-    **What you can build:** Custom healing strategies, auto-scaling, ChatOps commands, multi-environment dashboards
+    **Base capabilities:** systemd integration, intelligent diagnostics, email reporting, extensible healing strategies
 
--   ### 🐛 **Error Monitoring**
+-   ### 🎯 **Orchestration Engine**
     
-    Captures JavaScript/CSS errors in real-time, logs runtime issues, sends alerts with context.
+    Event-driven workflow automation with dependency resolution, rollback patterns, and systemd hooks.
     
-    **What you can build:** Custom dashboards, Slack notifications, automatic rollbacks, A/B test error comparison
+    **Base capabilities:** Multi-step workflows, conditional logic, state management, failure handling
 
--   ### 💓 **External Monitoring**
+-   ### 💓 **Monitoring Integration**
     
-    Integrates with Healthchecks.io for 100% uptime coverage, dead-man's switch alerting.
+    Flexible monitoring patterns with external service integration (Healthchecks.io included as example).
     
-    **What you can build:** Multi-region health checks, custom alerting workflows, SLA monitoring
+    **Base capabilities:** Health check patterns, alerting framework, dead-man's switch support, custom integrations
 
--   ### 🎯 **Orchestration Patterns**
+-   ### 🔧 **Ansible-Native Patterns**
     
-    Event-driven workflows, systemd integration, dependency resolution, rollback patterns.
+    Standard Ansible roles, playbooks, and patterns. No proprietary tools - just Ansible best practices.
     
-    **What you can build:** Blue-green deployments, multi-region failover, custom deployment strategies
+    **Base capabilities:** Reusable roles, composable playbooks, inventory patterns, vault integration
 
 </div>
 
-[View Complete Documentation →](self-healing/index.md)
+## 💡 Example Use Cases (Built with ANSAI)
+
+**Here are some real implementations showing what you can build:**
+
+<div class="grid cards" markdown>
+
+-   ### 🐛 **JavaScript/CSS Error Monitoring**
+    
+    *Example implementation by creator*  
+    Real-time frontend error capture, runtime logging, alerting system for web applications.
+    
+    **Demonstrates:** Monitoring patterns + alerting framework + custom data collection
+
+-   ### 📧 **Email Alert System**
+    
+    *Example implementation by creator*  
+    Detailed diagnostic emails with healing reports, failure analysis, and recovery steps.
+    
+    **Demonstrates:** Service healing + notification patterns + report generation
+
+-   ### ❤️ **Healthchecks.io Integration**
+    
+    *Example implementation by creator*  
+    External monitoring with uptime tracking, dead-man's switch, and third-party alerting.
+    
+    **Demonstrates:** Monitoring integration + external APIs + health reporting
+
+-   ### 🔄 **Multi-Service Orchestration**
+    
+    *Example implementation by creator*  
+    Coordinated healing across multiple services with dependency awareness and rollback capability.
+    
+    **Demonstrates:** Orchestration engine + service coordination + state management
+
+</div>
+
+**[See Documentation →](self-healing/index.md)** | **[View Example Code →](https://github.com/thebyrdman-git/ansai/tree/main/orchestrators/ansible/roles)**
 
 ---
 
