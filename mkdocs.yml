@@ -22,8 +22,8 @@ theme:
     # Light mode - Creative platform colors
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: deep purple
-      accent: pink
+      primary: blue
+      accent: light blue
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
@@ -31,8 +31,8 @@ theme:
     # Dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: deep purple
-      accent: pink
+      primary: blue
+      accent: light blue
       toggle:
         icon: material/brightness-4
         name: Switch to light mode

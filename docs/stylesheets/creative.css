@@ -4,11 +4,11 @@
 .hero-section {
     text-align: center;
     padding: 3rem 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
     color: white;
     border-radius: 12px;
     margin-bottom: 3rem;
-    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 40px rgba(25, 118, 210, 0.3);
 }
 
 .hero-section h2 {
@@ -30,11 +30,11 @@
     padding: 2rem;
     border-radius: 12px;
     margin: 2rem 0;
-    border-left: 5px solid #667eea;
+    border-left: 5px solid #1976d2;
 }
 
 .building-examples h3 {
-    color: #667eea;
+    color: #1976d2;
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
 }
@@ -68,9 +68,9 @@
 }
 
 .md-typeset .grid.cards>:-webkit-any(ol,ul)>li:hover {
-    border-color: #667eea;
+    border-color: #1976d2;
     transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+    box-shadow: 0 8px 24px rgba(25, 118, 210, 0.15);
 }
 
 .md-typeset .grid.cards>:is(ol,ul)>li {
@@ -81,25 +81,25 @@
 }
 
 .md-typeset .grid.cards>:is(ol,ul)>li:hover {
-    border-color: #667eea;
+    border-color: #1976d2;
     transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+    box-shadow: 0 8px 24px rgba(25, 118, 210, 0.15);
 }
 
 /* Icons in cards - Make them colorful */
 .md-typeset .grid.cards .lg {
-    color: #667eea;
+    color: #1976d2;
 }
 
 /* Community CTA */
 .community-cta {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
     color: white;
     padding: 3rem;
     border-radius: 12px;
     text-align: center;
     margin: 3rem 0;
-    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 40px rgba(25, 118, 210, 0.3);
 }
 
 .community-cta h3 {
@@ -123,7 +123,7 @@
     background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
     padding: 2rem;
     border-radius: 12px;
-    border-left: 5px solid #667eea;
+    border-left: 5px solid #1976d2;
 }
 
 .stats ul {
@@ -199,13 +199,13 @@
 }
 
 .md-button--primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
     border: none;
 }
 
 .md-button--primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
 }
 
 .md-button--large {
@@ -215,7 +215,7 @@
 
 /* Quote blocks - More creative */
 .md-typeset blockquote {
-    border-left: 5px solid #667eea;
+    border-left: 5px solid #1976d2;
     background: linear-gradient(to right, #f8f9fa 0%, #ffffff 100%);
     padding: 1.5rem;
     border-radius: 8px;
@@ -243,7 +243,7 @@
 /* Navigation - Emphasize creative sections */
 .md-nav__link[href*="show-and-tell"],
 .md-nav__link[href*="community"] {
-    color: #667eea;
+    color: #1976d2;
     font-weight: 700;
 }
 
@@ -251,7 +251,7 @@
 .md-typeset h1 {
     font-size: 3rem;
     font-weight: 900;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -259,9 +259,9 @@
 
 /* Section headers - More colorful */
 .md-typeset h2 {
-    color: #667eea;
+    color: #1976d2;
     font-weight: 800;
-    border-bottom: 3px solid #667eea;
+    border-bottom: 3px solid #1976d2;
     padding-bottom: 0.5rem;
 }
 
@@ -269,19 +269,19 @@
 .md-typeset hr {
     border: none;
     height: 3px;
-    background: linear-gradient(to right, transparent 0%, #667eea 50%, transparent 100%);
+    background: linear-gradient(to right, transparent 0%, #1976d2 50%, transparent 100%);
     margin: 3rem 0;
 }
 
 /* Link styling - More prominent */
 .md-typeset a {
-    color: #667eea;
+    color: #1976d2;
     font-weight: 600;
     transition: all 0.2s ease;
 }
 
 .md-typeset a:hover {
-    color: #764ba2;
+    color: #1565c0;
     text-decoration: underline;
 }
 
