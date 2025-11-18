@@ -1,14 +1,21 @@
 # ANSAI Q1 2025 Growth Plan
 
-## Mission: 0 → 100 Users in 90 Days
+## Mission: 0 → 100 Builders in 90 Days
 
-**Goal**: Establish ANSAI as the go-to self-healing framework for DevOps teams
+**Goal**: Establish ANSAI as the creative platform for infrastructure automation
+
+**Think**: Minecraft for DevOps, Lego for Infrastructure
+- Not "use our features" → "build what YOU need"
+- Not "ship features" → "provide building blocks"
+- Not "get users" → "inspire builders"
+- Not "feature requests" → "show & tell"
 
 **Success Metrics**:
-- 🎯 50+ GitHub stars
-- 🎯 10-20 production deployments
-- 🎯 5+ active contributors
-- 🎯 100+ community members (discussions, issues, PRs)
+- 🎯 50+ GitHub stars (platform adopters)
+- 🎯 10+ community creations shared (Show & Tell)
+- 🎯 5+ active builders contributing patterns
+- 🎯 100+ community members
+- 🎯 20+ production deployments with custom builds
 
 ## Week-by-Week Plan
 
@@ -16,13 +23,18 @@
 
 #### Day 1-2: Community Infrastructure
 - [x] ✅ GitHub repository published
-- [x] ✅ v1.0.0 released
+- [x] ✅ Phase 1 released (Infrastructure Resilience blocks)
 - [x] ✅ Documentation complete
+- [x] ✅ README repositioned as creative platform
+- [x] ✅ CONTRIBUTING.md emphasizes "share your creations"
 - [ ] Set up GitHub Discussions
-  - Categories: Announcements, General, Feature Requests, Show & Tell, Q&A
-- [ ] Create CONTRIBUTING.md
-- [ ] Add issue templates
-- [ ] Set up GitHub Projects for roadmap
+  - **Show & Tell** (MOST IMPORTANT - community creations)
+  - Ideas (building blocks people need)
+  - Q&A (help builders succeed)
+  - General
+  - Announcements
+- [ ] Add issue templates (bug reports, not feature requests)
+- [ ] Set up GitHub Projects for "Building Blocks Roadmap"
 - [ ] Configure GitHub Actions badges
 
 #### Day 3-4: Launch Content
@@ -52,86 +64,61 @@
   - Ansible automation questions
   - Service reliability threads
 
-### Week 3-4: Feature Quick Wins
+### Week 3-4: Listen & Inspire
 
-**Goal**: Ship 2 high-value features quickly
+**Goal**: Learn what builders are trying to create, provide the blocks they need
 
-#### Feature 1: Disk Space Management (Week 3)
-**Why**: #1 requested, easy to implement, immediate value
+**Philosophy**: Let builders tell us what they need through Show & Tell and discussions
 
-**Implementation**:
-```yaml
-disk_monitoring:
-  enabled: true
-  threshold_warning: 80
-  threshold_critical: 90
-  threshold_emergency: 95
-  auto_cleanup:
-    logs_older_than: 30
-    temp_files: true
-    package_cache: true
-    docker_cleanup: false
-```
+#### Week 3: Community Listening & First Builds
+- [ ] **Monitor Show & Tell**: What are people building?
+- [ ] **Identify patterns**: Common problems builders are solving
+- [ ] **Document creative uses**: "10 Things People Built with ANSAI"
+- [ ] **Identify missing blocks**: What stops builders from succeeding?
+- [ ] **Quick wins**: Add 1-2 commonly requested building blocks
+  - Based on ACTUAL builder needs, not assumptions
+  - Examples: disk management, cert monitoring, DB backups (IF requested)
+- [ ] **Showcase builds**: Feature community creation on README
 
-**Tasks**:
-- [ ] Create `disk_space_monitor` role
-- [ ] Implement monitoring script
-- [ ] Add cleanup automation
-- [ ] Write tests
-- [ ] Document usage
-- [ ] Blog post: "Never Run Out of Disk Space Again"
+#### Week 4: Building Block Sprint
+**Based on Week 3 feedback:**
+- [ ] Add top 2 requested building blocks
+- [ ] Write "How I Built X" tutorial with community member
+- [ ] Create video: "Building [Real Community Example]"
+- [ ] Document pattern library: "Common Building Patterns"
+- [ ] Blog: "What the Community Built in Week 1"
 
-#### Feature 2: Certificate Expiration Monitoring (Week 4)
-**Why**: Critical pain point, prevents outages
+**Key Principle**: Don't ship features. Ship building blocks that unlock creativity.
 
-**Implementation**:
-```yaml
-cert_monitoring:
-  enabled: true
-  check_paths:
-    - /etc/letsencrypt/live
-    - /etc/ssl/certs
-  alert_days: [30, 14, 7, 3, 1]
-  auto_renew: true
-  renewal_method: certbot
-```
+### Week 5-6: Celebrate & Amplify Community Creations
 
-**Tasks**:
-- [ ] Create `cert_monitor` role
-- [ ] Implement expiration checking
-- [ ] Add renewal automation (certbot)
-- [ ] Write tests
-- [ ] Document usage
-- [ ] Blog post: "Automated Certificate Management"
+#### Content Celebrating Builders
+- [ ] **Blog Series**: "What You Can Build with ANSAI"
+  - Part 1: "5 Creative Uses We Never Imagined"
+  - Part 2: "Builder Spotlight: [Community Member's Creation]"
+  - Part 3: "From Idea to Production in 2 Hours"
+  - Part 4: "Combining Building Blocks: Advanced Patterns"
 
-### Week 5-6: Content & Community Building
+- [ ] **Video Tutorials** (Show Real Builds)
+  - "Watch Me Build: ChatOps in 15 Minutes"
+  - "Community Build Walkthrough" (with builder)
+  - "3 Ways to Use the Same Building Block"
+  - "Debugging Your Custom Build"
 
-#### Content Marketing
-- [ ] **Blog Series**: "Self-Healing Infrastructure Patterns"
-  - Part 1: Why Self-Healing Matters
-  - Part 2: Anatomy of a Service Failure
-  - Part 3: Building Intelligent Remediation
-  - Part 4: Monitoring vs. Self-Healing
-
-- [ ] **Video Tutorials**
-  - Getting Started (5 min)
-  - First Deployment (10 min)
-  - Adding Your First Service (8 min)
-  - Understanding Healing Strategies (12 min)
-
-- [ ] **Case Studies**
-  - Interview early adopters
-  - Document real-world deployments
-  - Show metrics/results
-  - Build social proof
+- [ ] **Builder Spotlights**
+  - Interview community builders
+  - Document their creations
+  - Show their process
+  - Inspire others
 
 #### Community Engagement
-- [ ] Weekly GitHub Discussion: "Community Office Hours"
-- [ ] Respond to ALL issues within 24 hours
-- [ ] Welcome new contributors warmly
-- [ ] Feature contributor of the week
-- [ ] Create "Good First Issue" labels
-- [ ] Mentor first-time contributors
+- [ ] Weekly Discussion: "Show & Tell - Share What You Built"
+- [ ] **Celebrate builders**: Feature "Builder of the Week"
+- [ ] **Amplify creations**: Share cool builds on social media
+- [ ] Help builders succeed (respond to questions within 24hrs)
+- [ ] Welcome new builders enthusiastically
+- [ ] Create "Good First Build" examples (not just "Good First Issue")
+- [ ] Mentor builders: "Let me help you build that!"
 
 ### Week 7-8: Partnerships & Integrations
 
