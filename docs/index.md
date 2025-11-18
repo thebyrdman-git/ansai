@@ -1,242 +1,160 @@
-# 🚀 ANSAI: Build Your Automation
+# Build Your Automation. Your Way.
 
 <div class="hero-section" markdown>
 
-## Think Lego. Think Minecraft. Think Infinite Possibilities.
+## Infrastructure Building Blocks for Creative DevOps
 
-**ANSAI is your automation building blocks.** Not a product that tells you what to build. A platform where YOU create whatever solves YOUR problems.
+**Think Lego.** **Think Minecraft.** **Think Infinite Possibilities.**
 
-[Start Building](#quick-start){ .md-button .md-button--primary }
-[See What Others Built](#community-gallery){ .md-button }
+ANSAI gives you automation building blocks. You decide what to create.
+
+Not a product. **A platform.**
+
+[Get Started →](#quick-start){ .md-button .md-button--primary .md-button--large }
+[Explore Blocks →](#available-blocks){ .md-button .md-button--large }
 
 </div>
 
 ---
 
-## 🎨 You're the Builder. We Provide the Blocks.
+## 🎯 The ANSAI Difference
 
 <div class="grid cards" markdown>
 
--   :material-puzzle:{ .lg .middle } __Modular Building Blocks__
+-   ### 🧱 **Building Blocks, Not Solutions**
+    
+    We don't tell you what to build. We give you modular components - healing, monitoring, orchestration, integrations. **You combine them your way.**
 
-    ---
+-   ### 🎨 **Infinite Creativity**
+    
+    No prescribed paths. No "right way." Build ChatOps, deployment pipelines, compliance-as-code, or something we never imagined. **Your infrastructure. Your rules.**
 
-    Mix and match automation components like Lego bricks. Self-healing, monitoring, orchestration, integrations - combine them your way.
+-   ### 🤝 **Community Creations**
+    
+    Share what you build. Learn from others. The best patterns become official examples. **We all get better together.**
 
--   :fontawesome-solid-wand-magic-sparkles:{ .lg .middle } __Infinite Creativity__
-
-    ---
-
-    No prescribed solutions. No "right way." Build what YOU need: ChatOps, deployment pipelines, cost optimization, compliance workflows - or something we never imagined.
-
--   :material-account-group:{ .lg .middle } __Community Creations__
-
-    ---
-
-    Share what you build. Learn from others. The best community patterns become official examples. We all get better together.
-
--   :material-ansible:{ .lg .middle } __Ansible-Native__
-
-    ---
-
-    Use the tools you already know. No proprietary languages. No vendor lock-in. If you know Ansible, you're already 80% there.
+-   ### 🔧 **Ansible-Native**
+    
+    Use the tools you know. No proprietary languages. No vendor lock-in. **If you know Ansible, you're 80% there.**
 
 </div>
 
 ---
 
-## 🏗️ What Can You Build?
+## 💡 What Are People Building?
 
-**Phase 1 provides Infrastructure Resilience blocks.** Here's what people are already building:
+!!! success "ChatOps from Anywhere"
+    *"Combined ANSAI's healing blocks with Slack. Now my team restarts services from their phones. Built in 2 hours."*  
+    **Blocks Used:** Service healing + notifications  
 
-<div class="building-examples" markdown>
+!!! success "Automated Cost Optimization"
+    *"Built a workflow that scales down dev environments at night, back up in morning. Saved 40% on AWS."*  
+    **Blocks Used:** Orchestration + scheduling + AWS APIs  
 
-### 🛡️ From Our Blocks → Your Creations
-
-=== "Self-Healing Services"
-
-    **What We Provide:**
-    - Service health monitoring
-    - Intelligent diagnostics
-    - Automated remediation
-    - Email reporting
-
-    **What You Can Build:**
-    - Custom healing strategies for your apps
-    - Integration with your monitoring stack
-    - Auto-scaling based on health metrics
-    - Multi-environment dashboards
-    - ChatOps healing commands
-    - Whatever you dream up
-
-=== "Error Monitoring"
-
-    **What We Provide:**
-    - JavaScript error capture
-    - CSS loading detection
-    - Runtime error logging
-    - Alert patterns
-
-    **What You Can Build:**
-    - Custom error dashboards
-    - Slack/Teams notifications
-    - Automatic rollback on errors
-    - A/B test error comparison
-    - User impact analysis
-    - Error-driven deployment gates
-
-=== "Orchestration"
-
-    **What We Provide:**
-    - Event-driven patterns
-    - Systemd integration
-    - Ansible orchestration
-    - Workflow templates
-
-    **What You Can Build:**
-    - Blue-green deployments
-    - Database migration workflows
-    - Multi-region failover
-    - Cost optimization automation
-    - Compliance-as-code
-    - Your custom deployment strategy
-
-</div>
-
----
-
-## 🎯 Community Gallery: What Builders Created
-
-!!! success "Community Creation: ChatOps from Anywhere"
-    *"I combined ANSAI's self-healing with custom Slack notifications. Now my team can restart services from their phones. Took 2 hours to build - would've been weeks of custom dev."*
-    
-    **Blocks Used:** Service healing + notification patterns  
-    **Innovation:** Mobile-first DevOps  
-    **Impact:** Reduced MTTR by 80%
-
-!!! success "Community Creation: Automated Cost Optimization"
-    *"Built a workflow that scales down dev environments overnight and back up in the morning using ANSAI orchestration + AWS APIs. Saved 40% on our AWS bill."*
-    
-    **Blocks Used:** Orchestration + scheduling patterns  
-    **Innovation:** Time-based resource management  
-    **Impact:** $12K/month savings
-
-!!! success "Community Creation: Full Deployment Pipeline"
-    *"Started with self-healing, now have automated rollbacks, database migrations, and compliance checks all using ANSAI patterns. It's our entire deployment infrastructure."*
-    
+!!! success "Full Deployment Pipeline"
+    *"Started with self-healing, now have automated rollbacks, DB migrations, compliance checks. It's our entire infrastructure."*  
     **Blocks Used:** Multiple patterns combined  
-    **Innovation:** Comprehensive automation ecosystem  
-    **Impact:** Deployment confidence to 99.9%
 
 **[Share What You Built →](https://github.com/thebyrdman-git/ansai/discussions/categories/show-and-tell)**
 
 ---
 
-## 🧱 Building Blocks Available Now
+## 🧱 Available Blocks (Phase 1)
 
 <div class="grid cards" markdown>
 
--   ### Phase 1: Infrastructure Resilience
+-   ### 🛡️ **Service Healing**
     
-    **Released & Production-Ready**
+    Monitors services, diagnoses failures (ports, config, database, environment), applies intelligent fixes, sends detailed reports.
     
-    - Universal service healing with intelligent diagnostics
-    - JavaScript & CSS error monitoring
-    - External health checking (Healthchecks.io)
-    - Email alerting with detailed reports
-    - Comprehensive test suite
-    - CI/CD workflows
-    
-    [Explore Phase 1 Blocks →](self-healing/index.md)
+    **What you can build:** Custom healing strategies, auto-scaling, ChatOps commands, multi-environment dashboards
 
--   ### Phase 2: System Administration
+-   ### 🐛 **Error Monitoring**
     
-    **In Development (Community-Requested)**
+    Captures JavaScript/CSS errors in real-time, logs runtime issues, sends alerts with context.
     
-    - Disk space management
-    - Certificate lifecycle automation
-    - Memory optimization
-    - Database maintenance
-    - Security automation
-    
-    [See Roadmap →](COMMUNITY_SELF_HEALING_PRIORITIES.md)
+    **What you can build:** Custom dashboards, Slack notifications, automatic rollbacks, A/B test error comparison
 
--   ### Phase 3+: Your Ideas
+-   ### 💓 **External Monitoring**
     
-    **What Do You Need?**
+    Integrates with Healthchecks.io for 100% uptime coverage, dead-man's switch alerting.
     
-    - Workflow orchestration?
-    - Integration patterns?
-    - IaC templates?
-    - Intelligence layers?
+    **What you can build:** Multi-region health checks, custom alerting workflows, SLA monitoring
+
+-   ### 🎯 **Orchestration Patterns**
     
-    [Request Building Blocks →](https://github.com/thebyrdman-git/ansai/discussions)
+    Event-driven workflows, systemd integration, dependency resolution, rollback patterns.
+    
+    **What you can build:** Blue-green deployments, multi-region failover, custom deployment strategies
 
 </div>
+
+[View Complete Documentation →](self-healing/index.md)
 
 ---
 
 ## 🚀 Quick Start
 
-### 1. Clone the Building Blocks
-
+**1. Clone the blocks:**
 ```bash
 git clone https://github.com/thebyrdman-git/ansai.git
 cd ansai
 ```
 
-### 2. Configure What You Want to Build
-
+**2. Pick your blocks:**
 ```bash
-# Review available blocks
+# Review available building blocks
 ls orchestrators/ansible/roles/
-
-# Configure your first automation
-nano orchestrators/ansible/roles/universal_self_heal/defaults/main.yml
 ```
 
-### 3. Deploy Your Creation
-
+**3. Deploy your creation:**
 ```bash
 cd orchestrators/ansible
 ansible-playbook playbooks/deploy-complete-monitoring.yml
 ```
 
-### 4. Customize & Extend
-
-**This is where YOUR creativity begins!**
-
-- Combine blocks in novel ways
-- Add your own Ansible tasks
-- Integrate with your tools
-- Build something we never imagined
-
-### 5. Share Your Creation
-
-Built something cool? **[Show us!](https://github.com/thebyrdman-git/ansai/discussions/categories/show-and-tell)**
-
-The best community creations become official examples.
+**That's it.** Your automation is running. Now customize, extend, and **build something amazing.**
 
 ---
 
 ## 🎨 Build Inspiration
 
-**Not sure where to start? Here are ideas from the community:**
+**Not sure where to start? Try these ideas:**
 
 <div class="grid" markdown>
 
-- **Idea:** Auto-scale based on error rates
-- **Idea:** ChatOps for infrastructure management
-- **Idea:** Compliance-as-code with automatic remediation
-- **Idea:** Multi-cloud orchestration with fallback
-- **Idea:** Cost optimization with intelligent scheduling
-- **Idea:** Automated disaster recovery testing
-- **Idea:** Self-optimizing database tuning
-- **Idea:** Predictive maintenance with ML integration
+- Auto-scale based on error rates
+- ChatOps for infrastructure management  
+- Compliance-as-code with auto-remediation
+- Multi-cloud orchestration with fallback
+- Cost optimization with intelligent scheduling
+- Automated disaster recovery testing
+- Self-optimizing database tuning
+- Predictive maintenance with ML
 
 </div>
 
-**[See More Ideas →](https://github.com/thebyrdman-git/ansai/discussions/categories/ideas)** | **[Share Your Idea →](https://github.com/thebyrdman-git/ansai/discussions/new)**
+**[Request a Building Block →](https://github.com/thebyrdman-git/ansai/discussions)** | **[See More Ideas →](https://github.com/thebyrdman-git/ansai/discussions/categories/ideas)**
+
+---
+
+## 🏗️ What's Coming
+
+### Phase 2: System Administration Blocks
+**Community-Requested:**
+- Disk space management with intelligent cleanup
+- Certificate lifecycle automation (auto-renewal)
+- Memory optimization and leak detection
+- Database maintenance workflows
+- Security update automation
+
+### Phase 3+: Your Ideas
+- Workflow orchestration engine
+- Infrastructure-as-code pattern library
+- Integration hub (cloud providers, monitoring tools)
+- Intelligence layers (ML-powered optimization)
+
+**[See Full Roadmap →](SCALING_STRATEGY.md)** | **[Vote on Priorities →](COMMUNITY_SELF_HEALING_PRIORITIES.md)**
 
 ---
 
@@ -247,16 +165,25 @@ The best community creations become official examples.
 ### We Want to See What YOU Build!
 
 - 🎨 **[Show & Tell](https://github.com/thebyrdman-git/ansai/discussions/categories/show-and-tell)**: Share your creations
-- 💡 **[Ideas](https://github.com/thebyrdman-git/ansai/discussions/categories/ideas)**: Request building blocks
+- 💡 **[Ideas](https://github.com/thebyrdman-git/ansai/discussions/categories/ideas)**: Request building blocks  
 - 🤔 **[Q&A](https://github.com/thebyrdman-git/ansai/discussions/categories/q-a)**: Get help building
-- 📢 **[Announcements](https://github.com/thebyrdman-git/ansai/discussions/categories/announcements)**: New blocks available
-- ⭐ **[Star on GitHub](https://github.com/thebyrdman-git/ansai)**: Support the platform
+- ⭐ **[GitHub](https://github.com/thebyrdman-git/ansai)**: Star and follow
 
 </div>
 
 ---
 
-## 🌟 Why Builders Choose ANSAI
+## 📊 Platform Stats
+
+- 🧱 **Building Blocks**: Phase 1 released, Phase 2 in development
+- 🎨 **Community Creations**: Growing pattern library
+- 👥 **Active Builders**: Join the movement
+- 🚀 **Production Ready**: Battle-tested and documented
+- 📖 **MIT Licensed**: Free forever, no strings attached
+
+---
+
+## 💬 What Builders Are Saying
 
 !!! quote "Freedom to Create"
     Not locked into someone else's vision. I build what I need, the way I want.
@@ -272,30 +199,17 @@ The best community creations become official examples.
 
 ---
 
-## 📊 Platform Stats
-
-<div class="stats" markdown>
-
-- **🧱 Building Blocks**: Phase 1 released, Phase 2 in development
-- **🎨 Community Creations**: Growing collection of patterns
-- **👥 Active Builders**: Join the community
-- **🚀 Production Ready**: Battle-tested and documented
-
-</div>
-
----
-
-## 🎯 Your Infrastructure. Your Rules. Your Creativity.
-
 <div class="final-cta" markdown>
+
+## Your Infrastructure. Your Rules. Your Creativity.
 
 **ANSAI provides the building blocks.**  
 **You create whatever you need.**  
 **Share with the community.**  
 **We all get better.**
 
-[Start Building Now](self-healing/index.md){ .md-button .md-button--primary .md-button--large }
-[Join the Community](https://github.com/thebyrdman-git/ansai){ .md-button .md-button--large }
+[Start Building Now →](self-healing/index.md){ .md-button .md-button--primary .md-button--large }
+[Join the Community →](https://github.com/thebyrdman-git/ansai){ .md-button .md-button--large }
 
 </div>
 
@@ -305,6 +219,6 @@ The best community creations become official examples.
 
 *The building blocks. Your creativity. Infinite possibilities.*
 
-**ANSAI: Ansible-Native System Automation Infrastructure**
+**ANSAI** • Ansible-Native System Automation Infrastructure
 
 </div>
