@@ -13,7 +13,7 @@ Root cause analysis. Predictive failures. Context-aware actions. Cost optimizati
 **Without AI, it's just Ansible. With ANSAI, it thinks.**
 
 [Get Started →](#quick-start){ .md-button .md-button--primary .md-button--large }
-[See AI in Action →](#ai-capabilities){ .md-button .md-button--large }
+[See How It Works →](#ai-powered-building-blocks){ .md-button .md-button--large }
 
 </div>
 

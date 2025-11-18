@@ -1,0 +1,21 @@
+Building Resilient Infrastructure with ANSAI: A Comprehensive Automation Framework
+
+Join us for a deep dive into ANSAI (Ansible-Native System Automation Infrastructure) - an open-source automation framework designed to streamline IT operations and enhance system resilience.
+
+What you'll learn:
+• Overview: ANSAI's modular architecture and comprehensive approach to automation
+• v1.0 Feature Showcase: Self-healing infrastructure that automatically detects and remediates failures
+• Live demo: Watch automatic service recovery, error monitoring, and intelligent diagnostics in action
+• Architecture patterns: Building resilient, automated systems with Ansible
+• Roadmap: Workflow orchestration, infrastructure-as-code patterns, and integration capabilities
+• Getting started: Deploy your first automated module in 10 minutes
+
+Perfect for: DevOps engineers, SREs, sysadmins, and automation enthusiasts looking for a powerful, extensible framework.
+
+Tech stack: Ansible, systemd, Python
+License: MIT (Open Source)
+GitHub: https://github.com/thebyrdman-git/ansai
+
+ANSAI's vision extends beyond self-healing to encompass workflow orchestration, standardized IaC patterns, intelligent automation, and seamless integrations. Join us to see where we are today and where we're headed.
+
+Bring your questions - we'll have time for Q&A!
