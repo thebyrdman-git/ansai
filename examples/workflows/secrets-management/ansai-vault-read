@@ -1,0 +1,130 @@
+#!/usr/bin/env bash
+# ansai-vault-read - Secure secret retrieval from HashiCorp Vault
+# Part of ANSAI Secrets Management Building Blocks
+# https://ansai.dev
+
+set -e
+
+show_help() {
+    cat << EOF
+ansai-vault-read - Retrieve secrets from HashiCorp Vault
+
+USAGE:
+    ansai-vault-read <secret-path> [key]
+
+ARGUMENTS:
+    secret-path    Path to secret in Vault (e.g., "app/database")
+    key            Optional: specific key to retrieve from secret
+
+ENVIRONMENT VARIABLES:
+    VAULT_ADDR     Vault server address (default: http://127.0.0.1:8200)
+    VAULT_TOKEN    Vault authentication token
+    VAULT_HOST     Remote Vault host (if using SSH tunnel)
+    VAULT_PORT     Remote Vault port (default: 8201)
+
+EXAMPLES:
+    # Get all keys from a secret
+    ansai-vault-read app/database
+    
+    # Get specific key from secret
+    ansai-vault-read app/database password
+    
+    # With custom Vault address
+    VAULT_ADDR=https://vault.example.com:8200 ansai-vault-read app/api-key
+    
+    # Using remote Vault via SSH
+    VAULT_HOST=vault-server.local ansai-vault-read app/secrets
+
+EXIT CODES:
+    0   Success
+    1   Error retrieving secret or secret not found
+    2   Missing required arguments
+
+SECURITY NOTES:
+    - Never log or print secrets to console in production
+    - Use environment variables or files with restricted permissions for tokens
+    - Consider using Vault's AppRole or OIDC auth instead of tokens
+    - Rotate tokens regularly
+    - Use TLS in production (https://)
+
+COMMON SECRET PATHS:
+    app/database        Database credentials
+    app/api-keys        External API keys
+    app/smtp            Email server credentials
+    app/ssh-keys        SSH private keys
+    app/certificates    TLS certificates
+    ci/deploy-keys      CI/CD deployment credentials
+EOF
+}
+
+# Parse arguments
+if [[ $# -lt 1 ]]; then
+    show_help
+    exit 2
+fi
+
+if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
+    show_help
+    exit 0
+fi
+
+SECRET_PATH="$1"
+SECRET_KEY="${2:-}"
+
+# Vault configuration
+VAULT_ADDR="${VAULT_ADDR:-http://127.0.0.1:8200}"
+VAULT_TOKEN="${VAULT_TOKEN:-}"
+VAULT_HOST="${VAULT_HOST:-}"
+VAULT_PORT="${VAULT_PORT:-8201}"
+
+# Check if token is set
+if [[ -z "$VAULT_TOKEN" ]]; then
+    echo "Error: VAULT_TOKEN environment variable not set" >&2
+    echo "Set it with: export VAULT_TOKEN=your-token" >&2
+    exit 1
+fi
+
+# Function to retrieve secret via local Vault
+get_secret_local() {
+    vault kv get -format=json "$SECRET_PATH" 2>/dev/null
+}
+
+# Function to retrieve secret via remote Vault (SSH tunnel)
+get_secret_remote() {
+    ssh "$VAULT_HOST" "podman exec -e VAULT_ADDR='http://127.0.0.1:8200' -e VAULT_TOKEN='$VAULT_TOKEN' vault vault kv get -format=json $SECRET_PATH" 2>/dev/null
+}
+
+# Retrieve secret
+if [[ -n "$VAULT_HOST" ]]; then
+    # Remote Vault via SSH
+    RESPONSE=$(get_secret_remote)
+else
+    # Local Vault
+    RESPONSE=$(get_secret_local)
+fi
+
+# Check if retrieval was successful
+if [[ $? -ne 0 ]] || [[ -z "$RESPONSE" ]]; then
+    echo "❌ Failed to retrieve secret: $SECRET_PATH" >&2
+    echo "   Check that:" >&2
+    echo "   - Secret path exists" >&2
+    echo "   - VAULT_TOKEN has read permission" >&2
+    echo "   - Vault is accessible" >&2
+    exit 1
+fi
+
+# Parse and display response
+if [[ -n "$SECRET_KEY" ]]; then
+    # Get specific key
+    value=$(echo "$RESPONSE" | jq -r ".data.data.${SECRET_KEY}")
+    if [[ "$value" == "null" ]]; then
+        echo "❌ Key '$SECRET_KEY' not found in secret" >&2
+        exit 1
+    fi
+    echo "$value"
+else
+    # Show all keys (formatted)
+    echo "Secret: $SECRET_PATH"
+    echo "$RESPONSE" | jq -r '.data.data | to_entries[] | "  \(.key): \(.value)"'
+fi
+

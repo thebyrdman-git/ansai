@@ -1,0 +1,269 @@
+#!/bin/bash
+# ansai-context-switch - Switch ANSAI context and update environment
+# Part of ANSAI Context Management Building Blocks
+# https://ansai.dev
+
+set -euo pipefail
+
+# Configuration
+ANSAI_CONFIG_DIR="${ANSAI_CONFIG_DIR:-$HOME/.config/ansai}"
+CONTEXT_FILE="$ANSAI_CONFIG_DIR/current-context"
+CONTEXTS_CONFIG="$ANSAI_CONFIG_DIR/contexts.yaml"
+
+# Help function
+show_help() {
+    cat << EOF
+ansai-context-switch - Switch ANSAI context and update environment
+
+USAGE:
+    ansai-context-switch <context>
+
+EXAMPLE CONTEXTS:
+    work           Work projects (strict security)
+    personal       Personal projects and learning
+    finance        Personal finance automation
+    home           Home automation and IoT
+    content        Content creation and media
+    learning       Education and skill development
+    health         Health and wellness tracking
+    family         Family scheduling and coordination
+    maintenance    Home and vehicle maintenance
+    entertainment  Media management and hobbies
+    general        General development work
+
+OPTIONS:
+    --list         List all available contexts
+    --current      Show current context
+    --help, -h     Show this help message
+
+EXIT CODES:
+    0   Context switched successfully
+    1   Invalid context or error
+    2   Missing arguments
+
+EXAMPLES:
+    ansai-context-switch work
+    ansai-context-switch personal
+    ansai-context-switch --list
+    ansai-context-switch --current
+
+NOTES:
+    - Contexts are defined in: $CONTEXTS_CONFIG
+    - Current context stored in: $CONTEXT_FILE
+    - Hooks run from: $ANSAI_CONFIG_DIR/hooks/
+EOF
+}
+
+# List available contexts
+list_contexts() {
+    if [[ ! -f "$CONTEXTS_CONFIG" ]]; then
+        echo "No contexts configured yet."
+        echo "Create $CONTEXTS_CONFIG to define your contexts."
+        return 1
+    fi
+    
+    echo "Available contexts:"
+    # Parse YAML or use default contexts
+    echo "  - work"
+    echo "  - personal"
+    echo "  - finance"
+    echo "  - home"
+    echo "  - content"
+    echo "  - learning"
+    echo "  - health"
+    echo "  - family"
+    echo "  - maintenance"
+    echo "  - entertainment"
+    echo "  - general"
+}
+
+# Show current context
+show_current() {
+    if [[ -f "$CONTEXT_FILE" ]]; then
+        context=$(cat "$CONTEXT_FILE")
+        echo "Current context: $context"
+    else
+        echo "No context set (using default)"
+    fi
+}
+
+# Validate context
+validate_context() {
+    local context="$1"
+    case "$context" in
+        work|personal|finance|home|content|learning|health|family|maintenance|entertainment|general)
+            return 0
+            ;;
+        *)
+            # Check if custom context exists in config
+            if [[ -f "$CONTEXTS_CONFIG" ]] && grep -q "^$context:" "$CONTEXTS_CONFIG" 2>/dev/null; then
+                return 0
+            fi
+            return 1
+            ;;
+    esac
+}
+
+# Parse arguments
+if [[ $# -eq 0 ]]; then
+    echo "Error: Context required" >&2
+    show_help >&2
+    exit 2
+fi
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --help|-h)
+            show_help
+            exit 0
+            ;;
+        --list)
+            list_contexts
+            exit 0
+            ;;
+        --current)
+            show_current
+            exit 0
+            ;;
+        -*)
+            echo "Error: Unknown option $1" >&2
+            show_help >&2
+            exit 2
+            ;;
+        *)
+            if [[ -z "${CONTEXT:-}" ]]; then
+                CONTEXT="$1"
+            else
+                echo "Error: Multiple contexts specified" >&2
+                exit 2
+            fi
+            shift
+            ;;
+    esac
+done
+
+# Validate required argument
+if [[ -z "${CONTEXT:-}" ]]; then
+    echo "Error: Context required" >&2
+    show_help >&2
+    exit 2
+fi
+
+# Validate context
+if ! validate_context "$CONTEXT"; then
+    echo "Error: Invalid context '$CONTEXT'" >&2
+    echo "Run 'ansai-context-switch --list' to see available contexts" >&2
+    exit 1
+fi
+
+# Create config directory if it doesn't exist
+mkdir -p "$ANSAI_CONFIG_DIR"
+mkdir -p "$ANSAI_CONFIG_DIR/hooks"
+
+# Get current context for comparison
+current_context=""
+if [[ -f "$CONTEXT_FILE" ]]; then
+    current_context=$(cat "$CONTEXT_FILE" 2>/dev/null || echo "")
+fi
+
+# Check if already in this context
+if [[ "$current_context" == "$CONTEXT" ]]; then
+    echo "Already in context: $CONTEXT"
+    exit 0
+fi
+
+# Update context file
+echo "$CONTEXT" > "$CONTEXT_FILE"
+
+# Run pre-switch hook if it exists
+PRE_HOOK="$ANSAI_CONFIG_DIR/hooks/pre-switch-$CONTEXT.sh"
+if [[ -x "$PRE_HOOK" ]]; then
+    echo "Running pre-switch hook..."
+    "$PRE_HOOK" || {
+        echo "Warning: Pre-switch hook failed" >&2
+    }
+fi
+
+# Generate context-specific configuration (optional)
+# Note: You can implement custom config generation by creating:
+# - ansai-rules-generate script for IDE rules
+# - ansai-env-generate for environment variables
+# - Any other context-specific setup
+if command -v ansai-rules-generate >/dev/null 2>&1; then
+    echo "Generating configuration for context: $CONTEXT"
+    ansai-rules-generate "$CONTEXT" || {
+        echo "Warning: Failed to generate configuration" >&2
+    }
+else
+    # No config generator found - that's OK!
+    # Context switching works without it
+    :
+fi
+
+# Run post-switch hook if it exists
+POST_HOOK="$ANSAI_CONFIG_DIR/hooks/post-switch-$CONTEXT.sh"
+if [[ -x "$POST_HOOK" ]]; then
+    echo "Running post-switch hook..."
+    "$POST_HOOK" || {
+        echo "Warning: Post-switch hook failed" >&2
+    }
+fi
+
+# Success message
+echo "✅ Context switched to: $CONTEXT"
+
+# Show context banner
+case "$CONTEXT" in
+    work)
+        echo "💼 Work context active"
+        echo "   Focus: Professional projects with strict security"
+        ;;
+    personal)
+        echo "🏠 Personal projects context active"
+        echo "   Focus: Learning, creativity, personal productivity"
+        ;;
+    finance)
+        echo "💰 Personal finance context active"
+        echo "   Focus: Budgeting, investments, bill tracking, financial optimization"
+        echo "   Privacy: All data stays local"
+        ;;
+    home)
+        echo "🏠 Home automation context active"
+        echo "   Focus: Smart home devices, IoT management, energy optimization"
+        ;;
+    content)
+        echo "🎬 Content creation context active"
+        echo "   Focus: Video analysis, blog writing, content development"
+        ;;
+    learning)
+        echo "🎓 Learning context active"
+        echo "   Focus: Personal development, courses, skills, knowledge acquisition"
+        ;;
+    health)
+        echo "🏥 Health and wellness context active"
+        echo "   Focus: Health tracking, wellness research"
+        echo "   Privacy: Health data stays local"
+        ;;
+    family)
+        echo "👨‍👩‍👧‍👦 Family management context active"
+        echo "   Focus: Scheduling, communication, relationships, activities coordination"
+        ;;
+    maintenance)
+        echo "🔧 Maintenance context active"
+        echo "   Focus: Home repairs, vehicle maintenance, seasonal tasks, preventive care"
+        ;;
+    entertainment)
+        echo "🎮 Entertainment context active"
+        echo "   Focus: Media management, hobby projects, gaming, leisure activities"
+        ;;
+    general)
+        echo "⚙️  General development context active"
+        echo "   Focus: Standard development work"
+        ;;
+    *)
+        echo "📋 Context active: $CONTEXT"
+        ;;
+esac
+
+exit 0
+
