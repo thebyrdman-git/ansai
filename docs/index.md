@@ -198,12 +198,43 @@ ansible-playbook playbooks/deploy-complete-monitoring.yml
 
 <div class="community-cta" markdown>
 
-### We Want to See What YOU Build!
+**We Want to See What YOU Build!**
 
-- 🎨 **[Show & Tell](https://github.com/thebyrdman-git/ansai/discussions/categories/show-and-tell)**: Share your creations
-- 💡 **[Ideas](https://github.com/thebyrdman-git/ansai/discussions/categories/ideas)**: Request building blocks  
-- 🤔 **[Q&A](https://github.com/thebyrdman-git/ansai/discussions/categories/q-a)**: Get help building
-- ⭐ **[GitHub](https://github.com/thebyrdman-git/ansai)**: Star and follow
+<div class="grid cards" markdown>
+
+-   :material-palette:{ .lg .middle } __Show & Tell__
+
+    ---
+
+    Share your creations with the community. Inspire others with what you've built!
+
+    [:octicons-arrow-right-24: Share Your Build](https://github.com/thebyrdman-git/ansai/discussions/categories/show-and-tell)
+
+-   :material-lightbulb-on:{ .lg .middle } __Ideas__
+
+    ---
+
+    Request new building blocks or suggest improvements to existing ones.
+
+    [:octicons-arrow-right-24: Submit Ideas](https://github.com/thebyrdman-git/ansai/discussions/categories/ideas)
+
+-   :material-forum:{ .lg .middle } __Q&A__
+
+    ---
+
+    Get help building, troubleshoot issues, and learn from other builders.
+
+    [:octicons-arrow-right-24: Ask Questions](https://github.com/thebyrdman-git/ansai/discussions/categories/q-a)
+
+-   :material-github:{ .lg .middle } __Star on GitHub__
+
+    ---
+
+    Star the repo to show support and stay updated with new releases.
+
+    [:octicons-arrow-right-24: GitHub Repository](https://github.com/thebyrdman-git/ansai)
+
+</div>
 
 </div>
 
