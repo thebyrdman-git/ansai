@@ -1,41 +1,43 @@
-# Build Your Automation. Your Way.
+# AI-Powered Automation. Finally.
 
 <div class="hero-section" markdown>
 
-## Infrastructure Building Blocks for Creative DevOps
+## Stop Scripting. Start Thinking.
 
-**Think Lego.** **Think Minecraft.** **Think Infinite Possibilities.**
+**ANSAI = Ansible + AI**
 
-ANSAI gives you automation building blocks. You decide what to create.
+Your infrastructure makes intelligent decisions. Not just automated—**intelligent.**
 
-Not a product. **A platform.**
+Root cause analysis. Predictive failures. Context-aware actions. Cost optimization.
+
+**Without AI, it's just Ansible. With ANSAI, it thinks.**
 
 [Get Started →](#quick-start){ .md-button .md-button--primary .md-button--large }
-[Explore Blocks →](#available-blocks){ .md-button .md-button--large }
+[See AI in Action →](#ai-capabilities){ .md-button .md-button--large }
 
 </div>
 
 ---
 
-## 🎯 The ANSAI Difference
+## 🎯 Why AI-Powered Automation?
 
 <div class="grid cards" markdown>
 
--   ### 🧱 **Building Blocks, Not Solutions**
+-   ### 🧠 **Intelligent, Not Just Automated**
     
-    We don't tell you what to build. We give you modular components - healing, monitoring, orchestration, integrations. **You combine them your way.**
+    Traditional automation follows scripts. ANSAI uses AI to analyze, predict, and decide. **Your infrastructure actually thinks.**
 
--   ### 🎨 **Infinite Creativity**
+-   ### 🔍 **Root Cause Analysis**
     
-    No prescribed paths. No "right way." Build ChatOps, deployment pipelines, compliance-as-code, or something we never imagined. **Your infrastructure. Your rules.**
+    Not just "service failed." ANSAI's AI analyzes logs, correlates events, identifies patterns. **Tells you WHY it failed.**
 
--   ### 🤝 **Community Creations**
+-   ### 📊 **Predictive, Not Reactive**
     
-    Share what you build. Learn from others. The best patterns become official examples. **We all get better together.**
+    AI learns your patterns. Predicts failures before they happen. Optimizes costs automatically. **Proactive, not just responsive.**
 
--   ### 🔧 **Ansible-Native**
+-   ### 💬 **Natural Language Operations**
     
-    Use the tools you know. No proprietary languages. No vendor lock-in. **If you know Ansible, you're 80% there.**
+    "Why is CPU high?" "Optimize my database." "What changed last night?" **Talk to your infrastructure.**
 
 </div>
 
@@ -59,33 +61,39 @@ Not a product. **A platform.**
 
 ---
 
-## 🧱 Core Building Blocks (Phase 1)
+## 🧱 AI-Powered Building Blocks
 
 <div class="grid cards" markdown>
 
--   ### 🛡️ **Service Healing Framework**
+-   ### 🛡️ **AI-Powered Service Healing**
     
-    Intelligent service monitoring and auto-remediation. Detects failures, diagnoses root causes (ports, config, database, environment), applies fixes, sends detailed reports.
+    Not just restart-on-failure. AI analyzes logs, identifies root causes, correlates events. **Learns what "normal" looks like.**
     
-    **Base capabilities:** systemd integration, intelligent diagnostics, email reporting, extensible healing strategies
+    **AI capabilities:** Root cause analysis, pattern recognition, predictive failure detection, intelligent remediation
 
--   ### 🎯 **Orchestration Engine**
+-   ### 🎯 **AI Orchestration Engine**
     
-    Event-driven workflow automation with dependency resolution, rollback patterns, and systemd hooks.
+    AI makes routing decisions based on cost, performance, and load. Optimizes workflows automatically. **Learns from every execution.**
     
-    **Base capabilities:** Multi-step workflows, conditional logic, state management, failure handling
+    **AI capabilities:** Cost-aware routing, intelligent fallback, load prediction, workflow optimization
 
--   ### 💓 **Monitoring Integration**
+-   ### 📊 **AI Log Analysis**
     
-    Flexible monitoring patterns with external service integration (Healthchecks.io included as example).
+    AI reads your logs, finds anomalies, correlates events across services. **Tells you what matters.**
     
-    **Base capabilities:** Health check patterns, alerting framework, dead-man's switch support, custom integrations
+    **AI capabilities:** Anomaly detection, event correlation, trend analysis, alert de-duplication
 
--   ### 🔧 **Ansible-Native Patterns**
+-   ### 🤖 **Multi-Model LLM Access**
     
-    Standard Ansible roles, playbooks, and patterns. No proprietary tools - just Ansible best practices.
+    Route to OpenAI, Claude, Groq, or local models. AI picks the best model for the task. **Automatic cost optimization.**
     
-    **Base capabilities:** Reusable roles, composable playbooks, inventory patterns, vault integration
+    **AI capabilities:** LiteLLM proxy, intelligent routing, cost tracking, automatic fallback
+
+-   ### 💬 **Natural Language Interface**
+    
+    Talk to your infrastructure. Ask questions. Give commands. **AI understands context and intent.**
+    
+    **AI capabilities:** Fabric patterns, text processing, command understanding, conversational ops
 
 </div>
 
@@ -123,6 +131,20 @@ Not a product. **A platform.**
     
     **Demonstrates:** Orchestration engine + service coordination + state management
 
+-   ### 🤖 **LiteLLM Multi-Model Proxy**
+    
+    *Example implementation by creator*  
+    Route requests across OpenAI, Claude, local models with automatic fallback and cost tracking.
+    
+    **Demonstrates:** AI integration + API routing + cost optimization + fault tolerance
+
+-   ### 📝 **Fabric AI Text Processing**
+    
+    *Example implementation by creator*  
+    AI-powered text analysis, summarization, and transformation using proven patterns.
+    
+    **Demonstrates:** AI integration + text processing + pattern library + automation
+
 </div>
 
 **[See Documentation →](self-healing/index.md)** | **[View Example Code →](https://github.com/thebyrdman-git/ansai/tree/main/orchestrators/ansible/roles)**
@@ -131,25 +153,34 @@ Not a product. **A platform.**
 
 ## 🚀 Quick Start
 
-**1. Clone the blocks:**
+**1. Install AI Engine (Required):**
+```bash
+# Install LiteLLM for multi-model LLM access
+pip install 'litellm[proxy]'
+
+# Or install Fabric for AI text processing
+pipx install fabric-ai
+```
+
+**2. Clone ANSAI:**
 ```bash
 git clone https://github.com/thebyrdman-git/ansai.git
 cd ansai
 ```
 
-**2. Pick your blocks:**
+**3. Set up your LLM keys:**
 ```bash
-# Review available building blocks
-ls orchestrators/ansible/roles/
+export OPENAI_API_KEY="your-key"  # Or ANTHROPIC_API_KEY, GROQ_API_KEY
+# For local models: install Ollama (no API key needed)
 ```
 
-**3. Deploy your creation:**
+**4. Deploy AI-powered automation:**
 ```bash
 cd orchestrators/ansible
-ansible-playbook playbooks/deploy-complete-monitoring.yml
+ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
 ```
 
-**That's it.** Your automation is running. Now customize, extend, and **build something amazing.**
+**That's it.** Your AI-powered automation is thinking for you.
 
 ---
 
@@ -184,11 +215,20 @@ ansible-playbook playbooks/deploy-complete-monitoring.yml
 - Database maintenance workflows
 - Security update automation
 
-### Phase 3+: Your Ideas
+### Phase 3: AI & Intelligence Blocks
+**Making Automation Smarter:**
+- LiteLLM proxy for multi-model LLM access
+- Fabric patterns for AI text processing
+- Natural language command processing
+- AI-powered log analysis and anomaly detection
+- Cost-aware LLM routing and caching
+- Predictive maintenance with ML
+
+### Phase 4+: Your Ideas
 - Workflow orchestration engine
 - Infrastructure-as-code pattern library
 - Integration hub (cloud providers, monitoring tools)
-- Intelligence layers (ML-powered optimization)
+- Advanced intelligence patterns
 
 **[See Full Roadmap →](SCALING_STRATEGY.md)** | **[Vote on Priorities →](COMMUNITY_SELF_HEALING_PRIORITIES.md)**
 
