@@ -393,3 +393,10 @@
     margin-right: 1rem;
 }
 
+/* Community cards hover effects */
+.md-typeset div[style*="border: 2px solid #e0e0e0"]:hover {
+    border-color: #1976d2 !important;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(25, 118, 210, 0.15);
+}
+

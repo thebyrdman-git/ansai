@@ -196,41 +196,39 @@ ansible-playbook playbooks/deploy-complete-monitoring.yml
 
 ## 🤝 Join the Builder Community
 
-**We Want to See What YOU Build!**
+<div style="text-align: center; margin-bottom: 2rem;">
+<strong style="font-size: 1.3rem;">We Want to See What YOU Build!</strong>
+</div>
 
-<div class="grid cards" markdown>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
 
--   :material-palette:{ .lg .middle } **Show & Tell**
+<div style="border: 2px solid #e0e0e0; border-radius: 12px; padding: 1.5rem; background: white; transition: all 0.3s ease;">
+<div style="font-size: 2.5rem; margin-bottom: 1rem;">🎨</div>
+<h3 style="margin-top: 0; color: #1976d2;">Show & Tell</h3>
+<p>Share your creations with the community. Inspire others with what you've built!</p>
+<p><a href="https://github.com/thebyrdman-git/ansai/discussions/categories/show-and-tell" class="md-button">Share Your Build →</a></p>
+</div>
 
-    ---
+<div style="border: 2px solid #e0e0e0; border-radius: 12px; padding: 1.5rem; background: white; transition: all 0.3s ease;">
+<div style="font-size: 2.5rem; margin-bottom: 1rem;">💡</div>
+<h3 style="margin-top: 0; color: #1976d2;">Ideas</h3>
+<p>Request new building blocks or suggest improvements to existing ones.</p>
+<p><a href="https://github.com/thebyrdman-git/ansai/discussions/categories/ideas" class="md-button">Submit Ideas →</a></p>
+</div>
 
-    Share your creations with the community. Inspire others with what you've built!
+<div style="border: 2px solid #e0e0e0; border-radius: 12px; padding: 1.5rem; background: white; transition: all 0.3s ease;">
+<div style="font-size: 2.5rem; margin-bottom: 1rem;">💬</div>
+<h3 style="margin-top: 0; color: #1976d2;">Q&A</h3>
+<p>Get help building, troubleshoot issues, and learn from other builders.</p>
+<p><a href="https://github.com/thebyrdman-git/ansai/discussions/categories/q-a" class="md-button">Ask Questions →</a></p>
+</div>
 
-    [Share Your Build :octicons-arrow-right-24:](https://github.com/thebyrdman-git/ansai/discussions/categories/show-and-tell)
-
--   :material-lightbulb-on:{ .lg .middle } **Ideas**
-
-    ---
-
-    Request new building blocks or suggest improvements to existing ones.
-
-    [Submit Ideas :octicons-arrow-right-24:](https://github.com/thebyrdman-git/ansai/discussions/categories/ideas)
-
--   :material-forum:{ .lg .middle } **Q&A**
-
-    ---
-
-    Get help building, troubleshoot issues, and learn from other builders.
-
-    [Ask Questions :octicons-arrow-right-24:](https://github.com/thebyrdman-git/ansai/discussions/categories/q-a)
-
--   :material-github:{ .lg .middle } **Star on GitHub**
-
-    ---
-
-    Star the repo to show support and stay updated with new releases.
-
-    [GitHub Repository :octicons-arrow-right-24:](https://github.com/thebyrdman-git/ansai)
+<div style="border: 2px solid #e0e0e0; border-radius: 12px; padding: 1.5rem; background: white; transition: all 0.3s ease;">
+<div style="font-size: 2.5rem; margin-bottom: 1rem;">⭐</div>
+<h3 style="margin-top: 0; color: #1976d2;">Star on GitHub</h3>
+<p>Star the repo to show support and stay updated with new releases.</p>
+<p><a href="https://github.com/thebyrdman-git/ansai" class="md-button">GitHub Repository →</a></p>
+</div>
 
 </div>
 
