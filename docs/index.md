@@ -216,12 +216,12 @@ ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
 
 - **[Auto-scale based on error rates →](INSPIRATION.md#infrastructure-automation)**
 - **[ChatOps for infrastructure management →](INSPIRATION.md#infrastructure-automation)**
-- **[Compliance-as-code with auto-remediation →](INSPIRATION.md#security--compliance)**
+- **[Compliance-as-code with auto-remediation →](INSPIRATION.md#security-and-compliance)**
 - **[Multi-cloud orchestration with fallback →](INSPIRATION.md#infrastructure-automation)**
 - **[Cost optimization with intelligent scheduling →](INSPIRATION.md#infrastructure-automation)**
-- **[Automated disaster recovery testing →](INSPIRATION.md#security--compliance)**
-- **[Self-optimizing database tuning →](INSPIRATION.md#brain-advanced-ai-ops)**
-- **[Predictive maintenance with ML →](INSPIRATION.md#brain-advanced-ai-ops)**
+- **[Automated disaster recovery testing →](INSPIRATION.md#security-and-compliance)**
+- **[Self-optimizing database tuning →](INSPIRATION.md#advanced-ai-ops)**
+- **[Predictive maintenance with ML →](INSPIRATION.md#advanced-ai-ops)**
 
 </div>
 

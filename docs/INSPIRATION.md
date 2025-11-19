@@ -4,7 +4,7 @@ Ready to build? Here are 8 interactive tutorials to get you started with ANSAI.
 
 ---
 
-## 🚀 Infrastructure Automation
+## Infrastructure Automation
 
 ??? example "Auto-scale based on error rates"
     **Goal:** Automatically scale up resources when error rates spike, then scale down when stable.
@@ -114,7 +114,7 @@ Ready to build? Here are 8 interactive tutorials to get you started with ANSAI.
 
 ---
 
-## 🛡️ Security & Compliance
+## Security and Compliance
 
 ??? example "Compliance-as-code with auto-remediation"
     **Goal:** Automatically fix security misconfigurations (e.g., open SSH ports, root login).
@@ -168,7 +168,7 @@ Ready to build? Here are 8 interactive tutorials to get you started with ANSAI.
 
 ---
 
-## 🧠 Advanced AI Ops
+## Advanced AI Ops
 
 ??? example "Self-optimizing database tuning"
     **Goal:** Adjust Postgres/MySQL config based on actual load patterns.
