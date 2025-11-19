@@ -8,7 +8,7 @@
 
 Traditional automation: *"Service restarted."*
 
-**ANSAI:** *"Service failed due to database connection pool exhaustion (45/50 connections hung). Restarted service + closed stale connections. Fix: Add `pool_timeout=30` to database.py:47 to prevent future crashes."*
+**ANSAI:** *"Service failed due to database connection pool exhaustion (45/50 connections hung). Restarted service + closed stale connections. Fix: Add **pool_timeout=30** to database.py:47 to prevent future crashes."*
 
 **That's the difference.** Not just automated—**intelligent.**
 
@@ -163,9 +163,16 @@ sudo systemctl stop demo-service   # Break it
 🔍 [ANSAI] Failure detected in 1.2 seconds
 🤖 [ANSAI] AI analysis in progress...
 
-🤖 AI ROOT CAUSE: Database connection pool exhausted...
-   WHY: No timeout configured, connections hung...
-   FIX: Add pool_timeout=30 to database.py...
+🤖 AI ROOT CAUSE: Database connection pool exhausted
+   
+   WHY IT FAILED:
+   • No timeout configured, connections hung indefinitely
+   • All 50 connections consumed and not released
+   
+   RECOMMENDED FIX:
+   Add to your database config:
+     pool_timeout = 30
+     max_overflow = 10
 
 ⚡ [ANSAI] Healing: restart + cleanup
 ✅ [ANSAI] Service restored in 6 seconds
@@ -263,7 +270,7 @@ when utilization exceeds 80%. Add alerting for connection wait times
     4. Executes healing strategy
     5. Sends detailed report with prevention tips
     
-    **Example:** *"DB connection pool exhausted due to missing timeout. Restarted + cleared connections. Add pool_timeout=30."*
+    **Example:** *"DB connection pool exhausted due to missing timeout. Restarted + cleared connections. Add **pool_timeout=30** to config."*
 
 -   ### ✅ **Proactive Monitoring**
     
