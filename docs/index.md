@@ -846,9 +846,13 @@ ansible-playbook playbooks/deploy-self-healing.yml -e @/tmp/services.yml
 
 **Not sure where to start? Check out our interactive tutorials:**
 
+!!! tip "🚀 NEW: Executable Tutorials"
+    Run tutorials directly: `curl -sSL https://ansai.dev/tutorials/01-auto-scale.sh | bash`  
+    Or [browse all tutorials →](examples/tutorials/)
+
 <div class="grid" markdown>
 
-- **[Auto-scale based on error rates →](INSPIRATION.md#infrastructure-automation)**
+- **[Auto-scale based on error rates →](examples/tutorials/01-auto-scale-on-errors.sh)** 🎓
 - **[ChatOps for infrastructure management →](INSPIRATION.md#infrastructure-automation)**
 - **[Compliance-as-code with auto-remediation →](INSPIRATION.md#security-and-compliance)**
 - **[Multi-cloud orchestration with fallback →](INSPIRATION.md#infrastructure-automation)**
@@ -859,7 +863,7 @@ ansible-playbook playbooks/deploy-self-healing.yml -e @/tmp/services.yml
 
 </div>
 
-**[Request a Building Block →](https://github.com/thebyrdman-git/ansai/issues)** | **[See Detailed Tutorials →](INSPIRATION.md)**
+**[Try Interactive Tutorials →](examples/tutorials/)** | **[See All Ideas →](INSPIRATION.md)** | **[Request Features →](https://github.com/thebyrdman-git/ansai/issues)**
 
 ---
 
