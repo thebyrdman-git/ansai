@@ -12,7 +12,7 @@
         <meta name="author" content="ANSAI Builder Community">
       
       
-        <link rel="canonical" href="https://ansai.dev/TALK_DEMO_SCRIPT/">
+        <link rel="canonical" href="https://ansai.dev/VIDEO_TUTORIAL_SCRIPT/">
       
       
       
@@ -22,7 +22,7 @@
     
     
       
-        <title>ANSAI Talk - Demo Script & Checklist - ANSAI - Build Your Automation</title>
+        <title>ANSAI Video Tutorial Scripts - ANSAI - Build Your Automation</title>
       
     
     
@@ -88,7 +88,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ansai-talk-demo-script-checklist" class="md-skip">
+        <a href="#ansai-video-tutorial-scripts" class="md-skip">
           Skip to content
         </a>
       
@@ -124,7 +124,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ANSAI Talk - Demo Script &amp; Checklist
+              ANSAI Video Tutorial Scripts
             
           </span>
         </div>
@@ -988,245 +988,442 @@
   
 
 
-<h1 id="ansai-talk-demo-script-checklist">ANSAI Talk - Demo Script &amp; Checklist<a class="headerlink" href="#ansai-talk-demo-script-checklist" title="Link to this section">&para;</a></h1>
-<h2 id="pre-talk-setup-do-this-before-friday">Pre-Talk Setup (Do This Before Friday)<a class="headerlink" href="#pre-talk-setup-do-this-before-friday" title="Link to this section">&para;</a></h2>
-<h3 id="1-verify-ansai-is-running">1. Verify ANSAI is Running<a class="headerlink" href="#1-verify-ansai-is-running" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># SSH to miraclemax</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Check self-healing status</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>sudo<span class="w"> </span>/opt/self-healing/bin/miraclemax-status.sh
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Verify email alerts are working</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>sudo<span class="w"> </span>journalctl<span class="w"> </span>-u<span class="w"> </span>universal-self-heal@*<span class="w"> </span>-n<span class="w"> </span><span class="m">50</span>
+<h1 id="ansai-video-tutorial-scripts">ANSAI Video Tutorial Scripts<a class="headerlink" href="#ansai-video-tutorial-scripts" title="Link to this section">&para;</a></h1>
+<p><strong>Ready-to-record scripts for demos and tutorials.</strong></p>
+<p>Perfect for:
+- Your Friday talk
+- YouTube tutorials
+- Launch marketing
+- Community contributions</p>
+<hr />
+<h2 id="video-1-ansai-quick-start-5-minutes">🎬 Video 1: ANSAI Quick Start (5 minutes)<a class="headerlink" href="#video-1-ansai-quick-start-5-minutes" title="Link to this section">&para;</a></h2>
+<p><strong>Goal:</strong> Show how easy it is to get started with ANSAI</p>
+<h3 id="script">Script<a class="headerlink" href="#script" title="Link to this section">&para;</a></h3>
+<p><strong>[0:00 - 0:30] Introduction</strong></p>
+<blockquote>
+<p>"Hi! I'm going to show you ANSAI - AI-powered automation infrastructure. </p>
+<p>ANSAI is Ansible plus AI. It transforms traditional automation into intelligent automation.</p>
+<p>Without AI, it's just scripts. With ANSAI, your infrastructure actually thinks.</p>
+<p>Let me show you how easy it is to get started."</p>
+</blockquote>
+<p><strong>[0:30 - 1:00] Installation</strong></p>
+<blockquote>
+<p>"First, installation is a single command."</p>
+</blockquote>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>-sSL<span class="w"> </span>https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
 </span></code></pre></div>
-<h3 id="2-prepare-demo-environment">2. Prepare Demo Environment<a class="headerlink" href="#2-prepare-demo-environment" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Ensure you have a test service ready to fail</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># books.jbyrd.org is perfect for this</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Test email notifications work</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Test email from ANSAI demo prep&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>mail<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;ANSAI Demo Test&quot;</span><span class="w"> </span>jimmykbyrd@gmail.com
+<blockquote>
+<p>"The installer checks prerequisites, sets up your PATH, and offers to install AI backends like LiteLLM or Fabric.</p>
+<p>I'll choose LiteLLM for multi-model support."</p>
+</blockquote>
+<p><em>[Show installer output, select option 1 for LiteLLM]</em></p>
+<p><strong>[1:00 - 2:00] AI Backend Setup</strong></p>
+<blockquote>
+<p>"Now I need to set up the AI backend. I'll use OpenAI, but ANSAI also supports Claude, Groq, or local models like Ollama."</p>
+</blockquote>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;your-key&quot;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>litellm<span class="w"> </span>--config<span class="w"> </span>~/.config/ansai/litellm_config.yaml<span class="w"> </span>--port<span class="w"> </span><span class="m">4000</span><span class="w"> </span><span class="p">&amp;</span>
 </span></code></pre></div>
-<h3 id="3-have-these-urls-ready">3. Have These URLs Ready<a class="headerlink" href="#3-have-these-urls-ready" title="Link to this section">&para;</a></h3>
+<blockquote>
+<p>"LiteLLM acts as a proxy. It can route to the cheapest model, implement fallbacks, and track costs. Pretty cool."</p>
+</blockquote>
+<p><em>[Show health check]</em></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>http://localhost:4000/health
+</span></code></pre></div>
+<p><strong>[2:00 - 3:30] First AI Analysis</strong></p>
+<blockquote>
+<p>"Let's test it with log analysis. I'll create a simple error log."</p>
+</blockquote>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;ERROR: Connection refused on port 5432</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="s2">ERROR: Database connection timeout</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="s2">WARNING: High memory usage</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="s2">ERROR: Cannot connect to database&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>test.log
+</span></code></pre></div>
+<blockquote>
+<p>"Now let's see what the AI thinks."</p>
+</blockquote>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ansai-log-analyzer<span class="w"> </span>test.log
+</span></code></pre></div>
+<p><em>[Show AI analysis output]</em></p>
+<blockquote>
+<p>"Look at that! The AI identified:
+- Root cause: Database connection issues
+- Pattern: Multiple connection errors
+- Recommendation: Check if PostgreSQL is running on port 5432</p>
+<p>It's not just grepping for 'ERROR'. It's actually analyzing and making connections."</p>
+</blockquote>
+<p><strong>[3:30 - 4:30] Deploy to Server</strong></p>
+<blockquote>
+<p>"Now let's deploy AI-powered monitoring to a real server. First, I configure my inventory."</p>
+</blockquote>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>inventory/hosts.yml<span class="w"> </span><span class="s">&lt;&lt; &#39;EOF&#39;</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="s">all:</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="s">  children:</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="s">    servers:</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="s">      hosts:</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="s">        my-server:</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="s">          ansible_host: 192.168.1.100</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="s">          ansible_user: jbyrd</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="s">EOF</span>
+</span></code></pre></div>
+<blockquote>
+<p>"Now I deploy with one command."</p>
+</blockquote>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ansible-playbook<span class="w"> </span>playbooks/deploy-ai-powered-monitoring.yml
+</span></code></pre></div>
+<p><em>[Show playbook running, highlight key steps]</em></p>
+<blockquote>
+<p>"This deploys:
+- Universal self-healing for services
+- AI-powered root cause analysis
+- Email alerts with diagnostics
+- Automatic remediation"</p>
+</blockquote>
+<p><strong>[4:30 - 5:00] Wrap Up</strong></p>
+<blockquote>
+<p>"That's it! In 5 minutes we:
+- Installed ANSAI
+- Set up AI
+- Analyzed logs intelligently
+- Deployed to a real server</p>
+<p>Your infrastructure is now thinking, not just executing.</p>
+<p>Check out ansai.dev for more examples. Thanks for watching!"</p>
+</blockquote>
+<hr />
+<h2 id="video-2-ai-root-cause-analysis-demo-8-minutes">🎬 Video 2: AI Root Cause Analysis Demo (8 minutes)<a class="headerlink" href="#video-2-ai-root-cause-analysis-demo-8-minutes" title="Link to this section">&para;</a></h2>
+<p><strong>Goal:</strong> Show AI identifying root causes in a real incident</p>
+<h3 id="script_1">Script<a class="headerlink" href="#script_1" title="Link to this section">&para;</a></h3>
+<p><strong>[0:00 - 0:45] Setup the Scenario</strong></p>
+<blockquote>
+<p>"I'm going to simulate a production incident and show you how ANSAI's AI finds the root cause.</p>
+<p>The scenario: Our web API is slow. Users are complaining. Let's investigate."</p>
+</blockquote>
+<p><em>[Show a web app with slow response times]</em></p>
+<p><strong>[0:45 - 2:00] Collect Logs</strong></p>
+<blockquote>
+<p>"First, I grab the logs from our API service."</p>
+</blockquote>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>journalctl<span class="w"> </span>-u<span class="w"> </span>web-api.service<span class="w"> </span>--since<span class="w"> </span><span class="s2">&quot;30 minutes ago&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>api-logs.txt
+</span></code></pre></div>
+<blockquote>
+<p>"Let's take a quick look."</p>
+</blockquote>
+<p><em>[cat the logs, scroll through - show it's overwhelming]</em></p>
+<blockquote>
+<p>"Over 5,000 lines. Lots of noise. This would take me hours to analyze manually.</p>
+<p>Let's see what the AI finds."</p>
+</blockquote>
+<p><strong>[2:00 - 4:00] AI Analysis</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ansai-log-analyzer<span class="w"> </span>--service<span class="w"> </span>web-api<span class="w"> </span>--since<span class="w"> </span><span class="s2">&quot;30 minutes ago&quot;</span><span class="w"> </span>--format<span class="w"> </span>text
+</span></code></pre></div>
+<p><em>[Show AI analyzing]</em></p>
+<blockquote>
+<p>"The AI is reading all the logs, identifying patterns, and correlating events. Let's see what it found."</p>
+</blockquote>
+<p><em>[Show AI output]</em></p>
+<blockquote>
+<p>"Wow. Look at this:</p>
+<p><strong>Root Cause:</strong> Database connection pool exhausted</p>
+<p><strong>Contributing Factors:</strong>
+- Traffic spike: 300% above baseline
+- Connection pool: 100/100 (maxed out)
+- No connection timeout configured</p>
+<p><strong>Trigger:</strong> Marketing campaign launched at 2:30 PM</p>
+<p>The AI not only found the immediate cause - connection pool exhaustion - but it traced it back to the marketing campaign and identified configuration gaps.</p>
+<p>This is what I mean by intelligent automation. It's not just showing errors. It's explaining WHY."</p>
+</blockquote>
+<p><strong>[4:00 - 5:30] AI Recommendations</strong></p>
+<blockquote>
+<p>"But it doesn't stop there. Look at the recommendations:</p>
+<p><strong>Immediate:</strong>
+1. Increase connection pool from 100 to 200
+2. Add connection timeout (30 seconds)
+3. Implement rate limiting</p>
+<p><strong>Long-term:</strong>
+1. Add connection pool monitoring
+2. Auto-scaling based on utilization
+3. Coordinate with marketing for high-traffic events</p>
+<p>This is actionable. I can fix this right now."</p>
+</blockquote>
+<p><strong>[5:30 - 6:30] Apply Fix</strong></p>
+<blockquote>
+<p>"Let me apply the immediate fix."</p>
+</blockquote>
+<p><em>[Edit database config, increase pool size]</em></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># database.yml</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">connection_pool</span><span class="p">:</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span><span class="w">  </span><span class="c1"># Increased from 100</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">  </span><span class="c1"># Added timeout</span>
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>ansible-playbook<span class="w"> </span>playbooks/update-db-config.yml
+</span></code></pre></div>
+<p><em>[Show service restart, check metrics]</em></p>
+<p><strong>[6:30 - 7:30] Generate Incident Report</strong></p>
+<blockquote>
+<p>"Now let's document this incident. I'll use ANSAI's AI incident reporter."</p>
+</blockquote>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ansai-incident-report<span class="w"> </span>--interactive
+</span></code></pre></div>
+<p><em>[Fill in the prompts]</em></p>
+<blockquote>
+<p>"Service: web-api
+Start time: 2:30 PM
+Severity: high
+Impact: API latency increased 7x
+Root cause: Connection pool exhausted
+Template: postmortem"</p>
+</blockquote>
+<p><em>[Show AI generating the report]</em></p>
+<blockquote>
+<p>"And just like that, I have a complete post-mortem with timeline, root cause analysis, action items, and lessons learned.</p>
+<p>This would normally take me an hour to write. AI did it in 30 seconds."</p>
+</blockquote>
+<p><strong>[7:30 - 8:00] Wrap Up</strong></p>
+<blockquote>
+<p>"So that's AI root cause analysis with ANSAI:
+- Found the root cause in seconds (not hours)
+- Explained WHY it happened
+- Provided actionable recommendations
+- Generated a complete post-mortem</p>
+<p>This is what intelligent infrastructure looks like.</p>
+<p>Links in the description. Thanks for watching!"</p>
+</blockquote>
+<hr />
+<h2 id="video-3-safe-deployments-with-ai-6-minutes">🎬 Video 3: Safe Deployments with AI (6 minutes)<a class="headerlink" href="#video-3-safe-deployments-with-ai-6-minutes" title="Link to this section">&para;</a></h2>
+<p><strong>Goal:</strong> Show AI catching deployment issues before production</p>
+<h3 id="script_2">Script<a class="headerlink" href="#script_2" title="Link to this section">&para;</a></h3>
+<p><strong>[0:00 - 0:30] Introduction</strong></p>
+<blockquote>
+<p>"Ever deployed something to production and immediately regretted it?</p>
+<p>Let me show you how ANSAI uses AI to catch issues BEFORE they hit production.</p>
+<p>This is ansai-deploy-safe - your AI safety reviewer."</p>
+</blockquote>
+<p><strong>[0:30 - 1:30] The Deployment</strong></p>
+<blockquote>
+<p>"Here's a Kubernetes deployment I want to push to production."</p>
+</blockquote>
+<p><em>[Show deployment.yaml]</em></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp:latest</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</span></code></pre></div>
+<blockquote>
+<p>"Looks fine, right? Let's see what the AI thinks."</p>
+</blockquote>
+<p><strong>[1:30 - 3:30] AI Safety Analysis</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>ansai-deploy-safe<span class="w"> </span>--type<span class="w"> </span>kubernetes<span class="w"> </span>--env<span class="w"> </span>production<span class="w"> </span>--strict<span class="w"> </span>deployment.yaml
+</span></code></pre></div>
+<p><em>[Show AI analyzing]</em></p>
+<blockquote>
+<p>"The AI is checking:
+- Security vulnerabilities
+- Resource limits
+- Configuration risks
+- Production readiness
+- Best practices</p>
+<p>And here are the results..."</p>
+</blockquote>
+<p><em>[Show AI output]</em></p>
+<blockquote>
+<p>"Whoa. The AI found some serious issues:</p>
+<p><strong>CRITICAL:</strong>
+- No resource limits (can crash the node)
+- Missing readiness probe (traffic to unhealthy pods)
+- Using 'latest' tag (breaks rollbacks)
+- No monitoring configured (blind deployment)</p>
+<p><strong>Overall Assessment: HIGH RISK - NO GO</strong></p>
+<p>If I had deployed this, I would have had problems. The AI just saved me from a production incident."</p>
+</blockquote>
+<p><strong>[3:30 - 5:00] Fix the Issues</strong></p>
+<blockquote>
+<p>"Let me fix these issues based on the AI's recommendations."</p>
+</blockquote>
+<p><em>[Edit deployment.yaml]</em></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">    </span><span class="nt">prometheus.io/scrape</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w">  </span><span class="c1"># AI recommended</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp:v1.2.3</span><span class="w">  </span><span class="c1"># Specific tag</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span><span class="w">  </span><span class="c1"># AI recommended</span>
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;512Mi&quot;</span>
+</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="w">            </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;250m&quot;</span>
+</span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="w">          </span><span class="nt">limits</span><span class="p">:</span>
+</span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1Gi&quot;</span>
+</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="w">            </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;500m&quot;</span>
+</span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="w">        </span><span class="nt">readinessProbe</span><span class="p">:</span><span class="w">  </span><span class="c1"># AI required</span>
+</span><span id="__span-14-24"><a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a><span class="w">          </span><span class="nt">httpGet</span><span class="p">:</span>
+</span><span id="__span-14-25"><a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a><span class="w">            </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/health/ready</span>
+</span><span id="__span-14-26"><a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a><span class="w">            </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</span><span id="__span-14-27"><a id="__codelineno-14-27" name="__codelineno-14-27" href="#__codelineno-14-27"></a><span class="w">          </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</span><span id="__span-14-28"><a id="__codelineno-14-28" name="__codelineno-14-28" href="#__codelineno-14-28"></a><span class="w">          </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</span></code></pre></div>
+<blockquote>
+<p>"Now let's check again."</p>
+</blockquote>
+<p><strong>[5:00 - 5:30] Recheck</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>ansai-deploy-safe<span class="w"> </span>--type<span class="w"> </span>kubernetes<span class="w"> </span>--env<span class="w"> </span>production<span class="w"> </span>--strict<span class="w"> </span>deployment.yaml
+</span></code></pre></div>
+<p><em>[Show new output]</em></p>
+<blockquote>
+<p>"<strong>Overall Assessment: LOW RISK - GO</strong></p>
+<p>All checks passed! This is safe to deploy."</p>
+</blockquote>
+<p><strong>[5:30 - 6:00] Wrap Up</strong></p>
+<blockquote>
+<p>"That's AI-powered deployment safety:
+- Caught 4 critical issues before production
+- Provided specific fixes
+- Validated the corrected deployment</p>
+<p>This is like having an SRE reviewing every deployment. But it's instant, consistent, and never gets tired.</p>
+<p>Check out ansai.dev. Thanks for watching!"</p>
+</blockquote>
+<hr />
+<h2 id="bonus-your-friday-talk-ansai-ansible-ai-15-minutes">🎬 Bonus: Your Friday Talk - "ANSAI: Ansible + AI" (15 minutes)<a class="headerlink" href="#bonus-your-friday-talk-ansai-ansible-ai-15-minutes" title="Link to this section">&para;</a></h2>
+<p><strong>Goal:</strong> Comprehensive demo for technical audience</p>
+<h3 id="structure">Structure<a class="headerlink" href="#structure" title="Link to this section">&para;</a></h3>
+<p><strong>[0-2 min] The Problem</strong>
+- Traditional automation: Static, reactive, dumb
+- You write the rules, it follows blindly
+- When things break, you read logs manually
+- Configuration is guesswork
+- <em>"We've had intelligent humans for thousands of years. Intelligent infrastructure? That's new."</em></p>
+<p><strong>[2-4 min] The Solution: AI Layer</strong>
+- ANSAI = Ansible + AI
+- Same proven patterns (Ansible Galaxy)
+- New intelligence layer (LLMs)
+- Not replacing humans, augmenting automation
+- <em>"If Ansible is the hands, AI is the brain."</em></p>
+<p><strong>[4-7 min] Demo 1: AI Log Analysis</strong>
+- Show real logs from miraclemax
+- Traditional: grep, find, manual correlation
+- ANSAI: AI finds root cause in seconds
+- Explain the "why", not just "what"</p>
+<p><strong>[7-10 min] Demo 2: Galaxy + ANSAI</strong>
+- Show popular Ansible Galaxy role (nginx, postgres)
+- "This works great. But what if it was smart?"
+- Add ANSAI AI enhancement
+- Show AI optimization, predictions, recommendations</p>
+<p><strong>[10-13 min] Demo 3: Production Safety</strong>
+- Show deployment manifest
+- AI safety check catches issues
+- Fix issues
+- "This just prevented a production incident"</p>
+<p><strong>[13-15 min] The Future</strong>
+- Infrastructure that thinks
+- Proactive, not reactive
+- Learning from experience
+- Community-driven patterns + AI intelligence
+- <em>"This is what the next 10 years of ops looks like."</em></p>
+<p><strong>Q&amp;A Tips:</strong>
+- "Isn't this expensive?" → Show Groq/local models
+- "What about hallucinations?" → Validation layers, confidence scores
+- "How is this different from X?" → AI as intelligence layer, not replacement
+- "Can I use my own models?" → Yes! LiteLLM supports any OpenAI-compatible API</p>
+<hr />
+<h2 id="recording-tips">📝 Recording Tips<a class="headerlink" href="#recording-tips" title="Link to this section">&para;</a></h2>
+<h3 id="before-recording">Before Recording<a class="headerlink" href="#before-recording" title="Link to this section">&para;</a></h3>
+<p><strong>Environment Setup:</strong>
+- ✅ Clean terminal (clear history)
+- ✅ Increase font size (24pt minimum)
+- ✅ Hide sensitive info (API keys, IPs)
+- ✅ Test all commands work
+- ✅ Prepare "worst case" backups</p>
+<p><strong>Audio:</strong>
+- ✅ Use external microphone (not laptop mic)
+- ✅ Record in quiet room
+- ✅ Test audio levels
+- ✅ Have water nearby</p>
+<p><strong>Screen:</strong>
+- ✅ 1920x1080 minimum resolution
+- ✅ Hide notifications
+- ✅ Clean desktop
+- ✅ Close unnecessary apps</p>
+<h3 id="during-recording">During Recording<a class="headerlink" href="#during-recording" title="Link to this section">&para;</a></h3>
+<p><strong>Pacing:</strong>
+- Speak clearly and slowly
+- Pause between commands
+- Let AI output fully display
+- Don't rush through errors</p>
+<p><strong>Engagement:</strong>
+- Make eye contact with camera
+- Use hand gestures (if on camera)
+- Emphasize key points
+- Show enthusiasm!</p>
+<p><strong>Demo Flow:</strong>
+- Show the problem first
+- Then show the solution
+- Explain what's happening
+- Highlight impressive results</p>
+<h3 id="after-recording">After Recording<a class="headerlink" href="#after-recording" title="Link to this section">&para;</a></h3>
+<p><strong>Editing:</strong>
+- Cut long waits
+- Add text overlays for commands
+- Zoom in on important output
+- Add chapter markers</p>
+<p><strong>Publishing:</strong>
+- Catchy title with keywords
+- Detailed description
+- Links to ansai.dev
+- Timestamps in description
+- Tags: ANSAI, AI, Ansible, DevOps, SRE</p>
+<hr />
+<h2 id="key-messages-to-emphasize">🎯 Key Messages to Emphasize<a class="headerlink" href="#key-messages-to-emphasize" title="Link to this section">&para;</a></h2>
+<p><strong>1. AI Makes Automation Intelligent</strong></p>
+<blockquote>
+<p>"Traditional automation follows rules. ANSAI understands context."</p>
+</blockquote>
+<p><strong>2. Built on Proven Patterns</strong></p>
+<blockquote>
+<p>"ANSAI doesn't replace Ansible Galaxy. It enhances it with AI."</p>
+</blockquote>
+<p><strong>3. Real Results, Not Hype</strong></p>
+<blockquote>
+<p>"62% cost savings. 71% latency reduction. 95% faster query performance. These are real numbers from real infrastructure."</p>
+</blockquote>
+<p><strong>4. Easy to Get Started</strong></p>
+<blockquote>
+<p>"One-line install. 5-minute quick start. Deploy AI-powered automation today."</p>
+</blockquote>
+<p><strong>5. Community-Driven</strong></p>
+<blockquote>
+<p>"ANSAI is what you build with it. Share your workflows. Learn from others."</p>
+</blockquote>
+<hr />
+<h2 id="resources-to-mention">📚 Resources to Mention<a class="headerlink" href="#resources-to-mention" title="Link to this section">&para;</a></h2>
 <ul>
-<li>GitHub repo: https://github.com/thebyrdman-git/ansai</li>
-<li>Documentation: https://ansai.dev (or direct GitHub docs)</li>
-<li>Live service to demo: https://books.jbyrd.org</li>
-</ul>
-<h3 id="4-prepare-your-environment">4. Prepare Your Environment<a class="headerlink" href="#4-prepare-your-environment" title="Link to this section">&para;</a></h3>
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Have terminal windows pre-sized and arranged</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Browser tabs ready (GitHub, docs, service URL)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Email client open (to show alert)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Clear terminal history for clean demo</li>
+<li><strong>Website:</strong> ansai.dev</li>
+<li><strong>GitHub:</strong> github.com/thebyrdman-git/ansai</li>
+<li><strong>Docs:</strong> ansai.dev/GETTING_STARTED</li>
+<li><strong>Examples:</strong> ansai.dev/examples</li>
+<li><strong>Community:</strong> github.com/thebyrdman-git/ansai/discussions</li>
 </ul>
 <hr />
-<h2 id="demo-flow-15-minutes-total">Demo Flow (15 minutes total)<a class="headerlink" href="#demo-flow-15-minutes-total" title="Link to this section">&para;</a></h2>
-<h3 id="part-1-show-the-problem-2-min">Part 1: Show the Problem (2 min)<a class="headerlink" href="#part-1-show-the-problem-2-min" title="Link to this section">&para;</a></h3>
-<p><strong>Say</strong>: "Let's look at a common scenario. I have a Flask app running in production."</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Show the running service</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>systemctl<span class="w"> </span>status<span class="w"> </span>story-stages.service
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Show it&#39;s working</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>curl<span class="w"> </span>https://books.jbyrd.org
-</span></code></pre></div>
-<p><strong>Say</strong>: "Now let's simulate a failure - like the database getting locked or the service crashing."</p>
-<h3 id="part-2-trigger-the-failure-1-min">Part 2: Trigger the Failure (1 min)<a class="headerlink" href="#part-2-trigger-the-failure-1-min" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Option A: Kill the service</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>story-stages.service
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Option B: Simulate a crash</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">kill</span><span class="w"> </span>--signal<span class="o">=</span>SIGKILL<span class="w"> </span>story-stages.service
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Option C: Lock the database (more dramatic)</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>sqlite3<span class="w"> </span>/home/jbyrd/passgo/data/passgo.db<span class="w"> </span><span class="s2">&quot;.timeout 0&quot;</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="c1"># Then in another terminal:</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>sqlite3<span class="w"> </span>/home/jbyrd/passgo/data/passgo.db<span class="w"> </span><span class="s2">&quot;BEGIN EXCLUSIVE; SELECT sleep(3600);&quot;</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="c1"># Then restart the service to trigger the lock detection</span>
-</span></code></pre></div>
-<p><strong>Say</strong>: "Service is down. In the old world, I'd get paged, SSH in, and fix it manually. With ANSAI..."</p>
-<h3 id="part-3-show-self-healing-in-action-5-min">Part 3: Show Self-Healing in Action (5 min)<a class="headerlink" href="#part-3-show-self-healing-in-action-5-min" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Watch the healing happen in real-time</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>sudo<span class="w"> </span>journalctl<span class="w"> </span>-u<span class="w"> </span>universal-self-heal@story-stages.service<span class="w"> </span>-f
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Show detection</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1"># Show diagnosis (checking ports, config, database, etc.)</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># Show remediation</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># Show service restart</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1"># Show success</span>
-</span></code></pre></div>
-<p><strong>Say</strong>: "Notice how it didn't just restart blindly - it diagnosed the root cause, fixed the database lock, THEN restarted."</p>
-<p><strong>Switch to email</strong>:
-"And here's what I received - a detailed report explaining exactly what happened and how it was fixed."</p>
-<p><strong>Show email with</strong>:
-- Timestamp of failure
-- Root cause diagnosis
-- Healing steps taken
-- Current service status
-- All in plain English</p>
-<h3 id="part-4-show-the-service-is-healthy-1-min">Part 4: Show the Service is Healthy (1 min)<a class="headerlink" href="#part-4-show-the-service-is-healthy-1-min" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Verify service is running</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>systemctl<span class="w"> </span>status<span class="w"> </span>story-stages.service
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Test the endpoint</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>curl<span class="w"> </span>https://books.jbyrd.org
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># Show in browser</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="c1"># Click around to prove it&#39;s working</span>
-</span></code></pre></div>
-<p><strong>Say</strong>: "Total downtime: ~8 seconds. Manual intervention: Zero."</p>
-<h3 id="part-5-show-the-architecture-3-min">Part 5: Show the Architecture (3 min)<a class="headerlink" href="#part-5-show-the-architecture-3-min" title="Link to this section">&para;</a></h3>
-<p><strong>Open the GitHub repo</strong>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>thebyrdman-git/ansai
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>├── orchestrators/ansible/
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>│   ├── roles/
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>│   │   ├── universal_self_heal/    # Core healing logic
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>│   │   ├── js_error_monitoring/    # Frontend monitoring
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>│   │   ├── css_error_monitoring/   # Asset monitoring
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>│   │   └── healthchecks_monitoring/ # External monitoring
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>│   └── playbooks/
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>│       └── deploy-self-healing.yml  # One command deployment
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>└── docs/
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    └── self-healing/                # Complete documentation
-</span></code></pre></div>
-<p><strong>Say</strong>: "Everything is Ansible. No proprietary agents. No vendor lock-in. Deploy with one command."</p>
-<h3 id="part-6-show-how-to-get-started-3-min">Part 6: Show How to Get Started (3 min)<a class="headerlink" href="#part-6-show-how-to-get-started-3-min" title="Link to this section">&para;</a></h3>
-<p><strong>Walk through the quickstart</strong>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># 1. Clone the repo</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/thebyrdman-git/ansai.git
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nb">cd</span><span class="w"> </span>ansai
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># 2. Configure your services</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>nano<span class="w"> </span>orchestrators/ansible/roles/universal_self_heal/defaults/main.yml
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># 3. Deploy</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="nb">cd</span><span class="w"> </span>orchestrators/ansible
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>ansible-playbook<span class="w"> </span>playbooks/deploy-self-healing.yml
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="c1"># Done. Your services are now self-healing.</span>
-</span></code></pre></div>
-<p><strong>Say</strong>: "That's it. No complex setup. No steep learning curve. If you know Ansible, you're already 80% there."</p>
-<hr />
-<h2 id="key-talking-points">Key Talking Points<a class="headerlink" href="#key-talking-points" title="Link to this section">&para;</a></h2>
-<h3 id="why-self-healing">Why Self-Healing?<a class="headerlink" href="#why-self-healing" title="Link to this section">&para;</a></h3>
-<ul>
-<li>Monitoring tells you WHAT broke (Datadog, Prometheus, etc.)</li>
-<li>Self-healing FIXES it automatically</li>
-<li>Reduces MTTR from hours to seconds</li>
-<li>Cuts on-call burden by 60-80%</li>
-</ul>
-<h3 id="how-is-ansai-different">How is ANSAI Different?<a class="headerlink" href="#how-is-ansai-different" title="Link to this section">&para;</a></h3>
-<ul>
-<li><strong>Intelligent diagnosis</strong>: Checks ports, configs, databases, environment</li>
-<li><strong>Not just blind restarts</strong>: Fixes root cause first</li>
-<li><strong>Transparent</strong>: Detailed email reports</li>
-<li><strong>Production-tested</strong>: Running real workloads</li>
-<li><strong>Open source</strong>: MIT licensed, no strings</li>
-</ul>
-<h3 id="technical-highlights">Technical Highlights<a class="headerlink" href="#technical-highlights" title="Link to this section">&para;</a></h3>
-<ul>
-<li>Built with Ansible (infrastructure-as-code)</li>
-<li>Integrates with systemd (OnFailure hooks)</li>
-<li>Modular architecture (add your own healing strategies)</li>
-<li>100% test coverage</li>
-<li>External monitoring via Healthchecks.io</li>
-</ul>
-<h3 id="current-capabilities-v10">Current Capabilities (v1.0)<a class="headerlink" href="#current-capabilities-v10" title="Link to this section">&para;</a></h3>
-<ul>
-<li>✅ Universal service healing (any systemd service)</li>
-<li>✅ JavaScript error monitoring</li>
-<li>✅ CSS error monitoring</li>
-<li>✅ Database health checks</li>
-<li>✅ Port conflict resolution</li>
-<li>✅ Config validation</li>
-<li>✅ Email alerting</li>
-</ul>
-<h3 id="roadmap-v20">Roadmap (v2.0)<a class="headerlink" href="#roadmap-v20" title="Link to this section">&para;</a></h3>
-<ul>
-<li>📋 Disk space management</li>
-<li>📋 Certificate expiration monitoring</li>
-<li>📋 Memory leak detection</li>
-<li>📋 Multi-host support</li>
-<li>📋 Database maintenance</li>
-<li>📋 Network connectivity</li>
-</ul>
-<hr />
-<h2 id="backup-demos-if-primary-fails">Backup Demos (If Primary Fails)<a class="headerlink" href="#backup-demos-if-primary-fails" title="Link to this section">&para;</a></h2>
-<h3 id="demo-1-javascript-error-monitoring">Demo 1: JavaScript Error Monitoring<a class="headerlink" href="#demo-1-javascript-error-monitoring" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Show error detection in browser</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="c1"># Open https://books.jbyrd.org</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># Trigger a JS error in console</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># Show error captured in logs</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/js-runtime-errors/story-stages_errors.log
-</span></code></pre></div>
-<h3 id="demo-2-show-monitoring-dashboard">Demo 2: Show Monitoring Dashboard<a class="headerlink" href="#demo-2-show-monitoring-dashboard" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>sudo<span class="w"> </span>/opt/self-healing/bin/miraclemax-status.sh
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Shows:</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># - All monitored services</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># - Health status</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># - Recent healing activity</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="c1"># - System stats</span>
-</span></code></pre></div>
-<h3 id="demo-3-show-test-suite">Demo 3: Show Test Suite<a class="headerlink" href="#demo-3-show-test-suite" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">cd</span><span class="w"> </span>/home/jbyrd/ansai/orchestrators/ansible/tests
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>./run-all-tests.sh
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Shows automated testing of all healing scenarios</span>
-</span></code></pre></div>
-<hr />
-<h2 id="qa-preparation">Q&amp;A Preparation<a class="headerlink" href="#qa-preparation" title="Link to this section">&para;</a></h2>
-<h3 id="expected-questions">Expected Questions<a class="headerlink" href="#expected-questions" title="Link to this section">&para;</a></h3>
-<p><strong>Q: What if the healing fails?</strong>
-A: ANSAI sends an email alert with diagnostic info. It won't infinite-loop - there's cooldown logic. You still have your existing monitoring.</p>
-<p><strong>Q: Does it work with [insert service]?</strong>
-A: Any systemd service. Flask, Node.js, databases, web servers, custom apps - if systemd manages it, ANSAI can heal it.</p>
-<p><strong>Q: What about Kubernetes?</strong>
-A: Currently focused on systemd-based systems. K8s has built-in self-healing. ANSAI fills the gap for VMs, bare metal, and single-host deployments.</p>
-<p><strong>Q: How much overhead?</strong>
-A: Minimal. Health checks run only on failure. No constant polling. Resource usage is negligible.</p>
-<p><strong>Q: Can I customize healing strategies?</strong>
-A: Absolutely. It's Ansible - just add your own tasks. We provide templates and patterns.</p>
-<p><strong>Q: Does it replace my monitoring?</strong>
-A: No, it complements it. Your monitoring detects issues. ANSAI fixes them. Keep both.</p>
-<p><strong>Q: What about security?</strong>
-A: Runs as systemd services with limited permissions. Email credentials in encrypted Ansible vault. Open source - audit the code.</p>
-<p><strong>Q: How do I contribute?</strong>
-A: GitHub issues and discussions. We're community-driven. Roadmap shaped by user priorities.</p>
-<hr />
-<h2 id="presentation-tips">Presentation Tips<a class="headerlink" href="#presentation-tips" title="Link to this section">&para;</a></h2>
-<h3 id="dos">Do's<a class="headerlink" href="#dos" title="Link to this section">&para;</a></h3>
-<p>✅ Keep the demo simple and focused
-✅ Have a backup plan if demo fails
-✅ Show real code, not slides
-✅ Be honest about limitations
-✅ Encourage questions throughout
-✅ Share GitHub URL multiple times</p>
-<h3 id="donts">Don'ts<a class="headerlink" href="#donts" title="Link to this section">&para;</a></h3>
-<p>❌ Over-promise capabilities
-❌ Bash other tools/approaches
-❌ Go too deep into Ansible internals
-❌ Forget to share the repo URL
-❌ Rush through the demo
-❌ Assume everyone knows Ansible</p>
-<h3 id="opening-hook">Opening Hook<a class="headerlink" href="#opening-hook" title="Link to this section">&para;</a></h3>
-<p>"Show of hands - who's been paged at 2 AM for a service that was down? [pause] Who's fixed the same issue more than once? [pause] That's why I built ANSAI."</p>
-<h3 id="closing">Closing<a class="headerlink" href="#closing" title="Link to this section">&para;</a></h3>
-<p>"The code is on GitHub, MIT licensed. Try it this weekend on a test service. If you have questions, open an issue - we're building this as a community. Thanks!"</p>
-<hr />
-<h2 id="post-talk-follow-up">Post-Talk Follow-Up<a class="headerlink" href="#post-talk-follow-up" title="Link to this section">&para;</a></h2>
-<p>Within 24 hours:
-- [ ] Share slides/demo code via GitHub
-- [ ] Post link to recording (if recorded)
-- [ ] Respond to all questions you couldn't answer live
-- [ ] Gather feedback from attendees
-- [ ] Update docs based on feedback
-- [ ] Add talk to COMMUNITY_TALKS.md in repo</p>
-<hr />
-<p><strong>Good luck on Friday! You've got this! 🚀</strong></p>
-<p>Remember: The demo might fail. That's okay. Talk through what you expected to happen, show the code, and move on. The audience is rooting for you.</p>
+<p><strong>Good luck with your recording!</strong> 🎬<br />
+<strong>These scripts are templates - make them your own!</strong> 🚀</p>
+<p><strong>Part of the ANSAI Framework</strong><br />
+Learn more: https://ansai.dev</p>
 
 
 
@@ -1249,7 +1446,7 @@ A: GitHub issues and discussions. We're community-driven. Roadmap shaped by user
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 18, 2025 21:18:05 UTC"><span class="timeago" datetime="2025-11-18T21:18:05+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 18, 2025 21:18:05 UTC">2025-11-18</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 18, 2025 20:31:13 UTC"><span class="timeago" datetime="2025-11-18T20:31:13+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 18, 2025 20:31:13 UTC">2025-11-18</span>
   </span>
 
     
@@ -1259,7 +1456,7 @@ A: GitHub issues and discussions. We're community-driven. Roadmap shaped by user
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 18, 2025 17:26:54 UTC"><span class="timeago" datetime="2025-11-18T17:26:54+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 18, 2025 17:26:54 UTC">2025-11-18</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 18, 2025 20:31:13 UTC"><span class="timeago" datetime="2025-11-18T20:31:13+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 18, 2025 20:31:13 UTC">2025-11-18</span>
   </span>
 
     
@@ -1314,7 +1511,7 @@ A: GitHub issues and discussions. We're community-driven. Roadmap shaped by user
                 
                 
               
-              Thanks for your feedback! Help us improve by <a href="https://github.com/thebyrdman-git/ansai/issues/new/?title=[Feedback]+ANSAI%20Talk%20-%20Demo%20Script%20%26amp%3B%20Checklist+-+/TALK_DEMO_SCRIPT/" target="_blank" rel="noopener">telling us what you're looking for</a>.
+              Thanks for your feedback! Help us improve by <a href="https://github.com/thebyrdman-git/ansai/issues/new/?title=[Feedback]+ANSAI%20Video%20Tutorial%20Scripts+-+/VIDEO_TUTORIAL_SCRIPT/" target="_blank" rel="noopener">telling us what you're looking for</a>.
             </div>
           
         </div>
