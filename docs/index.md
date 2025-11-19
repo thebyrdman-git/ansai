@@ -57,7 +57,7 @@ Root cause analysis. Predictive failures. Context-aware actions. Cost optimizati
     *"Started with self-healing, now have automated rollbacks, DB migrations, compliance checks. It's our entire infrastructure."*  
     **Blocks Used:** Multiple patterns combined  
 
-**[Share What You Built →](https://github.com/thebyrdman-git/ansai/discussions/categories/show-and-tell)**
+**[Share What You Built →](https://github.com/thebyrdman-git/ansai/issues)**
 
 ---
 
@@ -184,6 +184,7 @@ all:
 EOF
 
 # 3. Deploy AI-powered monitoring
+# Navigate to the playbooks directory (installed by the script)
 cd ~/.ansai/orchestrators/ansible
 ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
 ```
@@ -209,22 +210,22 @@ ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
 
 ## 🎨 Build Inspiration
 
-**Not sure where to start? Try these ideas:**
+**Not sure where to start? Check out our interactive tutorials:**
 
 <div class="grid" markdown>
 
-- Auto-scale based on error rates
-- ChatOps for infrastructure management  
-- Compliance-as-code with auto-remediation
-- Multi-cloud orchestration with fallback
-- Cost optimization with intelligent scheduling
-- Automated disaster recovery testing
-- Self-optimizing database tuning
-- Predictive maintenance with ML
+- **[Auto-scale based on error rates →](INSPIRATION.md#infrastructure-automation)**
+- **[ChatOps for infrastructure management →](INSPIRATION.md#infrastructure-automation)**
+- **[Compliance-as-code with auto-remediation →](INSPIRATION.md#security--compliance)**
+- **[Multi-cloud orchestration with fallback →](INSPIRATION.md#infrastructure-automation)**
+- **[Cost optimization with intelligent scheduling →](INSPIRATION.md#infrastructure-automation)**
+- **[Automated disaster recovery testing →](INSPIRATION.md#security--compliance)**
+- **[Self-optimizing database tuning →](INSPIRATION.md#brain-advanced-ai-ops)**
+- **[Predictive maintenance with ML →](INSPIRATION.md#brain-advanced-ai-ops)**
 
 </div>
 
-**[Request a Building Block →](https://github.com/thebyrdman-git/ansai/discussions)** | **[See More Ideas →](https://github.com/thebyrdman-git/ansai/discussions/categories/ideas)**
+**[Request a Building Block →](https://github.com/thebyrdman-git/ansai/issues)** | **[See Detailed Tutorials →](INSPIRATION.md)**
 
 ---
 
@@ -269,21 +270,21 @@ ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
 <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎨</div>
 <h3 style="margin-top: 0; color: #1976d2;">Show & Tell</h3>
 <p>Share your creations with the community. Inspire others with what you've built!</p>
-<p><a href="https://github.com/thebyrdman-git/ansai/discussions/categories/show-and-tell" class="md-button">Share Your Build →</a></p>
+<p><a href="https://github.com/thebyrdman-git/ansai/issues" class="md-button">Share Your Build →</a></p>
 </div>
 
 <div style="border: 2px solid #e0e0e0; border-radius: 12px; padding: 1.5rem; background: white; transition: all 0.3s ease;">
 <div style="font-size: 2.5rem; margin-bottom: 1rem;">💡</div>
 <h3 style="margin-top: 0; color: #1976d2;">Ideas</h3>
 <p>Request new building blocks or suggest improvements to existing ones.</p>
-<p><a href="https://github.com/thebyrdman-git/ansai/discussions/categories/ideas" class="md-button">Submit Ideas →</a></p>
+<p><a href="https://github.com/thebyrdman-git/ansai/issues" class="md-button">Submit Ideas →</a></p>
 </div>
 
 <div style="border: 2px solid #e0e0e0; border-radius: 12px; padding: 1.5rem; background: white; transition: all 0.3s ease;">
 <div style="font-size: 2.5rem; margin-bottom: 1rem;">💬</div>
 <h3 style="margin-top: 0; color: #1976d2;">Q&A</h3>
 <p>Get help building, troubleshoot issues, and learn from other builders.</p>
-<p><a href="https://github.com/thebyrdman-git/ansai/discussions/categories/q-a" class="md-button">Ask Questions →</a></p>
+<p><a href="https://github.com/thebyrdman-git/ansai/issues" class="md-button">Ask Questions →</a></p>
 </div>
 
 <div style="border: 2px solid #e0e0e0; border-radius: 12px; padding: 1.5rem; background: white; transition: all 0.3s ease;">
@@ -332,7 +333,6 @@ ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
 **Share with the community.**  
 **We all get better.**
 
-[Start Building Now →](self-healing/index.md){ .md-button .md-button--primary .md-button--large }
 [Join the Community →](https://github.com/thebyrdman-git/ansai){ .md-button .md-button--large }
 
 </div>

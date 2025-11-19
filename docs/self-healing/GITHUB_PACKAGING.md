@@ -96,7 +96,7 @@ ansai/
 ### Step 1: Final Code Review
 
 ```bash
-cd /home/jbyrd/ansai
+cd ~/ansai
 
 # Check for sensitive data
 git grep -i "password\|secret\|token\|api_key" orchestrators/ansible/
@@ -128,7 +128,7 @@ Released: 2025-11-18
 ### Step 3: Tag Release
 
 ```bash
-cd /home/jbyrd/ansai
+cd ~/ansai
 
 # Create annotated tag
 git tag -a v1.0.0 -m "Release v1.0.0 - ANSAI Self-Healing Infrastructure
@@ -261,7 +261,7 @@ MIT License - See [LICENSE](LICENSE)
 ### Step 5: Update ansai.dev
 
 ```bash
-cd /home/jbyrd/ansai
+cd ~/ansai
 
 # Build and deploy documentation
 mkdocs build

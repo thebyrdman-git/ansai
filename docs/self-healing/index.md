@@ -158,7 +158,7 @@ Automated system administration tasks:
 ### 1. Deploy Complete Monitoring Stack
 
 ```bash
-cd /home/jbyrd/ansai/orchestrators/ansible
+cd ~/ansai/orchestrators/ansible
 ansible-playbook playbooks/deploy-complete-monitoring.yml
 ```
 
@@ -299,7 +299,7 @@ ANSAI includes comprehensive testing workflows:
 
 ```bash
 # Test Universal Self-Healing
-cd /home/jbyrd/ansai/orchestrators/ansible
+cd ~/ansai/orchestrators/ansible
 ./tests/test-service-healing.sh
 
 # Test JS Monitoring

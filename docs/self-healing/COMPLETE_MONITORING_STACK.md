@@ -155,7 +155,7 @@ Your check "MiracleMax Server" is now UP.
 
 **3. Configure Ansible:**
 ```bash
-vim /home/jbyrd/miraclemax-infrastructure/ansible/roles/healthchecks_monitoring/defaults/main.yml
+vim ~/infrastructure/ansible/roles/healthchecks_monitoring/defaults/main.yml
 ```
 
 Set:
@@ -165,7 +165,7 @@ healthcheck_ping_url: "https://hc-ping.com/YOUR-UUID-HERE"
 
 **4. Deploy complete stack:**
 ```bash
-cd /home/jbyrd/miraclemax-infrastructure/ansible
+cd ~/infrastructure/ansible
 ansible-playbook playbooks/deploy-complete-monitoring.yml
 ```
 
@@ -174,7 +174,7 @@ ansible-playbook playbooks/deploy-complete-monitoring.yml
 ### Update Existing Deployment
 
 ```bash
-cd /home/jbyrd/miraclemax-infrastructure/ansible
+cd ~/infrastructure/ansible
 
 # Update both layers
 ansible-playbook playbooks/deploy-complete-monitoring.yml
@@ -263,7 +263,7 @@ ssh jbyrd@miraclemax.local "sudo crontab -r"
 # You'll receive email: "MiracleMax Server is DOWN"
 
 # Restore cron
-cd /home/jbyrd/miraclemax-infrastructure/ansible
+cd ~/infrastructure/ansible
 ansible-playbook playbooks/deploy-healthchecks.yml
 ```
 

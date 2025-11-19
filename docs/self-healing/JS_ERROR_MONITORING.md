@@ -21,7 +21,7 @@ This system provides **two-layer JavaScript error detection**:
 ### 1. Deploy the Monitoring System
 
 ```bash
-cd /home/jbyrd/miraclemax-infrastructure/ansible
+cd ~/infrastructure/ansible
 ansible-playbook playbooks/deploy-js-monitoring.yml
 ```
 
@@ -74,8 +74,8 @@ Add this to the `<head>` section of your base templates:
 ### 4. Create Static JS Directory (if needed)
 
 ```bash
-ssh jbyrd@miraclemax.local "mkdir -p /home/jbyrd/story-stages/static/js"
-ssh jbyrd@miraclemax.local "mkdir -p /home/jbyrd/passgo/static/js"
+ssh jbyrd@miraclemax.local "mkdir -p /var/www/story-stages/static/js"
+ssh jbyrd@miraclemax.local "mkdir -p /var/www/passgo/static/js"
 ```
 
 ### 5. Restart Your Applications
@@ -153,7 +153,7 @@ You'll receive email alerts for:
 
 ## 🔧 Configuration
 
-Edit `/home/jbyrd/miraclemax-infrastructure/ansible/roles/js_error_monitoring/defaults/main.yml`:
+Edit `~/infrastructure/ansible/roles/js_error_monitoring/defaults/main.yml`:
 
 ```yaml
 # Email settings

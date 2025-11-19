@@ -213,7 +213,7 @@ MANUAL INTERVENTION REQUIRED:
 ### Deploy to ALL Services
 
 ```bash
-cd /home/jbyrd/miraclemax-infrastructure/ansible
+cd ~/infrastructure/ansible
 ansible-playbook playbooks/deploy-self-healing.yml
 ```
 
@@ -320,7 +320,7 @@ sudo systemctl start story-stages-self-heal
 
 ### Add a New Service
 
-Edit: `/home/jbyrd/miraclemax-infrastructure/ansible/roles/universal_self_heal/defaults/main.yml`
+Edit: `~/infrastructure/ansible/roles/universal_self_heal/defaults/main.yml`
 
 ```yaml
 monitored_services:
@@ -338,7 +338,7 @@ monitored_services:
 
 Redeploy:
 ```bash
-cd /home/jbyrd/miraclemax-infrastructure/ansible
+cd ~/infrastructure/ansible
 ansible-playbook playbooks/deploy-self-healing.yml
 ```
 
@@ -480,7 +480,7 @@ journalctl -t miraclemax-self-heal
 sudo systemctl stop story-stages
 
 # Deploy to new services
-cd /home/jbyrd/miraclemax-infrastructure/ansible
+cd ~/infrastructure/ansible
 ansible-playbook playbooks/deploy-self-healing.yml
 
 # Disable healing for a service
@@ -494,7 +494,7 @@ sudo systemctl unmask story-stages-self-heal
 
 ## 📚 Additional Documentation
 
-- **`/home/jbyrd/miraclemax-infrastructure/ansible/roles/universal_self_heal/`** - Source code
+- **`~/infrastructure/ansible/roles/universal_self_heal/`** - Source code
 - **`/var/log/self-heal-*.log`** - Individual service healing logs
 - **`journalctl -t miraclemax-self-heal`** - Centralized healing logs
 - **`/var/run/*-heal-status`** - Real-time healing status files

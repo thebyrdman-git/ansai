@@ -23,7 +23,7 @@ This system provides **two-layer CSS error detection**:
 ### 1. Deploy the Monitoring System
 
 ```bash
-cd /home/jbyrd/miraclemax-infrastructure/ansible
+cd ~/infrastructure/ansible
 ansible-playbook playbooks/deploy-css-monitoring.yml
 ```
 
@@ -150,7 +150,7 @@ You'll receive email alerts for:
 
 ## 🔧 Configuration
 
-Edit `/home/jbyrd/miraclemax-infrastructure/ansible/roles/css_error_monitoring/defaults/main.yml`:
+Edit `~/infrastructure/ansible/roles/css_error_monitoring/defaults/main.yml`:
 
 ```yaml
 # Email settings

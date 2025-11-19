@@ -18,7 +18,7 @@ ANSAI follows the **test-as-code** principle:
 ### Run All Tests
 
 ```bash
-cd /home/jbyrd/ansai/orchestrators/ansible/tests
+cd ~/ansai/orchestrators/ansible/tests
 ./run-all-tests.sh miraclemax.local jimmykbyrd@gmail.com story-stages
 ```
 
@@ -174,12 +174,12 @@ cd /home/jbyrd/ansai/orchestrators/ansible/tests
 **Troubleshooting:**
 1. Verify error-logger.js exists:
    ```bash
-   ls -la /home/jbyrd/story-stages/static/js/error-logger.js
+   ls -la /var/www/story-stages/static/js/error-logger.js
    ```
 
 2. Check if templates include error-logger.js:
    ```bash
-   grep -r "error-logger.js" /home/jbyrd/story-stages/templates/
+   grep -r "error-logger.js" /var/www/story-stages/templates/
    ```
 
 3. Test API endpoint:
@@ -201,7 +201,7 @@ cd /home/jbyrd/ansai/orchestrators/ansible/tests
 
 2. Check static file paths:
    ```bash
-   ls -la /home/jbyrd/story-stages/static/css/
+   ls -la /var/www/story-stages/static/css/
    ```
 
 **Symptom:** Runtime monitoring not working

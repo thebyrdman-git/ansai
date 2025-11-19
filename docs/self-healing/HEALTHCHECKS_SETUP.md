@@ -80,7 +80,7 @@ Email alert to jimmykbyrd@gmail.com
 Edit the configuration file:
 
 ```bash
-vim /home/jbyrd/miraclemax-infrastructure/ansible/roles/healthchecks_monitoring/defaults/main.yml
+vim ~/infrastructure/ansible/roles/healthchecks_monitoring/defaults/main.yml
 ```
 
 Update the `healthcheck_ping_url` line:
@@ -99,7 +99,7 @@ Replace `YOUR-UUID-HERE` with the actual UUID from Step 2.
 ### Step 4: Deploy with Ansible (2 minutes)
 
 ```bash
-cd /home/jbyrd/miraclemax-infrastructure/ansible
+cd ~/infrastructure/ansible
 
 # Deploy healthchecks monitoring
 ansible-playbook playbooks/deploy-healthchecks.yml
@@ -160,7 +160,7 @@ ssh jbyrd@miraclemax.local "sudo crontab -r"
 **Restore:**
 ```bash
 # Re-deploy to restore cron
-cd /home/jbyrd/miraclemax-infrastructure/ansible
+cd ~/infrastructure/ansible
 ansible-playbook playbooks/deploy-healthchecks.yml
 
 # Change period back to 5 minutes on healthchecks.io
@@ -420,11 +420,11 @@ ansible-playbook playbooks/deploy-healthchecks.yml
 # 1. Sign up at https://healthchecks.io
 # 2. Create check, copy ping URL
 # 3. Edit config
-vim /home/jbyrd/miraclemax-infrastructure/ansible/roles/healthchecks_monitoring/defaults/main.yml
+vim ~/infrastructure/ansible/roles/healthchecks_monitoring/defaults/main.yml
 # Set: healthcheck_ping_url: "https://hc-ping.com/YOUR-UUID"
 
 # 4. Deploy
-cd /home/jbyrd/miraclemax-infrastructure/ansible
+cd ~/infrastructure/ansible
 ansible-playbook playbooks/deploy-healthchecks.yml
 
 # 5. Verify
