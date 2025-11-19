@@ -1,0 +1,369 @@
+#!/usr/bin/env bash
+# ANSAI Workflow: Git Repository Security Audit
+# Comprehensive security audit for Git repositories before public release
+# Uses AI to analyze patterns and suggest sanitization strategies
+
+set -euo pipefail
+
+# Configuration
+REPO_PATH="${1:-.}"
+AI_BACKEND="${ANSAI_AI_BACKEND:-litellm}"
+MODEL="${ANSAI_MODEL:-gpt-4}"
+REPORT_FILE="REPO_SECURITY_AUDIT_$(date +%Y%m%d_%H%M%S).md"
+
+# Colors
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+echo -e "${BLUE}🔒 ANSAI Git Repository Security Audit${NC}"
+echo "Repository: $REPO_PATH"
+echo "AI Backend: $AI_BACKEND"
+echo ""
+
+cd "$REPO_PATH"
+
+# Verify it's a git repo
+if [[ ! -d .git ]]; then
+    echo -e "${RED}❌ Not a git repository${NC}"
+    exit 1
+fi
+
+# Initialize report
+cat > "$REPORT_FILE" <<EOF
+# Git Repository Security Audit Report
+**Generated:** $(date)
+**Repository:** $(basename "$(pwd)")
+**AI Analysis:** Enabled ($MODEL)
+
+---
+
+## Executive Summary
+
+EOF
+
+echo -e "${YELLOW}📊 Phase 1: Repository Analysis${NC}"
+
+# Collect repo stats
+TOTAL_FILES=$(git ls-files | wc -l)
+TOTAL_COMMITS=$(git rev-list --count HEAD 2>/dev/null || echo "0")
+REPO_SIZE=$(du -sh .git/ 2>/dev/null | cut -f1 || echo "unknown")
+
+cat >> "$REPORT_FILE" <<EOF
+- **Total Files Tracked:** $TOTAL_FILES
+- **Total Commits:** $TOTAL_COMMITS
+- **Repository Size:** $REPO_SIZE
+
+---
+
+## 🔍 Findings
+
+EOF
+
+echo "  Total files: $TOTAL_FILES"
+echo "  Total commits: $TOTAL_COMMITS"
+echo "  Repo size: $REPO_SIZE"
+echo ""
+
+# Phase 2: Sensitive file detection
+echo -e "${YELLOW}🔐 Phase 2: Scanning for Sensitive Files${NC}"
+
+SENSITIVE_PATTERNS=(
+    "password"
+    "secret"
+    "api.*key"
+    "token"
+    "\.env"
+    "vault"
+    "\.key"
+    "\.pem"
+    "\.crt"
+    "id_rsa"
+    "id_dsa"
+    "\.p12"
+    "\.pfx"
+    "credentials"
+)
+
+cat >> "$REPORT_FILE" <<EOF
+### 🔐 Sensitive File Patterns
+
+**Patterns Checked:**
+EOF
+
+SENSITIVE_FILES=$(mktemp)
+for pattern in "${SENSITIVE_PATTERNS[@]}"; do
+    echo "  - $pattern" >> "$REPORT_FILE"
+    git ls-files | grep -E "$pattern" >> "$SENSITIVE_FILES" 2>/dev/null || true
+done
+
+SENSITIVE_COUNT=$(cat "$SENSITIVE_FILES" | sort -u | wc -l)
+echo "  Found $SENSITIVE_COUNT potentially sensitive files"
+
+if [[ $SENSITIVE_COUNT -gt 0 ]]; then
+    cat >> "$REPORT_FILE" <<EOF
+
+**⚠️ Files Found ($SENSITIVE_COUNT):**
+\`\`\`
+$(cat "$SENSITIVE_FILES" | sort -u)
+\`\`\`
+
+EOF
+else
+    echo "✅ No sensitive file patterns found" >> "$REPORT_FILE"
+    echo ""
+fi
+
+# Phase 3: Build artifacts
+echo -e "${YELLOW}🏗️  Phase 3: Checking for Build Artifacts${NC}"
+
+BUILD_PATTERNS=(
+    "^site/"
+    "^dist/"
+    "^build/"
+    "^target/"
+    "^out/"
+    "__pycache__"
+    "\.pyc$"
+    "node_modules"
+    "\.min\.js$"
+    "\.min\.css$"
+)
+
+cat >> "$REPORT_FILE" <<EOF
+
+### 🏗️ Build Artifacts
+
+**Patterns Checked:**
+EOF
+
+BUILD_FILES=$(mktemp)
+for pattern in "${BUILD_PATTERNS[@]}"; do
+    echo "  - $pattern" >> "$REPORT_FILE"
+    git ls-files | grep -E "$pattern" >> "$BUILD_FILES" 2>/dev/null || true
+done
+
+BUILD_COUNT=$(cat "$BUILD_FILES" | sort -u | wc -l)
+echo "  Found $BUILD_COUNT build artifact files"
+
+if [[ $BUILD_COUNT -gt 0 ]]; then
+    cat >> "$REPORT_FILE" <<EOF
+
+**⚠️ Artifacts Found ($BUILD_COUNT):**
+\`\`\`
+$(cat "$BUILD_FILES" | sort -u | head -20)
+$(if [[ $BUILD_COUNT -gt 20 ]]; then echo "... and $(($BUILD_COUNT - 20)) more"; fi)
+\`\`\`
+
+EOF
+else
+    echo "✅ No build artifacts tracked" >> "$REPORT_FILE"
+    echo ""
+fi
+
+# Phase 4: Personal/hardcoded information
+echo -e "${YELLOW}👤 Phase 4: Scanning for Personal Information${NC}"
+
+PERSONAL_DATA=$(mktemp)
+git ls-files | xargs grep -l -E "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 2>/dev/null | grep -v ".md$" >> "$PERSONAL_DATA" || true
+git ls-files | xargs grep -l -E "192\.168\.|10\.0\.|172\.(1[6-9]|2[0-9]|3[01])\." 2>/dev/null | grep -v ".md$" >> "$PERSONAL_DATA" || true
+
+PERSONAL_COUNT=$(cat "$PERSONAL_DATA" | sort -u | wc -l)
+echo "  Found $PERSONAL_COUNT files with personal data"
+
+cat >> "$REPORT_FILE" <<EOF
+
+### 👤 Personal Information
+
+**Checked For:**
+- Email addresses (in non-markdown files)
+- Private IP addresses (192.168.x.x, 10.x.x.x, 172.16-31.x.x)
+- Hardcoded credentials
+
+EOF
+
+if [[ $PERSONAL_COUNT -gt 0 ]]; then
+    cat >> "$REPORT_FILE" <<EOF
+**⚠️ Files with Personal Data ($PERSONAL_COUNT):**
+\`\`\`
+$(cat "$PERSONAL_DATA" | sort -u)
+\`\`\`
+
+EOF
+else
+    echo "✅ No personal information detected" >> "$REPORT_FILE"
+    echo ""
+fi
+
+# Phase 5: .gitignore audit
+echo -e "${YELLOW}🚫 Phase 5: .gitignore Audit${NC}"
+
+cat >> "$REPORT_FILE" <<EOF
+
+### 🚫 .gitignore Status
+
+EOF
+
+if [[ -f .gitignore ]]; then
+    IGNORE_LINES=$(wc -l < .gitignore)
+    echo "  .gitignore exists ($IGNORE_LINES lines)"
+    echo "**✅ .gitignore exists** ($IGNORE_LINES lines)" >> "$REPORT_FILE"
+    echo "" >> "$REPORT_FILE"
+else
+    echo "  ⚠️ No .gitignore file found!"
+    echo "**⚠️ No .gitignore file found!**" >> "$REPORT_FILE"
+    echo "" >> "$REPORT_FILE"
+fi
+
+# Phase 6: AI Analysis
+echo -e "${YELLOW}🤖 Phase 6: AI-Powered Risk Analysis${NC}"
+
+AUDIT_SUMMARY=$(cat <<EOF
+Repository Security Audit Summary:
+- Total files: $TOTAL_FILES
+- Sensitive files found: $SENSITIVE_COUNT
+- Build artifacts: $BUILD_COUNT
+- Files with personal data: $PERSONAL_COUNT
+- .gitignore: $(if [[ -f .gitignore ]]; then echo "exists"; else echo "missing"; fi)
+
+Files flagged for review:
+$(cat "$SENSITIVE_FILES" "$BUILD_FILES" "$PERSONAL_DATA" 2>/dev/null | sort -u | head -30)
+
+Please analyze these findings and provide:
+1. Risk assessment (CRITICAL/HIGH/MEDIUM/LOW)
+2. Top 5 recommended actions
+3. .gitignore patterns that should be added
+4. Whether BFG Repo-Cleaner is needed for history cleanup
+EOF
+)
+
+echo "  Sending audit data to AI for analysis..."
+
+AI_ANALYSIS=$(mktemp)
+if command -v litellm &> /dev/null && [[ "$AI_BACKEND" == "litellm" ]]; then
+    echo "$AUDIT_SUMMARY" | litellm --model "$MODEL" > "$AI_ANALYSIS" 2>/dev/null || echo "AI analysis unavailable" > "$AI_ANALYSIS"
+elif command -v fabric &> /dev/null && [[ "$AI_BACKEND" == "fabric" ]]; then
+    echo "$AUDIT_SUMMARY" | fabric --pattern analyze_security | head -100 > "$AI_ANALYSIS" 2>/dev/null || echo "AI analysis unavailable" > "$AI_ANALYSIS"
+else
+    echo "AI backend not available - skipping analysis" > "$AI_ANALYSIS"
+fi
+
+cat >> "$REPORT_FILE" <<EOF
+
+### 🤖 AI Risk Analysis
+
+$(cat "$AI_ANALYSIS")
+
+---
+
+## 📋 Recommended Actions
+
+EOF
+
+# Generate action items
+echo -e "${YELLOW}📋 Phase 7: Generating Action Plan${NC}"
+
+ACTIONS=()
+
+if [[ $SENSITIVE_COUNT -gt 0 ]]; then
+    ACTIONS+=("**CRITICAL:** Review and remove $SENSITIVE_COUNT files with sensitive patterns")
+    echo "  🚨 Remove sensitive files"
+fi
+
+if [[ $BUILD_COUNT -gt 0 ]]; then
+    ACTIONS+=("**HIGH:** Remove $BUILD_COUNT build artifacts from Git tracking")
+    echo "  ⚠️ Remove build artifacts"
+fi
+
+if [[ $PERSONAL_COUNT -gt 0 ]]; then
+    ACTIONS+=("**HIGH:** Sanitize $PERSONAL_COUNT files containing personal information")
+    echo "  ⚠️ Sanitize personal data"
+fi
+
+if [[ ! -f .gitignore ]]; then
+    ACTIONS+=("**MEDIUM:** Create comprehensive .gitignore file")
+    echo "  📝 Create .gitignore"
+fi
+
+if [[ ${#ACTIONS[@]} -eq 0 ]]; then
+    ACTIONS+=("**✅ No critical issues found** - Repository appears clean for public release")
+fi
+
+for action in "${ACTIONS[@]}"; do
+    echo "$action" >> "$REPORT_FILE"
+    echo "" >> "$REPORT_FILE"
+done
+
+# Cleanup commands
+cat >> "$REPORT_FILE" <<EOF
+
+---
+
+## 🛠️ Cleanup Commands
+
+### Remove tracked files:
+\`\`\`bash
+# Review and remove specific files
+git rm --cached path/to/sensitive/file
+
+# Remove entire directories
+git rm -r --cached site/
+git rm -r --cached dist/
+
+# Commit changes
+git add .gitignore
+git commit -m "SECURITY: Remove sensitive/generated files from tracking"
+\`\`\`
+
+### Clean Git history (if secrets were committed):
+\`\`\`bash
+# Install BFG Repo-Cleaner
+# https://rtyley.github.io/bfg-repo-cleaner/
+
+# Remove specific files from history
+bfg --delete-files sensitive-file.txt
+
+# Remove text patterns (like passwords)
+bfg --replace-text passwords.txt
+
+# Clean up
+git reflog expire --expire=now --all
+git gc --prune=now --aggressive
+
+# Force push (DANGER!)
+git push origin --force --all
+\`\`\`
+
+---
+
+## 📚 Resources
+
+- [GitHub: Removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository)
+- [BFG Repo-Cleaner](https://rtyley.github.io/bfg-repo-cleaner/)
+- [.gitignore templates](https://github.com/github/gitignore)
+
+---
+
+**Report generated by ANSAI Repository Security Audit**
+EOF
+
+# Cleanup temp files
+rm -f "$SENSITIVE_FILES" "$BUILD_FILES" "$PERSONAL_DATA" "$AI_ANALYSIS"
+
+echo ""
+echo -e "${GREEN}✅ Audit Complete!${NC}"
+echo ""
+echo "📄 Report saved to: $REPORT_FILE"
+echo ""
+
+# Summary
+if [[ ${#ACTIONS[@]} -gt 1 ]] || [[ ! "${ACTIONS[0]}" =~ "No critical issues" ]]; then
+    echo -e "${YELLOW}⚠️  Action Required: ${#ACTIONS[@]} issue(s) found${NC}"
+    exit 1
+else
+    echo -e "${GREEN}✅ Repository is clean for public release${NC}"
+    exit 0
+fi
+
