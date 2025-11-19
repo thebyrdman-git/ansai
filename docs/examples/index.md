@@ -8,6 +8,12 @@
 
 <div class="grid cards" markdown>
 
+-   **🌟 Community Roles + ANSAI**
+    
+    ANSAI enhancements for popular Ansible Galaxy roles
+    
+    [See Integrations →](COMMUNITY_ROLES.md)
+
 -   **🤖 AI-Powered Workflows**
     
     Intelligent automation with LLMs
@@ -19,12 +25,6 @@
     Galaxy-inspired, AI-enhanced
     
     [See Use Cases →](#real-world-use-cases)
-
--   **🎬 Video Tutorials**
-    
-    Watch ANSAI in action
-    
-    [Watch Tutorials →](#video-tutorials)
 
 -   **🏗️ Build Your Own**
     
