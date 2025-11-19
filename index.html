@@ -1585,7 +1585,7 @@
 <p><strong>ANSAI = Ansible + AI</strong></p>
 <p><strong>Your Flask app crashes at 3 AM.</strong></p>
 <p>Traditional automation: <em>"Service restarted."</em></p>
-<p><strong>ANSAI:</strong> <em>"Service failed due to database connection pool exhaustion (45/50 connections hung). Restarted service + closed stale connections. Fix: Add <code>pool_timeout=30</code> to database.py:47 to prevent future crashes."</em></p>
+<p><strong>ANSAI:</strong> <em>"Service failed due to database connection pool exhaustion (45/50 connections hung). Restarted service + closed stale connections. Fix: Add <strong>pool_timeout=30</strong> to database.py:47 to prevent future crashes."</em></p>
 <p><strong>That's the difference.</strong> Not just automated—<strong>intelligent.</strong></p>
 <p><strong>Without AI, it's just Ansible. With ANSAI, it thinks.</strong></p>
 <p><a class="md-button md-button--primary md-button--large" href="#quick-start">Get Started →</a>
@@ -1739,14 +1739,21 @@
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>🔍 [ANSAI] Failure detected in 1.2 seconds
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>🤖 [ANSAI] AI analysis in progress...
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>🤖 AI ROOT CAUSE: Database connection pool exhausted...
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>   WHY: No timeout configured, connections hung...
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>   FIX: Add pool_timeout=30 to database.py...
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>⚡ [ANSAI] Healing: restart + cleanup
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>✅ [ANSAI] Service restored in 6 seconds
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>Total downtime: 6 seconds (vs 15-30 minutes manual)
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>🤖 AI ROOT CAUSE: Database connection pool exhausted
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>   WHY IT FAILED:
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>   • No timeout configured, connections hung indefinitely
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>   • All 50 connections consumed and not released
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>   RECOMMENDED FIX:
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>   Add to your database config:
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>     pool_timeout = 30
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>     max_overflow = 10
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>⚡ [ANSAI] Healing: restart + cleanup
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>✅ [ANSAI] Service restored in 6 seconds
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>Total downtime: 6 seconds (vs 15-30 minutes manual)
 </span></code></pre></div>
 <p><strong>Try it. See it work. Then install it.</strong></p>
 <hr />
@@ -1815,7 +1822,7 @@
 3. Identifies root cause (not just "it crashed")
 4. Executes healing strategy
 5. Sends detailed report with prevention tips</p>
-<p><strong>Example:</strong> <em>"DB connection pool exhausted due to missing timeout. Restarted + cleared connections. Add pool_timeout=30."</em></p>
+<p><strong>Example:</strong> <em>"DB connection pool exhausted due to missing timeout. Restarted + cleared connections. Add <strong>pool_timeout=30</strong> to config."</em></p>
 </li>
 <li>
 <h3 id="proactive-monitoring">✅ <strong>Proactive Monitoring</strong><a class="headerlink" href="#proactive-monitoring" title="Link to this section">&para;</a></h3>
@@ -2322,7 +2329,7 @@ AI-powered text analysis, summarization, and transformation using proven pattern
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 19, 2025 16:27:18 UTC"><span class="timeago" datetime="2025-11-19T16:27:18+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 19, 2025 16:27:18 UTC">2025-11-19</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 19, 2025 16:30:32 UTC"><span class="timeago" datetime="2025-11-19T16:30:32+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 19, 2025 16:30:32 UTC">2025-11-19</span>
   </span>
 
     
