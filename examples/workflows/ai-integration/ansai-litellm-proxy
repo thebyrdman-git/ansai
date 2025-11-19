@@ -193,3 +193,4 @@ print_status ""
 # Run LiteLLM proxy
 exec litellm --config "$CONFIG_FILE" --port "$PORT" --host "$HOST"
 
+

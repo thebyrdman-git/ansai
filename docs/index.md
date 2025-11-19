@@ -23,6 +23,12 @@ Traditional automation: *"Service restarted."*
 
 ## 🤔 What is ANSAI?
 
+![GitHub stars](https://img.shields.io/github/stars/thebyrdman-git/ansai?style=social)
+![GitHub forks](https://img.shields.io/github/forks/thebyrdman-git/ansai?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/thebyrdman-git/ansai)
+![License](https://img.shields.io/github/license/thebyrdman-git/ansai)
+![GitHub issues](https://img.shields.io/github/issues/thebyrdman-git/ansai)
+
 **ANSAI (Ansible-Native System Automation Infrastructure)** is an open-source framework that adds AI intelligence to your infrastructure automation.
 
 <div class="grid cards" markdown>
@@ -52,6 +58,25 @@ Traditional automation: *"Service restarted."*
 **ANSAI says:** *"Your service crashed because the database connection pool was exhausted. I restarted it and cleared stuck connections. To prevent this: add `pool_timeout=30` to your config. Here's why this happened and how to fix it permanently."*
 
 **The difference:** Traditional automation is **blind**. ANSAI **understands**.
+
+---
+
+## 🆚 ANSAI vs. Traditional Solutions
+
+**Choose the right tool for your infrastructure:**
+
+| Feature | Datadog/PagerDuty | Pure Ansible | **ANSAI** |
+|---------|:---:|:---:|:---:|
+| **Detect Failures** | ✅ | ✅ | ✅ |
+| **Auto-Heal** | ❌ Manual | ⚠️ Blind restart | ✅ Intelligent |
+| **Root Cause Analysis** | ⚠️ Alert clustering | ❌ None | ✅ AI-powered |
+| **Prevention Tips** | ❌ | ❌ | ✅ |
+| **Your Infrastructure** | ❌ SaaS only | ✅ | ✅ |
+| **Choose Your AI** | ❌ Their model | ❌ No AI | ✅ Any LLM |
+| **Cost (10 services)** | $500-1500/mo | $0 | **$2-5/mo** |
+| **Open Source** | ❌ | ✅ | ✅ |
+
+**ANSAI = Ansible's flexibility + AI's intelligence + Open source freedom**
 
 ---
 
@@ -268,6 +293,36 @@ View service logs: journalctl -u my-flask-app -n 100
 ```
 
 **You get this in your inbox.** No 3 AM wake-up calls. No guessing. AI tells you exactly what broke and how to fix it permanently.
+
+---
+
+## 🎬 Watch It Work (30 Seconds)
+
+**See AI-powered self-healing in action:**
+
+<!-- Demo GIF will be added here once recorded -->
+<!-- ![ANSAI Demo](images/ansai-demo.gif) -->
+<!-- *Real-time demonstration of failure detection, AI analysis, and automatic healing* -->
+
+**To create the demo GIF:**
+```bash
+# Install dependencies
+pip3 install asciinema
+npm install -g @asciinema/agg
+
+# Record and convert
+cd ~/ansai/demo
+./record-demo.sh
+```
+
+**What you'll see in the demo:**
+1. Service failure detected (1-2 seconds)
+2. AI analyzes logs and system state (2-3 seconds)
+3. AI identifies root cause with recommendations
+4. Service automatically healed (3-5 seconds)
+5. Complete report with prevention tips
+
+**Total time:** 6 seconds from failure to fixed.
 
 ---
 
@@ -550,6 +605,28 @@ curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh
 - ✅ Installs AI dependencies (LiteLLM or Fabric - **required**)
 - ✅ Prompts for your AI API key
 - ✅ Creates config directories
+
+### Verify Installation (30 seconds)
+
+```bash
+ansai-self-test
+```
+
+**Expected output:**
+```
+🔍 ANSAI Installation Self-Test
+
+✅ ANSAI tools found in PATH
+✅ ANSAI directory exists: ~/.ansai
+✅ Groq API key configured
+   ✅ Groq API key is valid and working
+✅ Ansible installed: ansible [core 2.15.0]
+✅ Python installed: Python 3.11.0
+
+🎉 PERFECT! ANSAI is fully configured and ready to use.
+```
+
+If you see errors, the script tells you exactly how to fix them.
 
 ### Deploy Your First AI-Powered Service (5 minutes)
 

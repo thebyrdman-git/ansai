@@ -1,0 +1,182 @@
+#!/usr/bin/env bash
+# ANSAI Installation Self-Test
+# Verifies that ANSAI is correctly installed and configured
+
+set -e
+
+echo ""
+echo "═══════════════════════════════════════════════════════"
+echo "  🔍 ANSAI Installation Self-Test"
+echo "═══════════════════════════════════════════════════════"
+echo ""
+
+ERRORS=0
+WARNINGS=0
+
+# Check ANSAI in PATH
+echo "Checking ANSAI installation..."
+if command -v ansai-progress-tracker &> /dev/null; then
+    echo "✅ ANSAI tools found in PATH"
+    ANSAI_PATH=$(which ansai-progress-tracker)
+    echo "   Location: ${ANSAI_PATH%/*}"
+else
+    echo "❌ ANSAI not in PATH"
+    echo "   Add to your shell config:"
+    echo "   export PATH=\"\$HOME/.ansai/bin:\$PATH\""
+    ERRORS=$((ERRORS + 1))
+fi
+
+# Check ANSAI directory
+echo ""
+echo "Checking ANSAI directory structure..."
+if [ -d "$HOME/.ansai" ]; then
+    echo "✅ ANSAI directory exists: ~/.ansai"
+    
+    if [ -d "$HOME/.ansai/orchestrators/ansible" ]; then
+        echo "✅ Ansible orchestrator found"
+    else
+        echo "⚠️  Ansible orchestrator not found"
+        WARNINGS=$((WARNINGS + 1))
+    fi
+    
+    if [ -d "$HOME/.ansai/examples" ]; then
+        echo "✅ Example workflows found"
+    else
+        echo "⚠️  Example workflows not found"
+        WARNINGS=$((WARNINGS + 1))
+    fi
+else
+    echo "❌ ANSAI directory not found at ~/.ansai"
+    echo "   Run: curl -sSL https://ansai.dev/install.sh | bash"
+    ERRORS=$((ERRORS + 1))
+fi
+
+# Check AI backend
+echo ""
+echo "Checking AI backend configuration..."
+AI_CONFIGURED=false
+
+if [ ! -z "$ANSAI_GROQ_API_KEY" ] || [ ! -z "$GROQ_API_KEY" ]; then
+    echo "✅ Groq API key configured"
+    AI_CONFIGURED=true
+    
+    # Test Groq API
+    GROQ_KEY="${ANSAI_GROQ_API_KEY:-$GROQ_API_KEY}"
+    TEST_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST https://api.groq.com/openai/v1/chat/completions \
+        -H "Authorization: Bearer $GROQ_KEY" \
+        -H "Content-Type: application/json" \
+        -d '{"model":"llama-3.1-8b-instant","messages":[{"role":"user","content":"test"}],"max_tokens":5}' 2>/dev/null || echo "000")
+    
+    if [ "$TEST_RESPONSE" = "200" ]; then
+        echo "   ✅ Groq API key is valid and working"
+    elif [ "$TEST_RESPONSE" = "401" ]; then
+        echo "   ❌ Groq API key is invalid"
+        ERRORS=$((ERRORS + 1))
+    elif [ "$TEST_RESPONSE" = "000" ]; then
+        echo "   ⚠️  Could not test Groq API (network issue?)"
+        WARNINGS=$((WARNINGS + 1))
+    else
+        echo "   ⚠️  Groq API returned unexpected status: $TEST_RESPONSE"
+        WARNINGS=$((WARNINGS + 1))
+    fi
+fi
+
+if [ ! -z "$OPENAI_API_KEY" ]; then
+    echo "✅ OpenAI API key configured"
+    AI_CONFIGURED=true
+fi
+
+if [ ! -z "$ANTHROPIC_API_KEY" ]; then
+    echo "✅ Anthropic API key configured"
+    AI_CONFIGURED=true
+fi
+
+if command -v ollama &> /dev/null; then
+    echo "✅ Ollama installed (local AI)"
+    AI_CONFIGURED=true
+fi
+
+if [ "$AI_CONFIGURED" = false ]; then
+    echo "⚠️  No AI backend configured"
+    echo "   ANSAI requires AI to function. Set one of:"
+    echo "   • export ANSAI_GROQ_API_KEY='your-key'  (get free key at console.groq.com)"
+    echo "   • export OPENAI_API_KEY='your-key'"
+    echo "   • export ANTHROPIC_API_KEY='your-key'"
+    echo "   • Install Ollama for local AI"
+    WARNINGS=$((WARNINGS + 1))
+fi
+
+# Check Ansible
+echo ""
+echo "Checking Ansible installation..."
+if command -v ansible &> /dev/null; then
+    ANSIBLE_VERSION=$(ansible --version | head -1)
+    echo "✅ Ansible installed: $ANSIBLE_VERSION"
+    
+    if command -v ansible-playbook &> /dev/null; then
+        echo "✅ ansible-playbook available"
+    else
+        echo "❌ ansible-playbook not found"
+        ERRORS=$((ERRORS + 1))
+    fi
+else
+    echo "⚠️  Ansible not found"
+    echo "   Install: pip3 install ansible"
+    echo "   ANSAI requires Ansible for deployment"
+    WARNINGS=$((WARNINGS + 1))
+fi
+
+# Check Python
+echo ""
+echo "Checking Python installation..."
+if command -v python3 &> /dev/null; then
+    PYTHON_VERSION=$(python3 --version)
+    echo "✅ Python installed: $PYTHON_VERSION"
+else
+    echo "❌ Python 3 not found"
+    echo "   ANSAI requires Python 3.9+"
+    ERRORS=$((ERRORS + 1))
+fi
+
+# Summary
+echo ""
+echo "═══════════════════════════════════════════════════════"
+echo "  📊 Test Summary"
+echo "═══════════════════════════════════════════════════════"
+echo ""
+
+if [ $ERRORS -eq 0 ] && [ $WARNINGS -eq 0 ]; then
+    echo "🎉 PERFECT! ANSAI is fully configured and ready to use."
+    echo ""
+    echo "Next steps:"
+    echo "  1. Configure your inventory:"
+    echo "     vim ~/.ansai/orchestrators/ansible/inventory/hosts.yml"
+    echo ""
+    echo "  2. Deploy self-healing:"
+    echo "     cd ~/.ansai/orchestrators/ansible"
+    echo "     ansible-playbook playbooks/deploy-self-healing.yml"
+    echo ""
+    exit 0
+elif [ $ERRORS -eq 0 ]; then
+    echo "✅ ANSAI is installed (with $WARNINGS warning(s))"
+    echo ""
+    echo "Review warnings above and fix if needed."
+    echo ""
+    echo "Ready to deploy:"
+    echo "  cd ~/.ansai/orchestrators/ansible"
+    echo "  ansible-playbook playbooks/deploy-self-healing.yml"
+    echo ""
+    exit 0
+else
+    echo "❌ ANSAI installation has $ERRORS error(s) and $WARNINGS warning(s)"
+    echo ""
+    echo "Please fix the errors above before deploying."
+    echo ""
+    if [ ! -d "$HOME/.ansai" ]; then
+        echo "Install ANSAI:"
+        echo "  curl -sSL https://ansai.dev/install.sh | bash"
+    fi
+    echo ""
+    exit 1
+fi
+
