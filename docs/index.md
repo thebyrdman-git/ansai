@@ -112,6 +112,131 @@ recycling when utilization exceeds 80%.
 
 ---
 
+## 📧 What You Get: The Actual Email Report
+
+**Real email delivered after automatic healing (sanitized for privacy):**
+
+```
+From: ANSAI Self-Healing <ansai@testserver.local>
+To: you@example.com
+Subject: ✅ TestServer: my-flask-app - RESOLVED
+
+═══════════════════════════════════════════════════════
+🤖 TestServer Self-Healing Report
+═══════════════════════════════════════════════════════
+
+Service: my-flask-app
+Domain: app.example.com
+Port: 5000
+Priority: CRITICAL
+
+Time: Wed Nov 19 11:03:11 AM EST 2025
+Host: testserver.local
+
+AUTOMATIC ISSUE RESOLUTION
+
+═══════════════════════════════════════════════════════
+
+ALERT: my-flask-app has stopped responding
+
+══════════════════════════════════════════════════
+🤖 AI-POWERED ROOT CAUSE ANALYSIS
+══════════════════════════════════════════════════
+
+ROOT CAUSE:
+The my-flask-app service failed due to a systemd service timeout, 
+triggered by a lack of response from the application.
+
+WHY IT FAILED:
+ • The application process was running for an extended period without 
+   issues, but suddenly stopped responding
+ • The systemd service timeout was triggered, causing service stop
+ • Application logs show no errors before the timeout
+ • Likely cause: database connection pool exhaustion or blocking I/O
+
+RECOMMENDED FIX:
+1. Check application logs for any errors that caused unresponsiveness
+2. Verify application is configured to handle requests within timeout
+3. Consider increasing systemd service timeout value
+4. Add connection pool timeout: pool_timeout = 30
+
+PREVENTION:
+Implement a health check mechanism within the application to detect 
+and respond to potential issues before the service timeout is 
+triggered. Add a periodic check or watchdog timer to the application.
+
+Analysis powered by: llama-3.1-8b-instant via Groq
+
+══════════════════════════════════════════════════
+ISSUE DETECTED: my-flask-app is not running
+══════════════════════════════════════════════════
+
+DIAGNOSIS:
+  • Service status: inactive
+  • Last exit status: 15
+  • Memory usage: 0 MB
+
+HEALING STRATEGY: Standard Service Restart
+  Action: systemctl restart my-flask-app
+
+✅ SUCCESS: Service restarted and is now active
+
+HOW IT WAS FIXED:
+  1. Detected my-flask-app was inactive/failed
+  2. Executed: systemctl restart my-flask-app
+  3. Waited 5 seconds for startup
+  4. Verified service is active
+  5. Service listening on port 5000
+
+ROOT CAUSE: Service crash or unexpected termination
+  Possible reasons:
+    • Out of memory (OOM killer)
+    • Unhandled exception in application
+    • External signal (SIGTERM/SIGKILL)
+    • Configuration error
+
+RESOLUTION: Standard systemd restart restored functionality
+HEALING TIME: ~5 seconds
+CONFIDENCE: High
+
+RECOMMENDATION:
+  Check recent logs for root cause: journalctl -u my-flask-app -n 100
+
+═══════════════════════════════════════════════════════
+Post-Healing System Status
+═══════════════════════════════════════════════════════
+
+Service: active
+Enabled: enabled
+Uptime: 2025-11-19 11:03:12 EST
+
+Recent Logs:
+Nov 19 11:03:12 testserver my-flask-app[4141118]: INFO: Starting Flask application
+Nov 19 11:03:12 testserver my-flask-app[4141118]: * Running on http://127.0.0.1:5000
+Nov 19 11:03:12 testserver my-flask-app[4141118]: * Running on http://10.0.1.50:5000
+
+═══════════════════════════════════════════════════════
+All TestServer Services Status:
+═══════════════════════════════════════════════════════
+
+  my-flask-app.service    loaded active running
+  api-service.service     loaded active running
+  worker.service          loaded active running
+  traefik.service         loaded active running
+
+═══════════════════════════════════════════════════════
+End Report - ANSAI Self-Healing System
+═══════════════════════════════════════════════════════
+
+View all healing logs: journalctl -t ansai-self-heal
+Check service: systemctl status my-flask-app
+View service logs: journalctl -u my-flask-app -n 100
+```
+
+**You get this in your inbox.** No 3 AM wake-up calls. No guessing. AI tells you exactly what broke and how to fix it permanently.
+
+---
+
 ## 🧪 Try ANSAI Right Now (No Installation)
 
 **See AI-powered self-healing in action before installing anything.**
