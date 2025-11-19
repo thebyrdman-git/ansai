@@ -21,6 +21,40 @@ Traditional automation: *"Service restarted."*
 
 ---
 
+## 🤔 What is ANSAI?
+
+**ANSAI (Ansible-Native System Automation Infrastructure)** is an open-source framework that adds AI intelligence to your infrastructure automation.
+
+<div class="grid cards" markdown>
+
+-   **🏗️ Built on Ansible**
+    
+    Uses the automation tool you already know. Not a proprietary platform. Your infrastructure, your rules.
+
+-   **🤖 Powered by AI**
+    
+    Connects to OpenAI, Claude, Groq, or local models. AI analyzes failures, identifies root causes, suggests fixes.
+
+-   **🛡️ Self-Healing Infrastructure**
+    
+    Automatically detects failures, analyzes with AI, executes healing strategies, sends detailed reports.
+
+-   **💰 Cost-Optimized**
+    
+    Intelligent routing picks the cheapest/fastest AI model for each task. ~$2-5/month for 10 services.
+
+</div>
+
+### In Simple Terms
+
+**Traditional automation says:** *"Your service crashed. I restarted it."*
+
+**ANSAI says:** *"Your service crashed because the database connection pool was exhausted. I restarted it and cleared stuck connections. To prevent this: add `pool_timeout=30` to your config. Here's why this happened and how to fix it permanently."*
+
+**The difference:** Traditional automation is **blind**. ANSAI **understands**.
+
+---
+
 ## 🎯 Why AI-Powered Automation?
 
 <div class="grid cards" markdown>
