@@ -23,6 +23,12 @@ SMTP_PORT="{{ smtp_port }}"
 SMTP_USER="{{ smtp_user }}"
 SMTP_PASS="{{ smtp_password }}"
 
+# AI Configuration
+AI_ENABLED="{{ ai_analysis_enabled | lower }}"
+GROQ_API_KEY="{{ groq_api_key }}"
+GROQ_MODEL="{{ groq_model }}"
+GROQ_API_URL="{{ groq_api_url }}"
+
 # Logging
 log() {
     echo "[$(date +'%Y-%m-%d %H:%M:%S')] [$SERVICE_NAME] $*" | tee -a "$LOG_FILE"
@@ -142,6 +148,99 @@ PYPYTHON
     echo "last_heal=$(date +%s)" > "$STATUS_FILE"
     echo "last_status=$status" >> "$STATUS_FILE"
     echo "service=$SERVICE_NAME" >> "$STATUS_FILE"
+}
+
+# AI-Powered Root Cause Analysis
+ai_analyze_failure() {
+    if [ "$AI_ENABLED" != "true" ] || [ -z "$GROQ_API_KEY" ]; then
+        return 0
+    fi
+    
+    log "🤖 Performing AI root cause analysis..."
+    report ""
+    report "══════════════════════════════════════════════════"
+    report "🤖 AI-POWERED ROOT CAUSE ANALYSIS"
+    report "══════════════════════════════════════════════════"
+    report ""
+    
+    # Gather diagnostic data
+    local service_status=$(systemctl status $SERVICE_NAME --no-pager 2>&1 | head -20)
+    local recent_logs=$(journalctl -u $SERVICE_NAME -n 50 --no-pager 2>&1)
+    local system_info=$(free -h && df -h && uptime)
+    
+    # Build AI prompt
+    local prompt="You are an expert Linux systems administrator analyzing a service failure. Be concise and specific.
+
+SERVICE FAILURE REPORT:
+Service Name: $SERVICE_NAME
+Port: $SERVICE_PORT
+Domain: $SERVICE_DOMAIN
+
+SERVICE STATUS:
+$service_status
+
+RECENT LOGS (last 50 lines):
+$recent_logs
+
+SYSTEM RESOURCES:
+$system_info
+
+Provide a BRIEF root cause analysis in this format:
+1. ROOT CAUSE: (1-2 sentences max)
+2. WHY IT FAILED: (2-3 bullet points)
+3. RECOMMENDED FIX: (specific commands or config changes)
+4. PREVENTION: (1-2 sentences on how to prevent recurrence)
+
+Be specific, actionable, and concise. Focus on the most likely cause based on the logs."
+    
+    # Call Groq API
+    local ai_response=$(curl -s -X POST "$GROQ_API_URL" \
+        -H "Authorization: Bearer $GROQ_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d @- <<EOFCURL
+{
+    "model": "$GROQ_MODEL",
+    "messages": [
+        {
+            "role": "system",
+            "content": "You are a Linux systems expert. Provide concise, actionable root cause analysis."
+        },
+        {
+            "role": "user",
+            "content": $(echo "$prompt" | python3 -c "import sys, json; print(json.dumps(sys.stdin.read()))")
+        }
+    ],
+    "temperature": 0.3,
+    "max_tokens": 500
+}
+EOFCURL
+    )
+    
+    # Extract and format response
+    local analysis=$(echo "$ai_response" | python3 -c "
+import sys, json
+try:
+    data = json.load(sys.stdin)
+    if 'choices' in data and len(data['choices']) > 0:
+        print(data['choices'][0]['message']['content'])
+    elif 'error' in data:
+        print(f\"AI Error: {data['error'].get('message', 'Unknown error')}\")
+    else:
+        print('AI analysis unavailable')
+except Exception as e:
+    print(f'Error parsing AI response: {e}')
+" 2>&1)
+    
+    if [ -n "$analysis" ] && ! echo "$analysis" | grep -q "Error"; then
+        report "$analysis"
+        report ""
+        report "Analysis powered by: $GROQ_MODEL via Groq"
+        log "✅ AI analysis completed"
+    else
+        report "AI analysis failed: $analysis"
+        log "⚠️  AI analysis failed or unavailable"
+    fi
+    report ""
 }
 
 # Healing Strategy: Service Restart
@@ -345,6 +444,9 @@ main() {
     log "⚠️  $SERVICE_NAME is DOWN - beginning healing procedures"
     report "ALERT: $SERVICE_NAME has stopped responding"
     report ""
+    
+    # Run AI analysis before attempting healing
+    ai_analyze_failure
     
     # Try enabled healing strategies in order
     {% for strategy in service.healing_strategies %}
