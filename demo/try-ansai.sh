@@ -31,7 +31,14 @@ echo "   Your Flask app is running on a production server."
 echo "   It crashes due to a database connection issue."
 echo "   Watch ANSAI detect, analyze, and heal it."
 echo ""
-read -p "Press Enter to start the demo..."
+
+# Auto-start if piped, otherwise wait for user
+if [ -t 0 ]; then
+    read -p "Press Enter to start the demo..."
+else
+    echo "🚀 Starting demo automatically..."
+    sleep 2
+fi
 echo ""
 
 # Simulate service failure
