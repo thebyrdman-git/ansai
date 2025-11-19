@@ -1039,9 +1039,9 @@
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">kill</span><span class="w"> </span>--signal<span class="o">=</span>SIGKILL<span class="w"> </span>story-stages.service
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Option C: Lock the database (more dramatic)</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>sqlite3<span class="w"> </span>/home/jbyrd/passgo/data/passgo.db<span class="w"> </span><span class="s2">&quot;.timeout 0&quot;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>sqlite3<span class="w"> </span>/var/www/passgo/data/passgo.db<span class="w"> </span><span class="s2">&quot;.timeout 0&quot;</span>
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="c1"># Then in another terminal:</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>sqlite3<span class="w"> </span>/home/jbyrd/passgo/data/passgo.db<span class="w"> </span><span class="s2">&quot;BEGIN EXCLUSIVE; SELECT sleep(3600);&quot;</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>sqlite3<span class="w"> </span>/var/www/passgo/data/passgo.db<span class="w"> </span><span class="s2">&quot;BEGIN EXCLUSIVE; SELECT sleep(3600);&quot;</span>
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="c1"># Then restart the service to trigger the lock detection</span>
 </span></code></pre></div>
 <p><strong>Say</strong>: "Service is down. In the old world, I'd get paged, SSH in, and fix it manually. With ANSAI..."</p>
@@ -1171,7 +1171,7 @@
 </span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="c1"># - System stats</span>
 </span></code></pre></div>
 <h3 id="demo-3-show-test-suite">Demo 3: Show Test Suite<a class="headerlink" href="#demo-3-show-test-suite" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">cd</span><span class="w"> </span>/home/jbyrd/ansai/orchestrators/ansible/tests
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">cd</span><span class="w"> </span>~/ansai/orchestrators/ansible/tests
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>./run-all-tests.sh
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Shows automated testing of all healing scenarios</span>
