@@ -2,12 +2,16 @@
 
 Ready to build? Here are 8 interactive tutorials to get you started with ANSAI.
 
+**🚀 NEW:** [Interactive, executable tutorials now available →](examples/tutorials/)
+
 ---
 
 ## Infrastructure Automation
 
 ??? example "Auto-scale based on error rates"
     **Goal:** Automatically scale up resources when error rates spike, then scale down when stable.
+    
+    **🎓 [Try Interactive Tutorial →](examples/tutorials/01-auto-scale-on-errors.sh)**
 
     **Blocks Used:**
     - 📊 **Log Analysis:** Monitor Nginx/Apache logs for 500 errors.
