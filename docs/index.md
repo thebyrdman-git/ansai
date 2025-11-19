@@ -1,3 +1,21 @@
+## 🤔 What is ANSAI?
+
+![GitHub stars](https://img.shields.io/github/stars/thebyrdman-git/ansai?style=social)
+![GitHub forks](https://img.shields.io/github/forks/thebyrdman-git/ansai?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/thebyrdman-git/ansai)
+![License](https://img.shields.io/github/license/thebyrdman-git/ansai)
+![GitHub issues](https://img.shields.io/github/issues/thebyrdman-git/ansai)
+
+**ANSAI (Ansible-Native System Automation Infrastructure)** is an open-source framework that adds AI intelligence to your infrastructure automation.
+
+**Traditional automation says:** *"Your service crashed. I restarted it."*
+
+**ANSAI says:** *"Your service crashed because the database connection pool was exhausted. I restarted it and cleared stuck connections. To prevent this: add `pool_timeout=30` to your config. Here's why this happened and how to fix it permanently."*
+
+**The difference:** Traditional automation is **blind**. ANSAI **understands**.
+
+---
+
 <div class="hero-section" markdown>
 
 # Stop Scripting. Start Thinking.
@@ -21,15 +39,7 @@ Traditional automation: *"Service restarted."*
 
 ---
 
-## 🤔 What is ANSAI?
-
-![GitHub stars](https://img.shields.io/github/stars/thebyrdman-git/ansai?style=social)
-![GitHub forks](https://img.shields.io/github/forks/thebyrdman-git/ansai?style=social)
-![GitHub last commit](https://img.shields.io/github/last-commit/thebyrdman-git/ansai)
-![License](https://img.shields.io/github/license/thebyrdman-git/ansai)
-![GitHub issues](https://img.shields.io/github/issues/thebyrdman-git/ansai)
-
-**ANSAI (Ansible-Native System Automation Infrastructure)** is an open-source framework that adds AI intelligence to your infrastructure automation.
+## 🏗️ Core Features
 
 <div class="grid cards" markdown>
 
@@ -50,14 +60,6 @@ Traditional automation: *"Service restarted."*
     Intelligent routing picks the cheapest/fastest AI model for each task. ~$2-5/month for 10 services.
 
 </div>
-
-### In Simple Terms
-
-**Traditional automation says:** *"Your service crashed. I restarted it."*
-
-**ANSAI says:** *"Your service crashed because the database connection pool was exhausted. I restarted it and cleared stuck connections. To prevent this: add `pool_timeout=30` to your config. Here's why this happened and how to fix it permanently."*
-
-**The difference:** Traditional automation is **blind**. ANSAI **understands**.
 
 ---
 
@@ -124,7 +126,7 @@ Traditional automation: *"Service restarted."*
 
 ## 📊 Real Production Data
 
-**ANSAI running on miraclemax.local (creator's production server):**
+**ANSAI running on creator's test server:**
 
 <div class="metrics-grid" markdown>
 
@@ -143,12 +145,12 @@ Traditional automation: *"Service restarted."*
 
 ### Real AI Analysis from Production
 
-**Actual output from miraclemax.local healing event (Nov 19, 11:03 EST):**
+**Actual output from test server healing event (Nov 19, 11:03 EST):**
 
 ```
 🤖 AI-POWERED ROOT CAUSE ANALYSIS
 
-ROOT CAUSE: The story-stages service failed due to a systemd 
+ROOT CAUSE: The my-flask-app service failed due to a systemd 
 service timeout, triggered by lack of response from the application.
 
 WHY IT FAILED:
@@ -349,25 +351,37 @@ export GROQ_API_KEY="your-key-here"
 curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/demo/try-ansai.sh | bash
 ```
 
-### Option 2: Docker Playground (Full Environment)
+### Option 2: Docker Playground (Full Interactive Environment)
 
 ```bash
-# Clone and run demo environment
+# Clone and start the playground
 git clone https://github.com/thebyrdman-git/ansai.git
 cd ansai/demo
-docker build -t ansai-demo .
-docker run -it ansai-demo
+docker-compose up -d
 
-# Inside container:
-sudo systemctl stop demo-service   # Break it
-# Watch ANSAI heal it automatically
+# Enter the interactive environment
+docker exec -it ansai-playground /bin/bash
+
+# Run the guided demo
+ansai-demo
 ```
 
-**Included in demo:**
-- Complete ANSAI installation
-- Pre-configured demo service
-- Self-healing scripts
-- AI analysis enabled
+**What you get:**
+- ✅ Complete ANSAI installation with systemd
+- ✅ Real Flask web service that can fail
+- ✅ Interactive guided demo (crashes, analyzes, heals)
+- ✅ AI analysis enabled (with your Groq key)
+- ✅ Manual testing playground
+
+**With AI enabled:**
+```bash
+export ANSAI_GROQ_API_KEY="your-key-here"
+docker-compose up -d
+docker exec -it ansai-playground /bin/bash
+ansai-demo  # See real AI root cause analysis
+```
+
+**[📚 Full Docker Playground Guide →](https://github.com/thebyrdman-git/ansai/tree/main/demo)**
 
 ### What You'll See
 
@@ -434,7 +448,7 @@ graph TB
 
 ### Real AI Analysis Example
 
-When your service crashes, traditional monitoring says: `"story-stages failed"`
+When your service crashes, traditional monitoring says: `"my-flask-app failed"`
 
 ANSAI's AI analyzes and tells you:
 
@@ -442,7 +456,7 @@ ANSAI's AI analyzes and tells you:
 🤖 AI ROOT CAUSE ANALYSIS
 
 ROOT CAUSE:
-The story-stages service failed due to a systemd service timeout, 
+The my-flask-app service failed due to a systemd service timeout, 
 triggered by lack of response from the application.
 
 WHY IT FAILED:

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Script to record ANSAI demo for GIF generation
-# Requires: asciinema and agg (npm install -g @asciinema/agg)
+# Requires: asciinema and agg
 
 set -e
 
@@ -16,12 +16,24 @@ if ! command -v asciinema &> /dev/null; then
     exit 1
 fi
 
-# Check for agg
+# Check for agg and offer to install
 if ! command -v agg &> /dev/null; then
     echo "⚠️  agg not found (needed to convert to GIF)"
-    echo "   Install: npm install -g @asciinema/agg"
     echo ""
-    echo "Continuing anyway - you can convert later..."
+    echo "Install agg? (y/n)"
+    read -r install_agg
+    if [[ "$install_agg" == "y" ]]; then
+        echo "Installing agg..."
+        cd /tmp
+        curl -L -o agg https://github.com/asciinema/agg/releases/download/v1.4.3/agg-x86_64-unknown-linux-gnu
+        chmod +x agg
+        sudo mv agg /usr/local/bin/
+        echo "✅ agg installed"
+        echo ""
+    else
+        echo "Continuing without agg - you can convert later..."
+        echo ""
+    fi
 fi
 
 # Create output directory
