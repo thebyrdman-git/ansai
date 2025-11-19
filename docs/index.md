@@ -6,14 +6,18 @@
 
 **ANSAI = Ansible + AI**
 
-Your infrastructure makes intelligent decisions. Not just automated—**intelligent.**
+**Your Flask app crashes at 3 AM.**
 
-Root cause analysis. Predictive failures. Context-aware actions. Cost optimization.
+Traditional automation: *"Service restarted."*
+
+**ANSAI:** *"Service failed due to database connection pool exhaustion (45/50 connections hung). Restarted service + closed stale connections. Fix: Add `pool_timeout=30` to database.py:47 to prevent future crashes."*
+
+**That's the difference.** Not just automated—**intelligent.**
 
 **Without AI, it's just Ansible. With ANSAI, it thinks.**
 
 [Get Started →](#quick-start){ .md-button .md-button--primary .md-button--large }
-[See How It Works →](#ai-powered-building-blocks){ .md-button .md-button--large }
+[See How It Works →](#how-it-works){ .md-button .md-button--large }
 
 </div>
 
@@ -61,6 +65,36 @@ Root cause analysis. Predictive failures. Context-aware actions. Cost optimizati
 
 ---
 
+## ⚙️ How It Works
+
+**ANSAI's intelligent healing cycle in 5 steps:**
+
+```mermaid
+graph TB
+    A[🔴 Service Fails] --> B[🔍 ANSAI Detects<br/>Within seconds]
+    B --> C[🤖 AI Analyzes<br/>Logs + Metrics + System State]
+    C --> D[💡 AI Identifies Root Cause<br/>Database pool exhausted]
+    D --> E[⚡ Execute Healing Strategy<br/>Restart + cleanup]
+    E --> F[📧 Report to You<br/>What, Why, How to Prevent]
+    
+    style A fill:#ff6b6b
+    style B fill:#4ecdc4
+    style C fill:#45b7d1
+    style D fill:#f9ca24
+    style E fill:#6c5ce7
+    style F fill:#00b894
+```
+
+**Typical Timeline:**
+- **0-2s:** Detect failure
+- **1-3s:** AI analyzes logs and system state
+- **2-5s:** Execute healing strategy
+- **5-6s:** Service restored, report sent
+
+**Total downtime: ~6 seconds** (vs hours waiting for you to wake up)
+
+---
+
 ## 🤖 What AI Actually Does (With Examples)
 
 **Without AI, automation is dumb. ANSAI's AI makes your infrastructure intelligent.**
@@ -100,50 +134,60 @@ when utilization exceeds 80%. Add alerting for connection wait times
 
 ---
 
-## 🧱 Core Capabilities (All AI-Powered)
+## 🎯 What ANSAI Can Do
+
+**Everything powered by AI. That's what makes it intelligent.**
 
 <div class="grid cards" markdown>
 
--   ### 🛡️ **Intelligent Service Healing**
+-   ### ✅ **Intelligent Service Healing**
     
-    **What it does:** Auto-detects failures, analyzes root cause with AI, applies fix, explains what happened
+    **Auto-detects failures + AI root cause analysis**
     
-    ```python
-    # AI analyzes: service logs, system metrics, recent changes
-    # AI decides: restart vs. config reload vs. resource cleanup
-    # AI reports: root cause + prevention steps
-    ```
+    Your service crashes. ANSAI:
+    1. Detects failure in 2 seconds
+    2. AI analyzes logs, metrics, and system state
+    3. Identifies root cause (not just "it crashed")
+    4. Executes healing strategy
+    5. Sends detailed report with prevention tips
+    
+    **Example:** *"DB connection pool exhausted due to missing timeout. Restarted + cleared connections. Add pool_timeout=30."*
 
--   ### 🔍 **Root Cause Analysis**
+-   ### ✅ **Proactive Monitoring**
     
-    **What it does:** AI reads your logs, correlates events, identifies patterns humans miss
+    **Predict failures before they happen**
     
-    ```python
-    # Traditional: "500 error"
-    # ANSAI AI: "500 errors caused by Redis timeout after 
-    #            DB migration at 03:14 increased query time"
-    ```
+    AI learns your normal patterns and alerts you to anomalies:
+    
+    - Memory leak detected → "Will crash in 6 hours"
+    - Disk usage growing → "Full in 3 days"
+    - Response time degrading → "Performance issue detected"
+    
+    **Fix problems before users notice them.**
 
--   ### 📊 **Predictive Failure Detection**
+-   ### ✅ **Cost Optimization**
     
-    **What it does:** AI learns your normal patterns, predicts failures before they happen
+    **AI picks the cheapest/fastest model for each task**
     
-    ```python
-    # AI notices: Memory usage growing 2% per hour
-    # AI predicts: OOM crash in 6 hours
-    # AI alerts: "story-stages will crash at 18:30 UTC"
-    ```
+    Different tasks need different AI models:
+    
+    - Simple log parsing → Groq ($0.10/M tokens, fast)
+    - Complex debugging → Claude ($15/M tokens, smart)
+    - Sensitive data → Local Ollama (free, private)
+    
+    **Save $40+/month** with intelligent routing.
 
--   ### 💰 **Cost-Optimized AI Routing**
+-   ### ✅ **Natural Language Operations**
     
-    **What it does:** Automatically route to cheapest/fastest AI model for each task
+    **Ask questions, get answers (via Fabric)**
     
-    ```python
-    # Log analysis → Groq (fast, cheap)
-    # Complex debugging → Claude (smart, expensive)
-    # Simple tasks → Local Ollama (free)
-    # Auto-fallback if model down
-    ```
+    Talk to your infrastructure:
+    
+    - *"Why is CPU high?"* → AI analyzes and explains
+    - *"Summarize last deployment"* → AI extracts key info
+    - *"Find errors in nginx logs"* → AI parses and reports
+    
+    **Your infrastructure, conversational.**
 
 </div>
 
