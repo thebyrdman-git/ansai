@@ -158,7 +158,7 @@ extra:
   # Analytics
   analytics:
     provider: google
-    property: G-XXXXXXXXXX
+    property: G-NMRXTVVL0Z
     feedback:
       title: Was this page helpful?
       ratings:
