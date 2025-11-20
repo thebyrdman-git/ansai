@@ -20,20 +20,12 @@
 
 # Stop Scripting. Start Thinking.
 
-**ANSAI = Ansible + AI**
-
-**Your Flask app crashes at 3 AM.**
-
-Traditional automation: *"Service restarted."*
-
-**ANSAI:** *"Service failed due to database connection pool exhaustion (45/50 connections hung). Restarted service + closed stale connections. Fix: Add **pool_timeout=30** to database.py:47 to prevent future crashes."*
-
-**That's the difference.** Not just automated—**intelligent.**
+**Your app crashes at 3 AM.** Traditional: *"Service restarted."* **ANSAI:** *"DB pool exhausted. Fixed + add **pool_timeout=30** to prevent it."*
 
 **Without AI, it's just Ansible. With ANSAI, it thinks.**
 
-[Get Started →](#quick-start){ .md-button .md-button--primary .md-button--large }
-[See How It Works →](#how-it-works){ .md-button .md-button--large }
+[Get Started →](#quick-start){ .md-button .md-button--primary }
+[See How It Works →](#how-it-works){ .md-button }
 
 </div>
 
