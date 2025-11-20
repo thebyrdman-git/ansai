@@ -33,25 +33,13 @@
 
 ## 🏗️ Core Features
 
-<div class="grid cards" markdown>
+**🏗️ Built on Ansible** - Uses the automation tool you already know. Not a proprietary platform. Your infrastructure, your rules.
 
--   **🏗️ Built on Ansible**
-    
-    Uses the automation tool you already know. Not a proprietary platform. Your infrastructure, your rules.
+**🤖 Powered by AI** - Connects to OpenAI, Claude, Groq, or local models. AI analyzes failures, identifies root causes, suggests fixes.
 
--   **🤖 Powered by AI**
-    
-    Connects to OpenAI, Claude, Groq, or local models. AI analyzes failures, identifies root causes, suggests fixes.
+**🛡️ Self-Healing Infrastructure** - Automatically detects failures, analyzes with AI, executes healing strategies, sends detailed reports.
 
--   **🛡️ Self-Healing Infrastructure**
-    
-    Automatically detects failures, analyzes with AI, executes healing strategies, sends detailed reports.
-
--   **💰 Cost-Optimized**
-    
-    Intelligent routing picks the cheapest/fastest AI model for each task. ~$2-5/month for 10 services.
-
-</div>
+**💰 Cost-Optimized** - Intelligent routing picks the cheapest/fastest AI model for each task. ~$2-5/month for 10 services.
 
 ---
 
@@ -76,25 +64,13 @@
 
 ## 🎯 Why AI-Powered Automation?
 
-<div class="grid cards" markdown>
+**🧠 Intelligent, Not Just Automated** - Traditional automation follows scripts. ANSAI uses AI to analyze, predict, and decide. Your infrastructure actually thinks.
 
--   ### 🧠 **Intelligent, Not Just Automated**
-    
-    Traditional automation follows scripts. ANSAI uses AI to analyze, predict, and decide. **Your infrastructure actually thinks.**
+**🔍 Root Cause Analysis** - Not just "service failed." ANSAI's AI analyzes logs, correlates events, identifies patterns. Tells you WHY it failed.
 
--   ### 🔍 **Root Cause Analysis**
-    
-    Not just "service failed." ANSAI's AI analyzes logs, correlates events, identifies patterns. **Tells you WHY it failed.**
+**📊 Predictive, Not Reactive** - AI learns your patterns. Predicts failures before they happen. Optimizes costs automatically. Proactive, not just responsive.
 
--   ### 📊 **Predictive, Not Reactive**
-    
-    AI learns your patterns. Predicts failures before they happen. Optimizes costs automatically. **Proactive, not just responsive.**
-
--   ### 💬 **Natural Language Operations**
-    
-    "Why is CPU high?" "Optimize my database." "What changed last night?" **Talk to your infrastructure.**
-
-</div>
+**💬 Natural Language Operations** - "Why is CPU high?" "Optimize my database." "What changed last night?" Talk to your infrastructure.
 
 ---
 
@@ -477,108 +453,70 @@ when utilization exceeds 80%. Add alerting for connection wait times
 
 **Everything powered by AI. That's what makes it intelligent.**
 
-<div class="grid cards" markdown>
+### ✅ Intelligent Service Healing
 
--   ### ✅ **Intelligent Service Healing**
-    
-    **Auto-detects failures + AI root cause analysis**
-    
-    Your service crashes. ANSAI:
-    1. Detects failure in 2 seconds
-    2. AI analyzes logs, metrics, and system state
-    3. Identifies root cause (not just "it crashed")
-    4. Executes healing strategy
-    5. Sends detailed report with prevention tips
-    
-    **Example:** *"DB connection pool exhausted due to missing timeout. Restarted + cleared connections. Add **pool_timeout=30** to config."*
+**Auto-detects failures + AI root cause analysis**
 
--   ### ✅ **Proactive Monitoring**
-    
-    **Predict failures before they happen**
-    
-    AI learns your normal patterns and alerts you to anomalies:
-    
-    - Memory leak detected → "Will crash in 6 hours"
-    - Disk usage growing → "Full in 3 days"
-    - Response time degrading → "Performance issue detected"
-    
-    **Fix problems before users notice them.**
+Your service crashes. ANSAI:
+1. Detects failure in 2 seconds
+2. AI analyzes logs, metrics, and system state
+3. Identifies root cause (not just "it crashed")
+4. Executes healing strategy
+5. Sends detailed report with prevention tips
 
--   ### ✅ **Cost Optimization**
-    
-    **AI picks the cheapest/fastest model for each task**
-    
-    Different tasks need different AI models:
-    
-    - Simple log parsing → Groq ($0.10/M tokens, fast)
-    - Complex debugging → Claude ($15/M tokens, smart)
-    - Sensitive data → Local Ollama (free, private)
-    
-    **Save $40+/month** with intelligent routing.
+**Example:** *"DB connection pool exhausted due to missing timeout. Restarted + cleared connections. Add **pool_timeout=30** to config."*
 
--   ### ✅ **Natural Language Operations**
-    
-    **Ask questions, get answers (via Fabric)**
-    
-    Talk to your infrastructure:
-    
-    - *"Why is CPU high?"* → AI analyzes and explains
-    - *"Summarize last deployment"* → AI extracts key info
-    - *"Find errors in nginx logs"* → AI parses and reports
-    
-    **Your infrastructure, conversational.**
+### ✅ Proactive Monitoring
 
-</div>
+**Predict failures before they happen**
+
+AI learns your normal patterns and alerts you to anomalies:
+
+- Memory leak detected → "Will crash in 6 hours"
+- Disk usage growing → "Full in 3 days"
+- Response time degrading → "Performance issue detected"
+
+**Fix problems before users notice them.**
+
+### ✅ Cost Optimization
+
+**AI picks the cheapest/fastest model for each task**
+
+Different tasks need different AI models:
+
+- Simple log parsing → Groq ($0.10/M tokens, fast)
+- Complex debugging → Claude ($15/M tokens, smart)
+- Sensitive data → Local Ollama (free, private)
+
+**Save $40+/month** with intelligent routing.
+
+### ✅ Natural Language Operations
+
+**Ask questions, get answers (via Fabric)**
+
+Talk to your infrastructure:
+
+- *"Why is CPU high?"* → AI analyzes and explains
+- *"Summarize last deployment"* → AI extracts key info
+- *"Find errors in nginx logs"* → AI parses and reports
+
+**Your infrastructure, conversational.**
 
 ## 💡 Example Use Cases (Built with ANSAI)
 
 **Here are some real implementations showing what you can build:**
 
-<div class="grid cards" markdown>
+**🐛 JavaScript/CSS Error Monitoring** - Real-time frontend error capture, runtime logging, alerting system for web applications. *Demonstrates: Monitoring patterns + alerting framework + custom data collection*
 
--   ### 🐛 **JavaScript/CSS Error Monitoring**
-    
-    *Example implementation by creator*  
-    Real-time frontend error capture, runtime logging, alerting system for web applications.
-    
-    **Demonstrates:** Monitoring patterns + alerting framework + custom data collection
+**📧 Email Alert System** - Detailed diagnostic emails with healing reports, failure analysis, and recovery steps. *Demonstrates: Service healing + notification patterns + report generation*
 
--   ### 📧 **Email Alert System**
-    
-    *Example implementation by creator*  
-    Detailed diagnostic emails with healing reports, failure analysis, and recovery steps.
-    
-    **Demonstrates:** Service healing + notification patterns + report generation
+**❤️ Healthchecks.io Integration** - External monitoring with uptime tracking, dead-man's switch, and third-party alerting. *Demonstrates: Monitoring integration + external APIs + health reporting*
 
--   ### ❤️ **Healthchecks.io Integration**
-    
-    *Example implementation by creator*  
-    External monitoring with uptime tracking, dead-man's switch, and third-party alerting.
-    
-    **Demonstrates:** Monitoring integration + external APIs + health reporting
+**🔄 Multi-Service Orchestration** - Coordinated healing across multiple services with dependency awareness and rollback capability. *Demonstrates: Orchestration engine + service coordination + state management*
 
--   ### 🔄 **Multi-Service Orchestration**
-    
-    *Example implementation by creator*  
-    Coordinated healing across multiple services with dependency awareness and rollback capability.
-    
-    **Demonstrates:** Orchestration engine + service coordination + state management
+**🤖 LiteLLM Multi-Model Proxy** - Route requests across OpenAI, Claude, local models with automatic fallback and cost tracking. *Demonstrates: AI integration + API routing + cost optimization + fault tolerance*
 
--   ### 🤖 **LiteLLM Multi-Model Proxy**
-    
-    *Example implementation by creator*  
-    Route requests across OpenAI, Claude, local models with automatic fallback and cost tracking.
-    
-    **Demonstrates:** AI integration + API routing + cost optimization + fault tolerance
-
--   ### 📝 **Fabric AI Text Processing**
-    
-    *Example implementation by creator*  
-    AI-powered text analysis, summarization, and transformation using proven patterns.
-    
-    **Demonstrates:** AI integration + text processing + pattern library + automation
-
-</div>
+**📝 Fabric AI Text Processing** - AI-powered text analysis, summarization, and transformation using proven patterns. *Demonstrates: AI integration + text processing + pattern library + automation*
 
 **[See Documentation →](self-healing/index.md)** | **[View Example Code →](https://github.com/thebyrdman-git/ansai/tree/main/orchestrators/ansible/roles)**
 
