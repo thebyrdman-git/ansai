@@ -1,0 +1,193 @@
+---
+# GitLab CEE Repository Creation Workflow
+# Creates a new GitLab repository and pushes code
+# 
+# Usage:
+#   ansible-playbook workflows/gitlab-repo-create.yml \
+#     -e repo_name=ansai \
+#     -e repo_description="ANSAI - AI-Powered Ansible Automation for Red Hat" \
+#     -e local_path=/home/jbyrd/ansai \
+#     -e gitlab_namespace=jbyrd
+#
+# Requires:
+#   - GitLab Personal Access Token in environment: GITLAB_TOKEN
+#   - Or in Ansible Vault: vault_gitlab_token
+#
+# Powered by Ansai - https://ansai.dev
+
+- name: Create GitLab CEE Repository and Push Code
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  vars:
+    gitlab_token: "{{ vault_gitlab_token | default(lookup('env', 'GITLAB_TOKEN')) }}"
+    gitlab_url: "https://gitlab.cee.redhat.com"
+    gitlab_api_url: "{{ gitlab_url }}/api/v4"
+    is_private: false
+    visibility: "internal"  # internal, private, or public
+    
+  tasks:
+    - name: Verify GitLab token is available
+      ansible.builtin.assert:
+        that:
+          - gitlab_token is defined
+          - gitlab_token | length > 0
+        fail_msg: "GitLab token not found. Set GITLAB_TOKEN environment variable or vault_gitlab_token"
+        success_msg: "GitLab token found"
+
+    - name: Verify local repository exists
+      ansible.builtin.stat:
+        path: "{{ local_path }}"
+      register: local_repo
+      
+    - name: Check if local path exists
+      ansible.builtin.assert:
+        that:
+          - local_repo.stat.exists
+          - local_repo.stat.isdir
+        fail_msg: "Local repository path {{ local_path }} does not exist"
+        success_msg: "Local repository found at {{ local_path }}"
+
+    - name: Check if repository already exists on GitLab
+      ansible.builtin.uri:
+        url: "{{ gitlab_api_url }}/projects/{{ gitlab_namespace }}%2F{{ repo_name }}"
+        method: GET
+        headers:
+          PRIVATE-TOKEN: "{{ gitlab_token }}"
+        status_code: [200, 404]
+        validate_certs: yes
+      register: repo_check
+      
+    - name: Create GitLab repository
+      ansible.builtin.uri:
+        url: "{{ gitlab_api_url }}/projects"
+        method: POST
+        headers:
+          PRIVATE-TOKEN: "{{ gitlab_token }}"
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          name: "{{ repo_name }}"
+          path: "{{ repo_name }}"
+          description: "{{ repo_description }}"
+          visibility: "{{ visibility }}"
+          initialize_with_readme: false
+          issues_enabled: true
+          merge_requests_enabled: true
+          wiki_enabled: false
+          snippets_enabled: false
+        status_code: 201
+        validate_certs: yes
+      register: repo_created
+      when: repo_check.status == 404
+
+    - name: Repository already exists
+      ansible.builtin.debug:
+        msg: "Repository {{ gitlab_namespace }}/{{ repo_name }} already exists on GitLab"
+      when: repo_check.status == 200
+
+    - name: Check if gitlab remote exists
+      ansible.builtin.command:
+        cmd: git remote get-url gitlab
+        chdir: "{{ local_path }}"
+      register: gitlab_remote_check
+      failed_when: false
+      changed_when: false
+
+    - name: Add GitLab remote to local repository
+      ansible.builtin.command:
+        cmd: git remote add gitlab git@gitlab.cee.redhat.com:{{ gitlab_namespace }}/{{ repo_name }}.git
+        chdir: "{{ local_path }}"
+      when: gitlab_remote_check.rc != 0
+
+    - name: Update GitLab remote URL if already exists
+      ansible.builtin.command:
+        cmd: git remote set-url gitlab git@gitlab.cee.redhat.com:{{ gitlab_namespace }}/{{ repo_name }}.git
+        chdir: "{{ local_path }}"
+      when: gitlab_remote_check.rc == 0
+
+    - name: Backup original README
+      ansible.builtin.copy:
+        src: "{{ local_path }}/README.md"
+        dest: "{{ local_path }}/README-GITHUB.md"
+        remote_src: yes
+      when: 
+        - local_path ~ '/ansai' in local_path
+        - (local_path ~ '/README-REDHAT.md') | ansible.builtin.stat exists
+
+    - name: Use Red Hat specific README
+      ansible.builtin.copy:
+        src: "{{ local_path }}/README-REDHAT.md"
+        dest: "{{ local_path }}/README.md"
+        remote_src: yes
+      when: 
+        - local_path ~ '/ansai' in local_path
+        - (local_path ~ '/README-REDHAT.md') | ansible.builtin.stat exists
+
+    - name: Stage README changes
+      ansible.builtin.command:
+        cmd: git add README.md README-GITHUB.md
+        chdir: "{{ local_path }}"
+      when: 
+        - local_path ~ '/ansai' in local_path
+        - (local_path ~ '/README-REDHAT.md') | ansible.builtin.stat exists
+
+    - name: Commit Red Hat README
+      ansible.builtin.command:
+        cmd: >
+          git commit -m "feat: Add Red Hat internal documentation
+
+          - Red Hat-specific README with internal use cases
+          - TAM, Training, Architect, Support role documentation  
+          - x2a integration roadmap
+          - RHLS analytics roadmap
+          - Customer Portal integration plans
+          - Internal security and compliance guidance
+          - Demo script for Red Hat roles (demo/ansai-demo-rh.sh)
+          - Red Hat-specific feedback form"
+        chdir: "{{ local_path }}"
+      register: commit_result
+      failed_when: commit_result.rc != 0 and 'nothing to commit' not in commit_result.stdout
+      changed_when: commit_result.rc == 0
+
+    - name: Check if code already pushed to GitLab
+      ansible.builtin.command:
+        cmd: git ls-remote gitlab main
+        chdir: "{{ local_path }}"
+      register: remote_check
+      failed_when: false
+      changed_when: false
+
+    - name: Push code to GitLab
+      ansible.builtin.command:
+        cmd: git push -u gitlab main
+        chdir: "{{ local_path }}"
+      register: push_result
+      when: remote_check.rc != 0 or remote_check.stdout == ''
+
+    - name: Code already pushed
+      ansible.builtin.debug:
+        msg: "Code already exists on GitLab remote"
+      when: remote_check.rc == 0 and remote_check.stdout != ''
+
+    - name: Display repository information
+      ansible.builtin.debug:
+        msg:
+          - "✅ GitLab repository ready!"
+          - ""
+          - "📦 Repository: {{ gitlab_url }}/{{ gitlab_namespace }}/{{ repo_name }}"
+          - "🌐 Clone URL: git@gitlab.cee.redhat.com:{{ gitlab_namespace }}/{{ repo_name }}.git"
+          - "📁 Local path: {{ local_path }}"
+          - ""
+          - "Next steps:"
+          - "1. Add collaborators: {{ gitlab_url }}/{{ gitlab_namespace }}/{{ repo_name }}/-/project_members"
+          - "2. Create issues for roadmap items"
+          - "3. Share with Red Hat TAMs/Training/Architects"
+          - "4. Set up CI/CD pipeline (optional)"
+          - ""
+          - "To restore GitHub README:"
+          - "  cd {{ local_path }}"
+          - "  git checkout README-GITHUB.md && mv README-GITHUB.md README.md"
+          - "  git add README.md && git commit -m 'Restore public README'"
+          - "  git push origin main"
+
