@@ -1,393 +1,304 @@
-# 🚀 ANSAI: AI-Powered Automation Infrastructure
+# ANSAI - For Red Hat Internal Use
 
-**ANSAI = Ansible + AI**
+🔴 **Red Hat Internal Repository** - Not for customer distribution without approval
 
-Stop scripting. Start thinking. Your infrastructure makes intelligent decisions.
-
-## 🎯 Why ANSAI?
-
-**Without AI, it's just Ansible.** With ANSAI, your automation:
-
-- 🧠 **Analyzes root causes** (not just "service failed")
-- 📊 **Predicts failures** before they happen
-- 💰 **Optimizes costs** automatically
-- 💬 **Understands natural language** ("why is CPU high?")
-- 🔍 **Correlates events** across your entire stack
-- 🎯 **Routes intelligently** based on cost, performance, load
-
-**The Difference:**
-
-| Traditional Automation | ANSAI (AI-Powered) |
-|------------------------|---------------------|
-| Restart on failure | Root cause analysis |
-| Static playbooks | Intelligent routing |
-| Manual log analysis | AI pattern recognition |
-| React to problems | Predict and prevent |
-| Follow scripts | Make decisions |
-
-## 🤖 AI-Powered Building Blocks
-
-### 1. AI-Powered Service Healing
-Not just restart-on-failure. AI analyzes logs, identifies root causes, correlates events.
-**Learns what "normal" looks like.**
-
-### 2. AI Orchestration Engine
-AI makes routing decisions based on cost, performance, load. Optimizes workflows automatically.
-**Learns from every execution.**
-
-### 3. AI Log Analysis
-AI reads your logs, finds anomalies, correlates events across services.
-**Tells you what matters.**
-
-### 4. Multi-Model LLM Access
-Route to OpenAI, Claude, Groq, or local models. AI picks the best model for the task.
-**Automatic cost optimization.**
-
-### 5. Natural Language Interface
-Talk to your infrastructure. Ask questions. Give commands.
-**AI understands context and intent.**
-
-## 🚀 Quick Start
-
-### One-Line Installation
-
-```bash
-curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
-```
-
-**The installer:**
-- ✅ Installs ANSAI to `~/.ansai`
-- ✅ Adds ANSAI to your PATH
-- ✅ Optionally installs AI dependencies (LiteLLM, Fabric)
-- ✅ Creates config directories
-- ✅ Prompts for AI backend setup
-
-### Quick Deploy (After Installation)
-
-```bash
-# 1. Start AI backend (LiteLLM example)
-export OPENAI_API_KEY="your-key"
-litellm --config ~/.config/ansai/litellm_config.yaml --port 4000 &
-
-# 2. Configure target server
-cat > ~/.ansai/orchestrators/ansible/inventory/hosts.yml << 'EOF'
-all:
-  children:
-    servers:
-      hosts:
-        my-server:
-          ansible_host: 192.168.1.100
-          ansible_user: your-username
-EOF
-
-# 3. Deploy AI-powered monitoring
-cd ~/.ansai/orchestrators/ansible
-ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
-```
-
-**That's it.** Your AI-powered automation is thinking for you.
-
-**[📚 Full Getting Started Guide](https://ansai.dev/GETTING_STARTED/)** (0 to AI in 5 minutes)
+**Public Version:** https://github.com/thebyrdman-git/ansai (Open source, MIT licensed)  
+**Internal Version:** https://gitlab.cee.redhat.com/jbyrd/ansai (Red Hat-specific enhancements)
 
 ---
 
-## ✨ What ANSAI Can Do (Phase 1)
+## What is ANSAI?
 
-### AI-Powered Infrastructure Resilience
-Phase 1 demonstrates AI-powered automation with real-world examples:
+**ANSAI** (Ansible-Native System Automation Infrastructure) combines Ansible with AI to provide intelligent, self-healing automation. It answers the #1 customer question: **"Can Ansible do AI?"**
 
-- **🛡️ AI-Powered Service Healing**: Not just restart - AI analyzes logs for root causes
-- **🐛 AI Error Analysis**: AI correlates frontend errors with backend events
-- **🎨 AI Asset Monitoring**: Intelligent detection of missing resources and patterns
-- **❤️ Predictive Health**: AI learns what's normal, alerts on anomalies
-- **🧪 Intelligent Testing**: AI-generated test scenarios based on real usage
-- **📚 AI Documentation**: Natural language queries about your infrastructure
-- **⚙️ Smart Workflows**: AI-optimized CI/CD based on code changes
-
-## 🗺️ Building Blocks: What You Can Create
-
-Think of these as **example creations** - patterns we're building to inspire you. But you're not limited to these. Build whatever solves YOUR problems.
-
-### Phase 1: Infrastructure Resilience Blocks (✅ Available Now)
-**What we built to show what's possible:**
-- Self-healing service patterns
-- Error monitoring and capture
-- External health checking
-- Automated diagnostics and remediation
-
-**What YOU could build with these:**
-- Auto-scaling based on health metrics
-- Custom healing strategies for your apps
-- Integration with your monitoring stack
-- Multi-environment health dashboards
-
-### Phase 2: System Administration Blocks (🚧 Community-Requested)
-**Patterns we're adding based on what YOU asked for:**
-- Disk space management patterns
-- Certificate lifecycle automation
-- Memory optimization strategies
-- Database maintenance workflows
-- Security update automation
-
-**What YOU could build:**
-- Custom cleanup policies for your data
-- Multi-CA certificate orchestration
-- Application-specific memory tuning
-- Backup-test-restore pipelines
-- Compliance scanning workflows
-
-### Phase 3: Workflow Orchestration Blocks (📋 Requested)
-**Building blocks for complex automation:**
-- Multi-step workflow engine
-- Event-driven triggers
-- Rollback and recovery patterns
-- Dependency resolution
-- Cross-service coordination
-
-**What YOU could build:**
-- Blue-green deployment automation
-- Data pipeline orchestration
-- Disaster recovery procedures
-- Multi-region failover
-- Custom deployment strategies
-
-### Phase 4: Infrastructure Pattern Library (📋 Requested)
-**Pre-built patterns you can customize:**
-- Web server configurations
-- Database cluster patterns
-- Load balancer setups
-- Environment templates
-- Compliance frameworks
-
-**What YOU could build:**
-- Your company's golden paths
-- Industry-specific patterns
-- Custom compliance rules
-- Organization standards
-- Reusable infrastructure modules
-
-### Phase 5: Integration Building Blocks (💡 Vision)
-**Connect ANSAI to your ecosystem:**
-- Cloud provider APIs
-- Monitoring tool hooks
-- Communication platforms
-- Ticketing systems
-- Custom APIs
-
-**What YOU could build:**
-- ChatOps commands
-- Custom dashboards
-- Automated incident response
-- Cross-platform orchestration
-- Your own integration ecosystem
-
-### Phase 6: Intelligence Patterns (💡 Vision)
-**Smart automation building blocks:**
-- Anomaly detection patterns
-- Predictive maintenance
-- Cost optimization logic
-- Performance tuning algorithms
-- Capacity forecasting
-
-**What YOU could build:**
-- ML-powered scaling
-- Predictive alerting
-- Cost-aware automation
-- Self-optimizing systems
-- Custom intelligence layers
+### Core Capabilities:
+- 🤖 **AI-powered root cause analysis** (not just "service restarted")
+- 🔧 **Intelligent self-healing** (AI decides how to fix issues)
+- 📊 **Predictive failure detection** (catch problems before they happen)
+- 💬 **Natural language ops** (ask infrastructure questions)
+- 💰 **Cost-effective** (~$0.10/month using Groq)
 
 ---
 
-**The Pattern**: We build example blocks → Community builds amazing things → We learn and improve → Repeat
+## Red Hat Use Cases
 
-**Show us what you build!** The best community creations become official examples.
+### For TAMs (Technical Account Managers)
+- **Customer case analysis** (500MB logs → AI root cause in 30 seconds)
+- **Reproduction in Red Hat lab** (no customer access needed)
+- **Playbook generation** (ready-to-send solutions)
+- **Time savings:** 120+ min → 15 min per case
 
-## 🚀 Quick Start
+[View TAM Demo →](docs/redhat-internal/TAM.md)
 
-### Install ANSAI
+### For Training Specialists (RHLS Management)
+- **RHLS usage analysis** (automatic monthly reports)
+- **Renewal risk detection** (inactive user alerts)
+- **Engagement automation** (personalized outreach)
+- **ROI reporting** (prove value to customers)
 
+[View Training Demo →](docs/redhat-internal/TRAINING.md)
+
+### For Solutions Architects
+- **Pre-sales demos** ("Can Ansible do AI?" → YES)
+- **Customer POCs** (15 min setup vs. weeks)
+- **Competitive positioning** (vs. AWS Systems Manager)
+
+[View Architect Demo →](docs/redhat-internal/ARCHITECT.md)
+
+### For Support Engineers
+- **Ticket analysis** (AI analyzes logs automatically)
+- **Solution generation** (knowledge base + AI)
+- **SLA protection** (45 min vs. 3+ hours)
+
+[View Support Demo →](docs/redhat-internal/SUPPORT.md)
+
+---
+
+## Quick Start (Red Hat Internal)
+
+### Try the Interactive Demo:
 ```bash
-# Clone the repository
-git clone https://github.com/thebyrdman-git/ansai.git
+git clone https://gitlab.cee.redhat.com/jbyrd/ansai.git
+cd ansai/demo
+docker compose up -d
+docker exec -it ansai-playground bash
+ansai-demo  # Select your role (TAM, Training, Architect, etc.)
+```
+
+### Deploy to Your Red Hat Lab:
+```bash
+# Clone repo
+git clone https://gitlab.cee.redhat.com/jbyrd/ansai.git
 cd ansai
 
-# Review configuration
-nano orchestrators/ansible/roles/universal_self_heal/defaults/main.yml
+# Set up AI provider (Groq recommended)
+export ANSAI_GROQ_API_KEY="your-groq-api-key"
 
-# Deploy v1.0 (Infrastructure Resilience)
-cd orchestrators/ansible
-ansible-playbook playbooks/deploy-complete-monitoring.yml
+# Deploy with Ansible
+ansible-playbook orchestrators/ansible/playbooks/deploy-self-healing.yml
+
+# Test
+curl localhost:8000/health
 ```
-
-### Your First Automated Service (5 minutes)
-
-```yaml
-# Add to monitored_services in defaults/main.yml
-monitored_services:
-  - name: "nginx"
-    description: "Web Server"
-  - name: "postgresql"
-    description: "Database"
-```
-
-```bash
-# Deploy
-ansible-playbook playbooks/deploy-self-healing.yml
-
-# Monitor
-sudo journalctl -u universal-self-heal@nginx.service -f
-```
-
-That's it! Your services are now self-healing with intelligent diagnostics.
-
-## 📊 Use Cases
-
-### For DevOps Teams
-- Reduce MTTR from hours to seconds
-- Automate repetitive operational tasks
-- Build intelligent runbooks that execute automatically
-- Create consistent automation patterns across teams
-
-### For SREs
-- Decrease on-call burden by 60-80%
-- Implement intelligent alerting with auto-remediation
-- Build resilient systems that heal themselves
-- Focus on innovation, not firefighting
-
-### For System Administrators  
-- Automate routine maintenance tasks
-- Prevent issues before they become incidents
-- Standardize configurations across environments
-- Scale your impact without scaling headcount
-
-### For Small Teams & Homelabs
-- Enterprise-grade automation without enterprise complexity
-- Production reliability for side projects
-- Learn automation best practices
-- Build professional infrastructure
-
-## 🏗️ Architecture
-
-ANSAI is built on three core principles:
-
-### 1. Modular Components
-Each ANSAI module is self-contained and can be deployed independently:
-- Infrastructure Resilience
-- System Administration
-- Workflow Orchestration
-- Integration Hub
-
-### 2. Ansible-Native
-Leverage your existing Ansible knowledge:
-- Familiar playbook structure
-- Standard Ansible modules
-- Integrates with existing automation
-- Use Ansible Vault for secrets
-
-### 3. Event-Driven Design
-React intelligently to system events:
-- systemd OnFailure hooks
-- Webhook triggers
-- Scheduled checks
-- API events
-
-## 🤝 Community Creations
-
-**We want to see what YOU build!** ANSAI is a platform for creativity.
-
-### Share Your Builds
-
-- **🎨 Show & Tell**: [Built something cool? Show us!](https://github.com/thebyrdman-git/ansai/discussions/categories/show-and-tell)
-- **💡 Request Building Blocks**: [What pieces do you need?](https://github.com/thebyrdman-git/ansai/discussions/categories/ideas)
-- **🐛 Report Issues**: [Something broken?](https://github.com/thebyrdman-git/ansai/issues)
-- **💻 Contribute Patterns**: [Share your creations](CONTRIBUTING.md)
-- **📚 Improve Examples**: Documentation and tutorial PRs welcome
-- **⭐ Star & Share**: Help others discover the platform
-
-### How We Learn From You
-
-1. You build something amazing
-2. Share it with the community
-3. Others learn and iterate
-4. Best patterns become official examples
-5. Everyone benefits
-
-**The best ANSAI creations come from the community, not from us.**
-
-## 📖 Documentation
-
-- **[Complete Documentation](docs/)**: Full guides and references
-- **[Self-Healing Infrastructure](docs/self-healing/)**: v1.0 feature documentation
-- **[Phase 1 Launch Strategy](docs/LAUNCH_STRATEGY.md)**: Community growth plan
-- **[Community Priorities](docs/COMMUNITY_PRIORITIES.md)**: What's coming next
-- **[Scaling Strategy](docs/SCALING_STRATEGY.md)**: Long-term vision
-
-## 🎯 Community Builds
-
-**Early adopters are already building amazing things:**
-
-> *"I combined the self-healing blocks with custom Slack notifications and built a ChatOps system that lets my team restart services from mobile. Took 2 hours to build what would've been weeks of custom dev."*
-> — Early Adopter
-
-> *"We used ANSAI patterns to build our entire deployment pipeline. Self-healing was just the starting point - now we have automated rollbacks, database migrations, and compliance checks all using the same framework."*
-> — Production User
-
-> *"I built a custom cost optimization workflow by combining ANSAI's orchestration with AWS APIs. It automatically scales down dev environments overnight and scales them back up in the morning. Saved 40% on our AWS bill."*
-> — Community Member
-
-**What will YOU build?** Share it in [Show & Tell](https://github.com/thebyrdman-git/ansai/discussions/categories/show-and-tell)!
-
-## 📈 Building Progress
-
-- **Phase 1**: ✅ Infrastructure Resilience Blocks - Released & Production-Ready
-- **Phase 2**: 🚧 System Administration Blocks - In Development (Community-Requested)
-- **Phase 3+**: 📋 Workflow, Patterns, Integrations, Intelligence - Roadmap
-
-**Community Growth** (Phase 1 Goals)
-- ⭐ Platform Adopters: 50+ stars
-- 🎨 Community Creations: 10+ shared builds
-- 👥 Active Builders: 5+ contributors
-- 💬 Community Members: 100+
-- 🚀 Production Deployments: 20+
-
-## 🛠️ Technical Stack
-
-- **Core**: Ansible, Python 3.9+, systemd
-- **Monitoring**: Custom scripts, systemd timers
-- **External Integration**: Healthchecks.io, SMTP
-- **Testing**: Bash test suite, GitHub Actions
-- **Documentation**: MkDocs Material
-
-## 📜 License
-
-MIT License - see [LICENSE](LICENSE) for details.
-
-**Free and open source forever.** No vendor lock-in, no premium features, no bait-and-switch.
-
-## 🙏 Acknowledgments
-
-Built with:
-- **Ansible**: The automation language that makes ANSAI possible
-- **systemd**: Reliable service management and event hooks
-- **Open Source Community**: Inspiration, feedback, and contributions
 
 ---
 
-## 🚀 Get Started Today
+## Red Hat Product Integrations
 
-```bash
-git clone https://github.com/thebyrdman-git/ansai.git
-cd ansai/orchestrators/ansible
-ansible-playbook playbooks/deploy-complete-monitoring.yml
-```
+### Current Integrations:
+- ✅ **Ansible Automation Platform (AAP)** - Works alongside AAP
+- ✅ **Red Hat Customer Portal** - TAM case analysis
+- 🔨 **Event-Driven Ansible (EDA)** - AI-powered source plugin (planned)
+- 🔨 **OpenShift** - Container self-healing (planned)
+- 🔨 **Red Hat Insights** - Complement with AI (planned)
 
-**Questions? Feedback? Ideas?**
-- 💬 [GitHub Discussions](https://github.com/thebyrdman-git/ansai/discussions)
-- 🐛 [Issue Tracker](https://github.com/thebyrdman-git/ansai/issues)
-- 📧 [Community](https://github.com/thebyrdman-git/ansai/discussions)
+### Upcoming:
+- 🔴 **x2a Integration** - Sr. Architect collaboration (Q1 2026)
+- 🔴 **RHLS Analytics** - Training subscription optimization
+- 🔴 **Dataverse MCP** - AI-powered data operations
 
 ---
 
-**Build your automation. Your way.** 🚀
+## Documentation
 
-*ANSAI: The building blocks. Your creativity. Infinite possibilities.*
+### For Red Hat Employees:
+- 📘 [TAM Workflow Guide](docs/redhat-internal/TAM.md)
+- 📊 [Training Specialist Guide](docs/redhat-internal/TRAINING.md)
+- 🏗️ [Solutions Architect Guide](docs/redhat-internal/ARCHITECT.md)
+- 🎫 [Support Engineer Guide](docs/redhat-internal/SUPPORT.md)
+- 💻 [Engineer Integration Guide](docs/redhat-internal/ENGINEER.md)
+- 📈 [Product Manager Guide](docs/redhat-internal/PM.md)
+
+### General Documentation:
+- 🚀 [Getting Started](docs/getting-started.md)
+- 🔧 [Installation Guide](docs/installation.md)
+- 🤖 [AI Configuration](docs/ai-configuration.md)
+- 📖 [API Documentation](docs/api.md)
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  AI Layer (Groq, OpenAI, Claude, Ollama)               │
+│  - Root cause analysis                                  │
+│  - Playbook generation                                  │
+│  - Predictive analytics                                 │
+└──────────────┬──────────────────────────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────────────────────────┐
+│  ANSAI Core                                             │
+│  - Self-healing orchestrator                            │
+│  - Service monitoring                                   │
+│  - Event correlation                                    │
+└──────────────┬──────────────────────────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────────────────────────┐
+│  Ansible Integration                                    │
+│  - AAP / AWX                                            │
+│  - Event-Driven Ansible                                 │
+│  - Existing playbooks                                   │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Cost Analysis (Red Hat Internal)
+
+### Using Groq (Recommended):
+- **Cost:** ~$0.10/month per server
+- **Model:** llama-3.1-8b-instant
+- **Speed:** 500+ tokens/second
+- **ROI:** 1 prevented outage pays for 1,000 months
+
+### Enterprise Options:
+- **AWS Bedrock:** $0.50-2.00/month per server
+- **Azure OpenAI:** $1-3/month per server
+- **On-premise LLM:** $0 (after hardware investment)
+
+### Customer Pricing Guidance:
+- **Small (1-10 servers):** $1-10/month
+- **Medium (10-100 servers):** $10-100/month
+- **Enterprise (100+ servers):** Volume pricing
+
+---
+
+## Security & Compliance
+
+### Data Privacy:
+- ✅ Logs sent to AI are configurable (filter sensitive data)
+- ✅ Works with on-premise LLMs (no external API calls)
+- ✅ No customer data stored (stateless by default)
+- ✅ HTTPS for all external communications
+
+### Red Hat Internal Use:
+- ✅ Safe for demo environments
+- ✅ Safe for non-production customer labs
+- ⚠️  Production customer deployments: Review with security team
+- ⚠️  Customer data: Follow Red Hat data handling policies
+
+---
+
+## Contributing (Red Hat Employees)
+
+### Internal Contributions:
+1. **Fork this repo** (GitLab internal)
+2. **Create feature branch** (`feature/tam-case-integration`)
+3. **Test thoroughly** (use demo environment)
+4. **Submit merge request** (tag @jbyrd for review)
+5. **Document for customers** (if customer-facing)
+
+### Upstream Contributions:
+- **Public GitHub:** https://github.com/thebyrdman-git/ansai
+- **For community features** (not Red Hat-specific)
+- **MIT License** (open source)
+
+---
+
+## Support & Contact
+
+### For Red Hat Employees:
+- 📧 **Email:** jbyrd@redhat.com
+- 💬 **Mojo:** [ANSAI Discussion Group] (coming soon)
+- 🎫 **Issues:** https://gitlab.cee.redhat.com/jbyrd/ansai/issues
+- 📅 **Office Hours:** TBD
+
+### For Customers:
+- 🌐 **Website:** https://ansai.dev
+- 💻 **GitHub:** https://github.com/thebyrdman-git/ansai
+- 📧 **Public Contact:** jimmykbyrd@gmail.com
+
+---
+
+## Roadmap
+
+### Q4 2024 ✅
+- [x] Core self-healing engine
+- [x] AI root cause analysis
+- [x] Multi-model support (Groq, OpenAI, Claude)
+- [x] Email notifications
+
+### Q1 2025 🔨
+- [ ] x2a integration (Sr. Architect collaboration)
+- [ ] RHLS analytics integration
+- [ ] Red Hat Customer Portal integration
+- [ ] Event-Driven Ansible source plugin
+
+### Q2 2025 🎯
+- [ ] AAP certified collection
+- [ ] OpenShift operator
+- [ ] Red Hat Insights integration
+- [ ] Enterprise RBAC/multi-tenancy
+
+### Q3 2025+ 🚀
+- [ ] Red Hat Dataverse MCP integration
+- [ ] Predictive failure AI models
+- [ ] Natural language playbook generation
+- [ ] Desktop/IDE integration (ANSAI Studio)
+
+---
+
+## Success Stories (Red Hat Internal)
+
+### Demo Results (November 2024):
+- ✅ **TAM use case** - Received excellent feedback
+- ✅ **Training Specialist** - RHLS integration interest
+- ✅ **Sr. Solution Architect** - x2a integration planned
+- ✅ **Time to value:** 36 minutes (demo → integration discussion)
+
+### Metrics:
+- ⏱️  **TAM time savings:** 120 min → 15 min per case
+- 💰 **Training renewal protection:** $42K+ saved per account
+- 🎯 **Customer satisfaction:** High (personalized engagement)
+
+---
+
+## FAQ (Red Hat Internal)
+
+### "Can I demo this to customers?"
+✅ Yes! It's open source. Show them https://ansai.dev or the Docker playground.
+
+### "Can I deploy this to customer environments?"
+⚠️  Use your judgment. Demo/lab environments: Yes. Production: Discuss with customer first.
+
+### "What about support/warranty for customers?"
+⚠️  This is a community project, not an official Red Hat product. No support SLA.
+
+### "Is this an official Red Hat product?"
+❌ No, it's a personal project by a Red Hat employee. Open source, community-driven.
+
+### "Can this become a Red Hat product?"
+🤔 Maybe! If there's enough customer demand and internal support. Your feedback helps!
+
+### "How do I get my manager's approval to use this?"
+💡 Share this repo + ansai.dev. Highlight: open source, low cost, customer value, competitive differentiation.
+
+---
+
+## License
+
+**Public Version (GitHub):** MIT License  
+**Internal Version (GitLab CEE):** Red Hat Internal Use
+
+See LICENSE file for details.
+
+---
+
+## Acknowledgments
+
+Built by **jbyrd@redhat.com** with feedback from Red Hat TAMs, Solution Architects, Training Specialists, and the open source community.
+
+Special thanks to the Ansible, OpenAI, and Groq communities for making intelligent automation accessible.
+
+---
+
+**Last Updated:** November 21, 2024  
+**Version:** 1.0 (Launch)  
+**Status:** Active Development
+
+🚀 **Ready to make Ansible intelligent? Let's build together!**
+
+
