@@ -99,7 +99,7 @@ echo -e "  4. Create configuration directories"
 echo -e ""
 
 read -p "Continue with installation? (y/n) " -n 1 -r
-echo
+echo ""
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     print_warning "Installation cancelled."
     exit 0
