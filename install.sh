@@ -182,18 +182,38 @@ print_success "All prerequisites met!"
 # Clone ANSAI repository
 print_header "Step 2: Installing ANSAI"
 
+# Check if we're running from within ANSAI_DIR (prevents self-deletion)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+RUNNING_FROM_ANSAI=false
+if [[ "$SCRIPT_DIR" == "$ANSAI_DIR"* ]]; then
+    RUNNING_FROM_ANSAI=true
+    print_warning "Detected: Running installer from within ANSAI directory"
+fi
+
 if [ -d "$ANSAI_DIR" ]; then
     print_warning "ANSAI directory already exists: $ANSAI_DIR"
     read -p "Remove and reinstall? (y/n) " -n 1 -r
-    echo
+    echo ""
     if [[ $REPLY =~ ^[Yy]$ ]]; then
+        # If running from within ANSAI, copy script to /tmp first
+        if [ "$RUNNING_FROM_ANSAI" = true ]; then
+            print_step "Copying installer to /tmp to prevent self-deletion..."
+            cp "$0" /tmp/ansai-install-temp.sh
+            chmod +x /tmp/ansai-install-temp.sh
+            print_info "Re-running installer from safe location..."
+            exec /tmp/ansai-install-temp.sh
+            exit 0
+        fi
+        
         print_step "Removing existing installation..."
         rm -rf "$ANSAI_DIR"
+        print_success "Existing installation removed"
     else
         print_info "Keeping existing installation. Pulling latest changes..."
         cd "$ANSAI_DIR"
         git pull origin main
         print_success "ANSAI updated!"
+        exit 0
     fi
 fi
 
@@ -401,7 +421,12 @@ echo -e "${CYAN}AI-powered automation starts now.${NC}\n"
 # Offer to reload shell
 echo -e "${YELLOW}Note: You need to reload your shell for PATH changes to take effect.${NC}"
 read -p "Open a new terminal or run: source $SHELL_CONFIG (press any key)" -n 1 -r
-echo
+echo ""
+
+# Clean up temp installer if it exists
+if [ -f /tmp/ansai-install-temp.sh ]; then
+    rm -f /tmp/ansai-install-temp.sh
+fi
 
 exit 0
 
