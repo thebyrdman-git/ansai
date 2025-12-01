@@ -1,0 +1,66 @@
+---
+# Deploy Cursor Rules and Personas
+# Usage: ansible-playbook playbooks/deploy-cursor-rules.yml
+#
+# This playbook:
+# 1. Generates persona YAML files from templates
+# 2. Deploys .cursorrules to target projects
+# 3. Syncs changes to GitHub cursor.rules repo
+
+- name: Deploy Cursor Rules and AI Personas
+  hosts: localhost
+  gather_facts: true
+
+  vars:
+    # Override defaults as needed
+    cursor_rules_targets:
+      # Red Hat projects
+      - path: "{{ ansible_env.HOME }}/Documents/GitHub/taminator"
+        persona: "redhat"
+      - path: "{{ ansible_env.HOME }}/Documents/GitHub/taminator-ci"
+        persona: "redhat"
+      
+      # Personal dev projects
+      - path: "{{ ansible_env.HOME }}/Documents/GitHub/ansai"
+        persona: "personal_dev"
+      - path: "{{ ansible_env.HOME }}/Documents/GitHub/personal-pai"
+        persona: "personal_dev"
+      - path: "{{ ansible_env.HOME }}/Documents/GitHub/miraclemax-infrastructure"
+        persona: "personal_dev"
+      
+      # Personal finance projects
+      - path: "{{ ansible_env.HOME }}/Documents/GitHub/family-finance"
+        persona: "personal_finance"
+      - path: "{{ ansible_env.HOME }}/Documents/GitHub/money-jbyrd-org"
+        persona: "personal_finance"
+
+  roles:
+    - role: cursor_rules
+      tags:
+        - cursor_rules
+        - personas
+
+  post_tasks:
+    - name: Display deployment summary
+      ansible.builtin.debug:
+        msg: |
+          
+          ══════════════════════════════════════════════════════════
+            ✅ CURSOR RULES DEPLOYMENT COMPLETE
+          ══════════════════════════════════════════════════════════
+          
+          Personas deployed:
+            - redhat: TAM automation context
+            - personal_dev: ANSAI/AI development context  
+            - personal_finance: Ramit Sethi inspired context
+          
+          Target projects updated: {{ cursor_rules_targets | length }}
+          
+          Persona profile:
+            - MBTI: {{ persona_profile.mbti }}
+            - Enneagram: {{ persona_profile.enneagram }}
+          
+          Source repo: {{ cursor_rules_source_repo }}
+          
+          ══════════════════════════════════════════════════════════
+

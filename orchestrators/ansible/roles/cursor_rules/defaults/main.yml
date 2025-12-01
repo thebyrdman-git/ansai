@@ -1,0 +1,46 @@
+---
+# Cursor Rules Role - Default Variables
+# Manages deployment of cursor rules and AI personas across projects
+
+# Base configuration
+cursor_rules_source_repo: "{{ ansible_env.HOME }}/Documents/GitHub/cursor.rules"
+cursor_rules_backup: true
+
+# Persona configuration
+persona_profile:
+  mbti: "INTJ"
+  enneagram: "Type 8"
+  traits:
+    - "Direct"
+    - "Truth-focused"
+    - "Systematic"
+    - "Results-oriented"
+
+# Target projects to deploy cursor rules
+cursor_rules_targets: []
+# Example:
+# cursor_rules_targets:
+#   - path: "{{ ansible_env.HOME }}/Documents/GitHub/ansai"
+#     persona: "personal_dev"
+#   - path: "{{ ansible_env.HOME }}/Documents/GitHub/taminator"
+#     persona: "redhat"
+
+# Persona templates to deploy
+personas:
+  redhat:
+    enabled: true
+    name: "Red Hat TAM"
+    description: "Technical Account Manager automation"
+  personal_dev:
+    enabled: true
+    name: "Personal Dev"
+    description: "ANSAI/AI automation projects"
+  personal_finance:
+    enabled: true
+    name: "Personal Finance"
+    description: "Ramit Sethi inspired financial automation"
+
+# Sync settings
+cursor_rules_sync_to_github: true
+cursor_rules_github_repo: "thebyrdman-git/cursor.rules"
+
