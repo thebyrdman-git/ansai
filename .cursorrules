@@ -1,0 +1,44 @@
+# ANSAI Project Rules
+
+## Workflow Automation
+
+- **Always use Ansible playbooks instead of bash scripts for workflows**
+  - Ansible is idempotent, documented, and integrates with the ANSAI ecosystem
+  - Place playbooks in `playbooks/` or `orchestrators/ansible/playbooks/`
+  - Use roles for reusable components in `orchestrators/ansible/roles/`
+  - Only use bash scripts for simple CLI wrappers in `bin/`
+
+- **Ansible best practices:**
+  - Use `ansible.builtin` FQCNs for all modules
+  - Include meaningful task names
+  - Use `block/rescue` for error handling
+  - Set `changed_when` and `failed_when` appropriately
+  - Use variables with sensible defaults in `defaults/main.yml`
+
+## Security
+
+- **Never commit secrets to git**
+  - Use environment variables or HashiCorp Vault
+  - Run `gitleaks detect` before committing
+  - Add pre-commit hooks with gitleaks
+
+- **Run security scans on all repos periodically**
+  - Use `playbooks/security-scan-repos.yml` for comprehensive scanning
+
+## Code Style
+
+- **Shell scripts (when necessary):**
+  - Use `#!/bin/bash` or `#!/usr/bin/env bash`
+  - Include `set -euo pipefail` for safety
+  - Use ANSAI standard colored output functions
+
+- **Python:**
+  - Use `uv` for package management
+  - Format with `ruff`
+  - Type hints required
+
+## Documentation
+
+- Do not create README files unless explicitly requested
+- Document playbooks with header comments explaining usage
+

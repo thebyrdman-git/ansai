@@ -1,0 +1,212 @@
+---
+# ANSAI Security Scan - Scan all repos for leaked secrets
+# Usage: ansible-playbook playbooks/security-scan-repos.yml
+#
+# Requirements:
+#   - gitleaks installed (brew install gitleaks)
+#   - SSH keys configured for GitHub and GitLab CEE
+#   - VPN connected for GitLab CEE repos
+
+- name: Scan all repositories for leaked secrets
+  hosts: localhost
+  gather_facts: true
+  
+  vars:
+    scan_dir: "{{ ansible_env.HOME }}/Documents/GitHub/_security-scan/repos"
+    report_dir: "{{ ansible_env.HOME }}/Documents/GitHub/_security-scan/reports"
+    
+    github_repos:
+      - thebyrdman-git/acceleration-framework
+      - thebyrdman-git/ansai
+      - thebyrdman-git/ansai-demo
+      - thebyrdman-git/ansai-docs
+      - thebyrdman-git/ansai-landing
+      - thebyrdman-git/ansai-pull-requests
+      - thebyrdman-git/ansai-self-healing
+      - thebyrdman-git/ansai-studio
+      - thebyrdman-git/ansible
+      - thebyrdman-git/ansible-pilot
+      - thebyrdman-git/ansible-strategy
+      - thebyrdman-git/ansibleize-everything
+      - thebyrdman-git/bible-learning
+      - thebyrdman-git/blog-command-center
+      - thebyrdman-git/blog-jbyrd-org
+      - thebyrdman-git/books-jbyrd-org
+      - thebyrdman-git/bugnosis
+      - thebyrdman-git/cursor-history
+      - thebyrdman-git/cursor.rules
+      - thebyrdman-git/drift-management
+      - thebyrdman-git/dynamic-inventory-plugin-example
+      - thebyrdman-git/family-finance
+      - thebyrdman-git/first-challenge
+      - thebyrdman-git/google-assistant-ai
+      - thebyrdman-git/jbyrd
+      - thebyrdman-git/laptop-as-code
+      - thebyrdman-git/laptop-enterprise-automation
+      - thebyrdman-git/miraclemax-ansible
+      - thebyrdman-git/miraclemax-infrastructure
+      - thebyrdman-git/money-jbyrd-org
+      - thebyrdman-git/myspace-jbyrd-org
+      - thebyrdman-git/pai-core-framework
+      - thebyrdman-git/pai-entertainment-automation
+      - thebyrdman-git/pai-home-automation
+      - thebyrdman-git/pai-learning-lab
+      - thebyrdman-git/pai-monitoring-stack
+      - thebyrdman-git/pai-personal-finance
+      - thebyrdman-git/pai-smart-home-automation
+      - thebyrdman-git/passgo-infra
+      - thebyrdman-git/passgo-landing
+      - thebyrdman-git/personal-infrastructure-automation
+      - thebyrdman-git/personal-pai
+      - thebyrdman-git/quarterly-connection-assistant
+      - thebyrdman-git/redhat-runner-manager
+      - thebyrdman-git/redhat-servers
+      - thebyrdman-git/redhat-totp-autofill
+      - thebyrdman-git/rh294-practice
+      - thebyrdman-git/smart-home-automation
+      - thebyrdman-git/smart-home-automation-public
+      - thebyrdman-git/sports-command-center
+      - thebyrdman-git/storage-role-demo
+      - thebyrdman-git/taminator
+      - thebyrdman-git/taminator-ci
+      - thebyrdman-git/taminator-staging
+      - thebyrdman-git/tamlab-redhat-os
+      - thebyrdman-git/tamlab-windows-hosts
+      - thebyrdman-git/tldr
+      - thebyrdman-git/using_ansible_facts_with_conditionals_demo
+      - thebyrdman-git/windows-tests
+      - thebyrdman-git/wireguard-gui
+      - thebyrdman-git/zedr.blog_examples
+
+    gitlab_cee_repos:
+      - jbyrd/taminator
+      - jbyrd/ansai-workflow-automator
+
+  tasks:
+    - name: Check gitleaks is installed
+      ansible.builtin.command: which gitleaks
+      register: gitleaks_check
+      changed_when: false
+      failed_when: gitleaks_check.rc != 0
+
+    - name: Create scan directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "{{ scan_dir }}"
+        - "{{ report_dir }}"
+
+    - name: Clone GitHub repos
+      ansible.builtin.git:
+        repo: "git@github.com:{{ item }}.git"
+        dest: "{{ scan_dir }}/{{ item | replace('/', '_') }}"
+        clone: true
+        update: true
+        depth: 0  # Full history for scanning
+      loop: "{{ github_repos }}"
+      register: github_clone
+      ignore_errors: true
+
+    - name: Clone GitLab CEE repos
+      ansible.builtin.git:
+        repo: "git@gitlab.cee.redhat.com:{{ item }}.git"
+        dest: "{{ scan_dir }}/{{ item | replace('/', '_') }}"
+        clone: true
+        update: true
+        depth: 0
+      loop: "{{ gitlab_cee_repos }}"
+      register: gitlab_clone
+      ignore_errors: true
+
+    - name: Scan GitHub repos with gitleaks
+      ansible.builtin.shell: |
+        cd "{{ scan_dir }}/{{ item | replace('/', '_') }}"
+        gitleaks detect --report-path "{{ report_dir }}/{{ item | replace('/', '_') }}.json" --report-format json 2>&1
+        echo "EXIT_CODE:$?"
+      loop: "{{ github_repos }}"
+      register: github_scans
+      changed_when: false
+      failed_when: false
+
+    - name: Scan GitLab CEE repos with gitleaks
+      ansible.builtin.shell: |
+        cd "{{ scan_dir }}/{{ item | replace('/', '_') }}"
+        gitleaks detect --report-path "{{ report_dir }}/{{ item | replace('/', '_') }}.json" --report-format json 2>&1
+        echo "EXIT_CODE:$?"
+      loop: "{{ gitlab_cee_repos }}"
+      register: gitlab_scans
+      changed_when: false
+      failed_when: false
+
+    - name: Parse scan results
+      ansible.builtin.set_fact:
+        repos_with_leaks: >-
+          {{
+            (github_scans.results + gitlab_scans.results)
+            | selectattr('rc', 'ne', 0)
+            | map(attribute='item')
+            | list
+          }}
+
+    - name: Count leaks per repo
+      ansible.builtin.shell: |
+        if [ -f "{{ report_dir }}/{{ item | replace('/', '_') }}.json" ]; then
+          python3 -c "import json; print(len(json.load(open('{{ report_dir }}/{{ item | replace('/', '_') }}.json'))))"
+        else
+          echo "0"
+        fi
+      loop: "{{ repos_with_leaks }}"
+      register: leak_counts
+      changed_when: false
+
+    - name: Display scan summary
+      ansible.builtin.debug:
+        msg: |
+          
+          ══════════════════════════════════════════════════════════
+            🔍 GITLEAKS SECURITY SCAN SUMMARY
+          ══════════════════════════════════════════════════════════
+          
+          Total repos scanned: {{ github_repos | length + gitlab_cee_repos | length }}
+          Repos with potential leaks: {{ repos_with_leaks | length }}
+          
+          {% if repos_with_leaks | length > 0 %}
+          ⚠️  REPOS REQUIRING ATTENTION:
+          {% for item in leak_counts.results %}
+            - {{ item.item }}: {{ item.stdout }} potential leaks
+          {% endfor %}
+          
+          Reports saved to: {{ report_dir }}
+          {% else %}
+          ✅ All repos are clean!
+          {% endif %}
+          
+          ══════════════════════════════════════════════════════════
+
+    - name: Create summary report
+      ansible.builtin.copy:
+        content: |
+          # Security Scan Report
+          Generated: {{ ansible_date_time.iso8601 | default(lookup('pipe', 'date -Iseconds')) }}
+          
+          ## Summary
+          - Total repos scanned: {{ github_repos | length + gitlab_cee_repos | length }}
+          - Repos with potential leaks: {{ repos_with_leaks | length }}
+          
+          ## Repos with Leaks
+          {% for item in leak_counts.results %}
+          - {{ item.item }}: {{ item.stdout }} findings
+          {% endfor %}
+          
+          ## Next Steps
+          1. Review JSON reports in {{ report_dir }}
+          2. Identify real secrets vs false positives
+          3. Rotate any leaked credentials
+          4. Clean git history with BFG
+          5. Add pre-commit hooks to prevent future leaks
+        dest: "{{ report_dir }}/SUMMARY.md"
+        mode: '0644'
+      when: repos_with_leaks | length > 0
+
