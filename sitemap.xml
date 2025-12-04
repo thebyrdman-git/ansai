@@ -84,4 +84,20 @@
          <loc>https://ansai.dev/self-healing/UNIVERSAL_SELF_HEALING/</loc>
          <lastmod>2025-12-04</lastmod>
     </url>
+    <url>
+         <loc>https://ansai.dev/system-admin/AAP_LOCAL_SETUP/</loc>
+         <lastmod>2025-12-04</lastmod>
+    </url>
+    <url>
+         <loc>https://ansai.dev/system-admin/CERTIFICATE_LIFECYCLE/</loc>
+         <lastmod>2025-12-04</lastmod>
+    </url>
+    <url>
+         <loc>https://ansai.dev/system-admin/DISK_MANAGEMENT/</loc>
+         <lastmod>2025-12-04</lastmod>
+    </url>
+    <url>
+         <loc>https://ansai.dev/system-admin/INDEX/</loc>
+         <lastmod>2025-12-04</lastmod>
+    </url>
 </urlset>

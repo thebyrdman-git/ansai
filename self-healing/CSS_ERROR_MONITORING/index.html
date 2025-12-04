@@ -1585,7 +1585,7 @@
 <div class="language-html highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/static/js/css-monitor.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </span></code></pre></div>
 <h3 id="4-restart-your-applications">4. Restart Your Applications<a class="headerlink" href="#4-restart-your-applications" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo systemctl restart story-stages passgo&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo systemctl restart story-stages passgo&quot;</span>
 </span></code></pre></div>
 <h2 id="monitoring-features">📊 Monitoring Features<a class="headerlink" href="#monitoring-features" title="Link to this section">&para;</a></h2>
 <h3 id="template-validation">Template Validation<a class="headerlink" href="#template-validation" title="Link to this section">&para;</a></h3>
@@ -1631,29 +1631,29 @@
 </ul>
 <h2 id="manual-commands">🛠️ Manual Commands<a class="headerlink" href="#manual-commands" title="Link to this section">&para;</a></h2>
 <h3 id="run-css-validation-manually">Run CSS Validation Manually<a class="headerlink" href="#run-css-validation-manually" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo /usr/local/bin/css-validator.sh&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo /usr/local/bin/css-validator.sh&quot;</span>
 </span></code></pre></div>
 <h3 id="check-runtime-css-errors">Check Runtime CSS Errors<a class="headerlink" href="#check-runtime-css-errors" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo /usr/local/bin/runtime-css-monitor.sh&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo /usr/local/bin/runtime-css-monitor.sh&quot;</span>
 </span></code></pre></div>
 <h3 id="view-validation-logs">View Validation Logs<a class="headerlink" href="#view-validation-logs" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo journalctl -u css-validation.service -f&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo journalctl -u css-validation.service -f&quot;</span>
 </span></code></pre></div>
 <h3 id="view-runtime-monitor-logs">View Runtime Monitor Logs<a class="headerlink" href="#view-runtime-monitor-logs" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo journalctl -u css-runtime-monitor.service -f&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo journalctl -u css-runtime-monitor.service -f&quot;</span>
 </span></code></pre></div>
 <h3 id="check-error-logs">Check Error Logs<a class="headerlink" href="#check-error-logs" title="Link to this section">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Story Stages CSS errors</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo tail -f /var/log/css-runtime-errors/story-stages_errors.log&quot;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo tail -f /var/log/css-runtime-errors/story-stages_errors.log&quot;</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># PassGo CSS errors</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo tail -f /var/log/css-runtime-errors/passgo_errors.log&quot;</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo tail -f /var/log/css-runtime-errors/passgo_errors.log&quot;</span>
 </span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
 </span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="c1"># CSS validation errors</span>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo tail -f /var/log/css-validation/errors.log&quot;</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo tail -f /var/log/css-validation/errors.log&quot;</span>
 </span></code></pre></div>
 <h3 id="check-timer-status">Check Timer Status<a class="headerlink" href="#check-timer-status" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;systemctl list-timers | grep -E &#39;(css-validation|css-runtime-monitor)&#39;&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;systemctl list-timers | grep -E &#39;(css-validation|css-runtime-monitor)&#39;&quot;</span>
 </span></code></pre></div>
 <h2 id="email-alerts">📧 Email Alerts<a class="headerlink" href="#email-alerts" title="Link to this section">&para;</a></h2>
 <p>You'll receive email alerts for:
@@ -1707,12 +1707,12 @@
 - ✅ Problem fixed proactively</p>
 <h2 id="troubleshooting">📝 Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this section">&para;</a></h2>
 <h3 id="validator-not-running">Validator not running?<a class="headerlink" href="#validator-not-running" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;systemctl status css-validation.timer&quot;</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo systemctl start css-validation.timer&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;systemctl status css-validation.timer&quot;</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo systemctl start css-validation.timer&quot;</span>
 </span></code></pre></div>
 <h3 id="monitor-not-running">Monitor not running?<a class="headerlink" href="#monitor-not-running" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;systemctl status css-runtime-monitor.timer&quot;</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo systemctl start css-runtime-monitor.timer&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;systemctl status css-runtime-monitor.timer&quot;</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo systemctl start css-runtime-monitor.timer&quot;</span>
 </span></code></pre></div>
 <h3 id="not-receiving-emails">Not receiving emails?<a class="headerlink" href="#not-receiving-emails" title="Link to this section">&para;</a></h3>
 <ul>
@@ -1744,7 +1744,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 19, 2025 15:30:14 UTC"><span class="timeago" datetime="2025-11-19T15:30:14+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 19, 2025 15:30:14 UTC">2025-11-19</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 4, 2025 18:45:31 UTC"><span class="timeago" datetime="2025-12-04T18:45:31+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 4, 2025 18:45:31 UTC">2025-12-04</span>
   </span>
 
     

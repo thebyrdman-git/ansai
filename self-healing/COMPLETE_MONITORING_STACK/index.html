@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#miraclemax-complete-monitoring-stack" class="md-skip">
+        <a href="#testserver-complete-monitoring-stack" class="md-skip">
           Skip to content
         </a>
       
@@ -1468,7 +1468,7 @@
   
 
 
-<h1 id="miraclemax-complete-monitoring-stack">MiracleMax Complete Monitoring Stack<a class="headerlink" href="#miraclemax-complete-monitoring-stack" title="Link to this section">&para;</a></h1>
+<h1 id="testserver-complete-monitoring-stack">TestServer Complete Monitoring Stack<a class="headerlink" href="#testserver-complete-monitoring-stack" title="Link to this section">&para;</a></h1>
 <h2 id="what-you-have-now">🎯 What You Have Now<a class="headerlink" href="#what-you-have-now" title="Link to this section">&para;</a></h2>
 <p><strong>Two-layer protection system that provides 100% coverage:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────┐
@@ -1494,27 +1494,27 @@
 <hr />
 <h2 id="quick-reference">📊 Quick Reference<a class="headerlink" href="#quick-reference" title="Link to this section">&para;</a></h2>
 <h3 id="view-overall-status">View Overall Status<a class="headerlink" href="#view-overall-status" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;miraclemax-status&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;testserver-status&quot;</span>
 </span></code></pre></div>
 <h3 id="view-self-healing-activity">View Self-Healing Activity<a class="headerlink" href="#view-self-healing-activity" title="Link to this section">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># All healing events</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;journalctl -t miraclemax-self-heal&quot;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;journalctl -t testserver-self-heal&quot;</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Specific service</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;journalctl -u story-stages-self-heal&quot;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;journalctl -u story-stages-self-heal&quot;</span>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Real-time</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;journalctl -t miraclemax-self-heal -f&quot;</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;journalctl -t testserver-self-heal -f&quot;</span>
 </span></code></pre></div>
 <h3 id="view-heartbeat-status">View Heartbeat Status<a class="headerlink" href="#view-heartbeat-status" title="Link to this section">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># View logs</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;tail -f /var/log/healthcheck-heartbeat.log&quot;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;tail -f /var/log/healthcheck-heartbeat.log&quot;</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Manual test</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo /usr/local/bin/miraclemax-heartbeat&quot;</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo /usr/local/bin/testserver-heartbeat&quot;</span>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Check cron</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;crontab -l | grep heartbeat&quot;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;crontab -l | grep heartbeat&quot;</span>
 </span></code></pre></div>
 <h3 id="healthchecksio-dashboard">Healthchecks.io Dashboard<a class="headerlink" href="#healthchecksio-dashboard" title="Link to this section">&para;</a></h3>
 <p><strong>URL</strong>: https://healthchecks.io/projects/<br />
@@ -1522,7 +1522,7 @@
 <hr />
 <h2 id="what-emails-youll-receive">📧 What Emails You'll Receive<a class="headerlink" href="#what-emails-youll-receive" title="Link to this section">&para;</a></h2>
 <h3 id="type-1-self-healing-success">Type 1: Self-Healing Success<a class="headerlink" href="#type-1-self-healing-success" title="Link to this section">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Subject: ✅ MiracleMax: story-stages - RESOLVED
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Subject: ✅ TestServer: story-stages - RESOLVED
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Service: story-stages (books.jbyrd.org)
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
@@ -1539,7 +1539,7 @@
 <p><strong>What this means</strong>: Self-healing automatically fixed an issue. No action needed.</p>
 <hr />
 <h3 id="type-2-self-healing-failure">Type 2: Self-Healing Failure<a class="headerlink" href="#type-2-self-healing-failure" title="Link to this section">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Subject: ❌ MiracleMax: traefik - FAILED
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Subject: ❌ TestServer: traefik - FAILED
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>❌ ALL HEALING STRATEGIES FAILED
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
@@ -1547,16 +1547,16 @@
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>Status: STILL DOWN after healing attempts
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>MANUAL INTERVENTION REQUIRED:
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  1. SSH to server: ssh jbyrd@miraclemax.local
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  1. SSH to server: ssh jbyrd@testserver.local
 </span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  2. Check logs: journalctl -u traefik -n 100
 </span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>  ...
 </span></code></pre></div>
 <p><strong>What this means</strong>: Self-healing tried but couldn't fix it. You need to investigate.</p>
 <hr />
 <h3 id="type-3-heartbeat-stopped">Type 3: Heartbeat Stopped<a class="headerlink" href="#type-3-heartbeat-stopped" title="Link to this section">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Subject: MiracleMax Server is DOWN
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Subject: TestServer Server is DOWN
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Your check &quot;MiracleMax Server&quot; is DOWN.
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Your check &quot;TestServer Server&quot; is DOWN.
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>Last ping was 11 minutes ago.
 </span></code></pre></div>
@@ -1568,9 +1568,9 @@
 <p><strong>Action</strong>: Check if you can reach the server, reboot if necessary.</p>
 <hr />
 <h3 id="type-4-heartbeat-resumed">Type 4: Heartbeat Resumed<a class="headerlink" href="#type-4-heartbeat-resumed" title="Link to this section">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Subject: MiracleMax Server is now UP
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Subject: TestServer Server is now UP
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Your check &quot;MiracleMax Server&quot; is now UP.
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Your check &quot;TestServer Server&quot; is now UP.
 </span></code></pre></div>
 <p><strong>What this means</strong>: Server is responding again. Crisis over.</p>
 <hr />
@@ -1581,7 +1581,7 @@
 - Use email: jimmykbyrd@gmail.com
 - Verify email</p>
 <p><strong>2. Create check:</strong>
-- Name: MiracleMax Server
+- Name: TestServer Server
 - Period: 5 minutes
 - Grace: 10 minutes
 - Copy ping URL</p>
@@ -1639,17 +1639,17 @@
 <h2 id="testing">🧪 Testing<a class="headerlink" href="#testing" title="Link to this section">&para;</a></h2>
 <h3 id="test-self-healing">Test Self-Healing<a class="headerlink" href="#test-self-healing" title="Link to this section">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Stop a service (it will auto-heal)</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo systemctl stop story-stages&quot;</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo systemctl stop story-stages&quot;</span>
 </span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
 </span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="c1"># Watch it recover (~15 seconds)</span>
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>watch<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;systemctl status story-stages&quot;</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>watch<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;systemctl status story-stages&quot;</span>
 </span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
 </span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="c1"># Check your email for healing report</span>
 </span></code></pre></div>
 <hr />
 <h3 id="test-heartbeat">Test Heartbeat<a class="headerlink" href="#test-heartbeat" title="Link to this section">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Trigger manual heartbeat</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo /usr/local/bin/miraclemax-heartbeat&quot;</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo /usr/local/bin/testserver-heartbeat&quot;</span>
 </span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
 </span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="c1"># Check healthchecks.io dashboard</span>
 </span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="c1"># Should show: Last ping &quot;Just now&quot;</span>
@@ -1657,10 +1657,10 @@
 <hr />
 <h3 id="test-external-monitoring-simulate-server-down">Test External Monitoring (Simulate Server Down)<a class="headerlink" href="#test-external-monitoring-simulate-server-down" title="Link to this section">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Pause heartbeat cron</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>ssh<span class="w"> </span>jbyrd@miraclemax.local<span class="w"> </span><span class="s2">&quot;sudo crontab -r&quot;</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>ssh<span class="w"> </span>jbyrd@testserver.local<span class="w"> </span><span class="s2">&quot;sudo crontab -r&quot;</span>
 </span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
 </span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="c1"># Wait 11+ minutes</span>
-</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c1"># You&#39;ll receive email: &quot;MiracleMax Server is DOWN&quot;</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c1"># You&#39;ll receive email: &quot;TestServer Server is DOWN&quot;</span>
 </span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>
 </span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="c1"># Restore cron</span>
 </span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="nb">cd</span><span class="w"> </span>~/infrastructure/ansible
@@ -1820,7 +1820,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 19, 2025 15:30:14 UTC"><span class="timeago" datetime="2025-11-19T15:30:14+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 19, 2025 15:30:14 UTC">2025-11-19</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 4, 2025 18:45:31 UTC"><span class="timeago" datetime="2025-12-04T18:45:31+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 4, 2025 18:45:31 UTC">2025-12-04</span>
   </span>
 
     

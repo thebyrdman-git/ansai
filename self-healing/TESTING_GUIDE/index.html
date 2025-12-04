@@ -1109,20 +1109,20 @@
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Link to this section">&para;</a></h2>
 <h3 id="run-all-tests">Run All Tests<a class="headerlink" href="#run-all-tests" title="Link to this section">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>~/ansai/orchestrators/ansible/tests
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./run-all-tests.sh<span class="w"> </span>miraclemax.local<span class="w"> </span>jimmykbyrd@gmail.com<span class="w"> </span>story-stages
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./run-all-tests.sh<span class="w"> </span>testserver.local<span class="w"> </span>jimmykbyrd@gmail.com<span class="w"> </span>story-stages
 </span></code></pre></div>
 <h3 id="run-individual-tests">Run Individual Tests<a class="headerlink" href="#run-individual-tests" title="Link to this section">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Test universal service healing</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./test-service-healing.sh<span class="w"> </span>passgo<span class="w"> </span>miraclemax.local<span class="w"> </span>jimmykbyrd@gmail.com
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./test-service-healing.sh<span class="w"> </span>passgo<span class="w"> </span>testserver.local<span class="w"> </span>jimmykbyrd@gmail.com
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Test JavaScript monitoring</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>./test-js-monitoring.sh<span class="w"> </span>story-stages<span class="w"> </span>miraclemax.local<span class="w"> </span>jimmykbyrd@gmail.com
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>./test-js-monitoring.sh<span class="w"> </span>story-stages<span class="w"> </span>testserver.local<span class="w"> </span>jimmykbyrd@gmail.com
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Test CSS monitoring</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>./test-css-monitoring.sh<span class="w"> </span>story-stages<span class="w"> </span>miraclemax.local<span class="w"> </span>jimmykbyrd@gmail.com
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>./test-css-monitoring.sh<span class="w"> </span>story-stages<span class="w"> </span>testserver.local<span class="w"> </span>jimmykbyrd@gmail.com
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># Test Healthchecks.io integration</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>./test-healthchecks.sh<span class="w"> </span>miraclemax.local<span class="w"> </span>YOUR_HEALTHCHECK_URL
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>./test-healthchecks.sh<span class="w"> </span>testserver.local<span class="w"> </span>YOUR_HEALTHCHECK_URL
 </span></code></pre></div>
 <h2 id="test-components">Test Components<a class="headerlink" href="#test-components" title="Link to this section">&para;</a></h2>
 <h3 id="1-universal-service-healing-tests">1. Universal Service Healing Tests<a class="headerlink" href="#1-universal-service-healing-tests" title="Link to this section">&para;</a></h3>
@@ -1270,12 +1270,12 @@
 <p><strong>Symptom:</strong> Heartbeat not reaching Healthchecks.io</p>
 <p><strong>Troubleshooting:</strong>
 1. Verify ping URL is correct:
-   <div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>grep<span class="w"> </span><span class="s2">&quot;HEALTHCHECK_URL&quot;</span><span class="w"> </span>/usr/local/bin/miraclemax-heartbeat.sh
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>grep<span class="w"> </span><span class="s2">&quot;HEALTHCHECK_URL&quot;</span><span class="w"> </span>/usr/local/bin/testserver-heartbeat.sh
 </span></code></pre></div></p>
 <ol>
 <li>
 <p>Test heartbeat manually:
-   <div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>/usr/local/bin/miraclemax-heartbeat.sh
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>/usr/local/bin/testserver-heartbeat.sh
 </span></code></pre></div></p>
 </li>
 <li>
@@ -1437,7 +1437,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 19, 2025 17:07:05 UTC"><span class="timeago" datetime="2025-11-19T17:07:05+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 19, 2025 17:07:05 UTC">2025-11-19</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 4, 2025 18:45:31 UTC"><span class="timeago" datetime="2025-12-04T18:45:31+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 4, 2025 18:45:31 UTC">2025-12-04</span>
   </span>
 
     
