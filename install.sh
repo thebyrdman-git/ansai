@@ -52,13 +52,8 @@ command_exists() {
 
 # Check if we can read from TTY (for interactive prompts)
 can_prompt() {
-    # Test if /dev/tty is readable
-    if [[ -r /dev/tty ]] && [[ -w /dev/tty ]]; then
-        # Actually try to use it
-        echo -n "" > /dev/tty 2>/dev/null
-        return $?
-    fi
-    return 1
+    # Test if /dev/tty exists and we can open it
+    ( exec < /dev/tty ) 2>/dev/null
 }
 
 # Prompt user or use default in non-interactive mode
