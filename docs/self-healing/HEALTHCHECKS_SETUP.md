@@ -13,7 +13,7 @@
 ## 🫀 How It Works
 
 ```
-MiracleMax Server
+TestServer Server
     ↓
 Cron runs every 5 minutes
     ↓
@@ -52,16 +52,16 @@ Email alert to jimmykbyrd@gmail.com
 
 2. Configure the check:
    ```
-   Name: MiracleMax Server
+   Name: TestServer Server
    
    Schedule:
    ├─ Period: 5 minutes
    └─ Grace Time: 10 minutes
    
-   Description: Dead man's switch for miraclemax.local
+   Description: Dead man's switch for testserver.local
                 Monitors all services via heartbeat
    
-   Tags: miraclemax, production, self-healing
+   Tags: testserver, production, self-healing
    ```
 
 3. **Save the check**
@@ -106,7 +106,7 @@ ansible-playbook playbooks/deploy-healthchecks.yml
 ```
 
 **What this does:**
-- ✅ Deploys heartbeat script to miraclemax
+- ✅ Deploys heartbeat script to testserver
 - ✅ Creates cron job (runs every 5 minutes)
 - ✅ Tests the connection
 - ✅ Sends first heartbeat
@@ -117,7 +117,7 @@ ansible-playbook playbooks/deploy-healthchecks.yml
 
 Check Healthchecks.io dashboard:
 - Go to: https://healthchecks.io/projects/
-- You should see your check: **MiracleMax Server**
+- You should see your check: **TestServer Server**
 - Status should show: **✅ UP** (green)
 - Last ping: "Just now" or "< 5 minutes ago"
 
@@ -125,13 +125,13 @@ Check on server:
 
 ```bash
 # View heartbeat log
-ssh jbyrd@miraclemax.local "tail -20 /var/log/healthcheck-heartbeat.log"
+ssh jbyrd@testserver.local "tail -20 /var/log/healthcheck-heartbeat.log"
 
 # Manually trigger heartbeat
-ssh jbyrd@miraclemax.local "sudo /usr/local/bin/miraclemax-heartbeat"
+ssh jbyrd@testserver.local "sudo /usr/local/bin/testserver-heartbeat"
 
 # View cron job
-ssh jbyrd@miraclemax.local "crontab -l | grep heartbeat"
+ssh jbyrd@testserver.local "crontab -l | grep heartbeat"
 ```
 
 ---
@@ -148,13 +148,13 @@ ssh jbyrd@miraclemax.local "crontab -l | grep heartbeat"
 **On your server:**
 ```bash
 # Stop the heartbeat cron temporarily
-ssh jbyrd@miraclemax.local "sudo crontab -r"
+ssh jbyrd@testserver.local "sudo crontab -r"
 
 # Wait 2-3 minutes
 ```
 
 **Expected result:**
-- ✅ You'll receive an email: "MiracleMax Server is DOWN"
+- ✅ You'll receive an email: "TestServer Server is DOWN"
 - ✅ Healthchecks.io dashboard shows check as **DOWN** (red)
 
 **Restore:**
@@ -172,11 +172,11 @@ ansible-playbook playbooks/deploy-healthchecks.yml
 
 ```bash
 # Stop a service
-ssh jbyrd@miraclemax.local "sudo systemctl stop story-stages"
+ssh jbyrd@testserver.local "sudo systemctl stop story-stages"
 
 # Wait for next heartbeat (up to 5 minutes)
 # Check the heartbeat log
-ssh jbyrd@miraclemax.local "tail -f /var/log/healthcheck-heartbeat.log"
+ssh jbyrd@testserver.local "tail -f /var/log/healthcheck-heartbeat.log"
 ```
 
 **Expected result:**
@@ -188,7 +188,7 @@ ssh jbyrd@miraclemax.local "tail -f /var/log/healthcheck-heartbeat.log"
 **Restore:**
 ```bash
 # Self-healing will auto-restart, or do it manually:
-ssh jbyrd@miraclemax.local "sudo systemctl start story-stages"
+ssh jbyrd@testserver.local "sudo systemctl start story-stages"
 ```
 
 ---
@@ -224,7 +224,7 @@ healthcheck_ping_url: "{{ healthcheck_urls[inventory_hostname] }}"
 all:
   vars:
     healthcheck_urls:
-      miraclemax.local: "https://hc-ping.com/uuid-for-miraclemax"
+      testserver.local: "https://hc-ping.com/uuid-for-testserver"
       otherserver.local: "https://hc-ping.com/uuid-for-otherserver"
 ```
 
@@ -252,7 +252,7 @@ ansible-playbook playbooks/deploy-healthchecks.yml
 
 ### Include More Data in Heartbeat
 
-Edit: `ansible/roles/healthchecks_monitoring/templates/miraclemax-heartbeat.sh.j2`
+Edit: `ansible/roles/healthchecks_monitoring/templates/testserver-heartbeat.sh.j2`
 
 Add custom checks to the `get_health_summary()` function.
 
@@ -280,9 +280,9 @@ Then update `tasks/main.yml` to create checks programmatically.
 
 **When heartbeat stops:**
 ```
-Subject: MiracleMax Server is DOWN
+Subject: TestServer Server is DOWN
 
-Your check "MiracleMax Server" is DOWN.
+Your check "TestServer Server" is DOWN.
 
 Last ping was 11 minutes ago.
 
@@ -291,9 +291,9 @@ Check URL: https://healthchecks.io/checks/...
 
 **When heartbeat resumes:**
 ```
-Subject: MiracleMax Server is now UP
+Subject: TestServer Server is now UP
 
-Your check "MiracleMax Server" is now UP.
+Your check "TestServer Server" is now UP.
 
 Check URL: https://healthchecks.io/checks/...
 ```
@@ -322,13 +322,13 @@ Healthchecks.io supports multiple notification channels:
 
 ```bash
 # Real-time
-ssh jbyrd@miraclemax.local "tail -f /var/log/healthcheck-heartbeat.log"
+ssh jbyrd@testserver.local "tail -f /var/log/healthcheck-heartbeat.log"
 
 # Last 50 lines
-ssh jbyrd@miraclemax.local "tail -50 /var/log/healthcheck-heartbeat.log"
+ssh jbyrd@testserver.local "tail -50 /var/log/healthcheck-heartbeat.log"
 
 # Search for errors
-ssh jbyrd@miraclemax.local "grep ERROR /var/log/healthcheck-heartbeat.log"
+ssh jbyrd@testserver.local "grep ERROR /var/log/healthcheck-heartbeat.log"
 ```
 
 ---
@@ -336,7 +336,7 @@ ssh jbyrd@miraclemax.local "grep ERROR /var/log/healthcheck-heartbeat.log"
 ### Manually Trigger Heartbeat
 
 ```bash
-ssh jbyrd@miraclemax.local "sudo /usr/local/bin/miraclemax-heartbeat"
+ssh jbyrd@testserver.local "sudo /usr/local/bin/testserver-heartbeat"
 ```
 
 ---

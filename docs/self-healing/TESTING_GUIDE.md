@@ -19,23 +19,23 @@ ANSAI follows the **test-as-code** principle:
 
 ```bash
 cd ~/ansai/orchestrators/ansible/tests
-./run-all-tests.sh miraclemax.local jimmykbyrd@gmail.com story-stages
+./run-all-tests.sh testserver.local jimmykbyrd@gmail.com story-stages
 ```
 
 ### Run Individual Tests
 
 ```bash
 # Test universal service healing
-./test-service-healing.sh passgo miraclemax.local jimmykbyrd@gmail.com
+./test-service-healing.sh passgo testserver.local jimmykbyrd@gmail.com
 
 # Test JavaScript monitoring
-./test-js-monitoring.sh story-stages miraclemax.local jimmykbyrd@gmail.com
+./test-js-monitoring.sh story-stages testserver.local jimmykbyrd@gmail.com
 
 # Test CSS monitoring
-./test-css-monitoring.sh story-stages miraclemax.local jimmykbyrd@gmail.com
+./test-css-monitoring.sh story-stages testserver.local jimmykbyrd@gmail.com
 
 # Test Healthchecks.io integration
-./test-healthchecks.sh miraclemax.local YOUR_HEALTHCHECK_URL
+./test-healthchecks.sh testserver.local YOUR_HEALTHCHECK_URL
 ```
 
 ## Test Components
@@ -220,12 +220,12 @@ cd ~/ansai/orchestrators/ansible/tests
 **Troubleshooting:**
 1. Verify ping URL is correct:
    ```bash
-   grep "HEALTHCHECK_URL" /usr/local/bin/miraclemax-heartbeat.sh
+   grep "HEALTHCHECK_URL" /usr/local/bin/testserver-heartbeat.sh
    ```
 
 2. Test heartbeat manually:
    ```bash
-   /usr/local/bin/miraclemax-heartbeat.sh
+   /usr/local/bin/testserver-heartbeat.sh
    ```
 
 3. Check for network issues:

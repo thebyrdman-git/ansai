@@ -555,7 +555,7 @@ ssh your-server "curl -fsS https://hc-ping.com/your-uuid"
 ```bash
 # Verify cron is running heartbeat
 ssh your-server "sudo crontab -l | grep heartbeat"
-# Should show: */5 * * * * /usr/local/bin/miraclemax-heartbeat.sh
+# Should show: */5 * * * * /usr/local/bin/testserver-heartbeat.sh
 
 # Check cron logs
 ssh your-server "sudo journalctl -u cron | grep heartbeat"

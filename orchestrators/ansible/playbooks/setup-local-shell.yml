@@ -1,0 +1,78 @@
+---
+- name: Configure Local Developer Environment
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars:
+    # Calculate repo root (3 levels up from orchestrators/ansible/playbooks)
+    ansai_bin_path: "{{ playbook_dir | dirname | dirname | dirname }}/bin"
+    user_shell_rc: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
+    
+  tasks:
+    - name: Detect shell config file
+      set_fact:
+        target_rc: "{{ ansible_facts['env']['HOME'] }}/.zshrc"
+      when: ansible_facts['env']['SHELL'] | basename == 'zsh'
+
+    - name: Set target rc file (fallback to bashrc)
+      set_fact:
+        target_rc: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
+      when: ansible_facts['env']['SHELL'] | basename != 'zsh'
+
+    - name: Display configuration info
+      debug:
+        msg: 
+          - "Configuring shell: {{ ansible_facts['env']['SHELL'] }}"
+          - "Target RC file: {{ target_rc }}"
+          - "ANSAI bin path: {{ ansai_bin_path }}"
+
+    - name: Ensure ~/.local/bin is in PATH
+      lineinfile:
+        path: "{{ target_rc }}"
+        line: 'export PATH="$HOME/.local/bin:$PATH"'
+        search_string: 'export PATH="$HOME/.local/bin:$PATH"'
+        create: true
+        state: present
+        
+    - name: Ensure ANSAI bin is in PATH
+      lineinfile:
+        path: "{{ target_rc }}"
+        line: 'export PATH="{{ ansai_bin_path }}:$PATH"'
+        search_string: 'export PATH="{{ ansai_bin_path }}:$PATH"'
+        create: true
+        state: present
+
+    - name: Configure Podman aliases (Docker compatibility)
+      blockinfile:
+        path: "{{ target_rc }}"
+        marker: "# {mark} ANSAI PODMAN ALIASES"
+        block: |
+          # Podman - Docker-compatible container runtime
+          alias docker=podman
+          alias docker-compose=podman-compose
+        create: true
+        state: present
+
+    - name: Setup direnv hook
+      lineinfile:
+        path: "{{ target_rc }}"
+        line: 'eval "$(direnv hook {{ ansible_facts["env"]["SHELL"] | basename }})"'
+        search_string: 'eval "$(direnv hook'
+        create: true
+        state: present
+
+    - name: Setup pyenv init
+      lineinfile:
+        path: "{{ target_rc }}"
+        line: 'eval "$(pyenv init -)"'
+        search_string: 'eval "$(pyenv init -)"'
+        create: true
+        state: present
+
+    - name: Success Message
+      debug:
+        msg: 
+          - "✅ Configuration complete!"
+          - "Please run: source {{ target_rc }}"
+          - "Then try running: build-aap-image"
+

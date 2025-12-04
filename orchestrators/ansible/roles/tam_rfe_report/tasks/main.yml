@@ -1,0 +1,15 @@
+---
+# tasks file for tam_rfe_report
+- name: Ensure report directory exists
+  ansible.builtin.file:
+    path: "reports"
+    state: directory
+    mode: '0755'
+
+- name: Generate RFE Report for {{ tam_rfe_report_customer_name }}
+  ansible.builtin.template:
+    src: rfe_report.md.j2
+    dest: "reports/{{ tam_rfe_report_output_file }}"
+  delegate_to: localhost
+
+

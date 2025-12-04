@@ -411,7 +411,7 @@ ansai-deploy-safe --type kubernetes --env production --strict deployment.yaml
 - *"If Ansible is the hands, AI is the brain."*
 
 **[4-7 min] Demo 1: AI Log Analysis**
-- Show real logs from miraclemax
+- Show real logs from testserver
 - Traditional: grep, find, manual correlation
 - ANSAI: AI finds root cause in seconds
 - Explain the "why", not just "what"

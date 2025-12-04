@@ -109,7 +109,7 @@
           ╚════════════════════════════════════════════════════════════╝
           
           📊 Status Dashboard:
-            ssh {{ ansible_user }}@{{ inventory_hostname }} sudo /usr/local/bin/miraclemax-status.sh
+            ssh {{ ansible_user }}@{{ inventory_hostname }} sudo /usr/local/bin/testserver-status.sh
           
           📝 Logs:
             Self-healing: /var/log/self-heal/

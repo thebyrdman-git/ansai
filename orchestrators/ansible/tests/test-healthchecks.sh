@@ -23,7 +23,7 @@ echo "Test 1: Heartbeat Script Deployment"
 echo "-------------------------------------"
 echo "🔍 Checking if heartbeat script exists..."
 
-SCRIPT_PATH="/usr/local/bin/miraclemax-heartbeat.sh"
+SCRIPT_PATH="/usr/local/bin/testserver-heartbeat.sh"
 if ssh jbyrd@$TEST_HOST "[ -f $SCRIPT_PATH ]"; then
     echo "✅ PASS: Heartbeat script deployed"
     
@@ -45,10 +45,10 @@ echo "Test 2: Cron Job Configuration"
 echo "--------------------------------"
 echo "🔍 Checking cron job..."
 
-CRON_EXISTS=$(ssh jbyrd@$TEST_HOST "crontab -l 2>/dev/null | grep miraclemax-heartbeat | wc -l" || echo "0")
+CRON_EXISTS=$(ssh jbyrd@$TEST_HOST "crontab -l 2>/dev/null | grep testserver-heartbeat | wc -l" || echo "0")
 if [ "$CRON_EXISTS" -gt 0 ]; then
     echo "✅ PASS: Heartbeat cron job configured"
-    CRON_SCHEDULE=$(ssh jbyrd@$TEST_HOST "crontab -l 2>/dev/null | grep miraclemax-heartbeat")
+    CRON_SCHEDULE=$(ssh jbyrd@$TEST_HOST "crontab -l 2>/dev/null | grep testserver-heartbeat")
     echo "  Schedule: $CRON_SCHEDULE"
 else
     echo "❌ FAIL: Heartbeat cron job not found"

@@ -258,13 +258,13 @@ sudo tail -f /var/log/self-heal/sshd.log
 
 ```bash
 # View comprehensive status
-sudo /usr/local/bin/miraclemax-status.sh
+sudo /usr/local/bin/testserver-status.sh
 ```
 
 **You'll see:**
 ```
 ╔══════════════════════════════════════════════════════════╗
-║           System Health Status - miraclemax              ║
+║           System Health Status - testserver              ║
 ╚══════════════════════════════════════════════════════════╝
 
 🟢 sshd              Active since 2025-11-18 (self-healed)
@@ -553,7 +553,7 @@ cd ~/.ansai/orchestrators/ansible
 ansible-playbook playbooks/deploy-ai-powered-monitoring.yml -i inventory/hosts.yml
 
 # Check status
-ssh your-server "sudo /usr/local/bin/miraclemax-status.sh"
+ssh your-server "sudo /usr/local/bin/testserver-status.sh"
 
 # View logs
 ssh your-server "sudo tail -f /var/log/self-heal/*.log"

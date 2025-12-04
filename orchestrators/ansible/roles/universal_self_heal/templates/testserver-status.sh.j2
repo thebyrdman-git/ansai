@@ -1,5 +1,5 @@
 #!/bin/bash
-# MiracleMax Universal Status Dashboard
+# TestServer Universal Status Dashboard
 # Shows health of all monitored services
 
 # Colors
@@ -12,7 +12,7 @@ NC='\033[0m'
 
 # Header
 echo -e "${BLUE}╔════════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║              🤖 MiracleMax Self-Healing Status                ║${NC}"
+echo -e "${BLUE}║              🤖 TestServer Self-Healing Status                ║${NC}"
 echo -e "${BLUE}║              {{ inventory_hostname }}                          ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════════════════════════════╝${NC}"
 echo ""
@@ -84,7 +84,7 @@ echo ""
 
 # Recent healing activity
 echo -e "${CYAN}🔄 Recent Self-Healing Activity:${NC}"
-HEAL_COUNT=$(journalctl -t miraclemax-self-heal --since "24 hours ago" 2>/dev/null | grep -c "Self-Healing Report" || echo "0")
+HEAL_COUNT=$(journalctl -t testserver-self-heal --since "24 hours ago" 2>/dev/null | grep -c "Self-Healing Report" || echo "0")
 
 if [ "$HEAL_COUNT" -eq 0 ]; then
     echo -e "   ${GREEN}✅ No healing attempts in last 24 hours${NC}"
@@ -92,7 +92,7 @@ else
     echo -e "   ${YELLOW}⚠️  $HEAL_COUNT healing attempt(s) in last 24 hours${NC}"
     echo ""
     echo "   Recent healing events:"
-    journalctl -t miraclemax-self-heal --since "24 hours ago" --no-pager 2>/dev/null | \
+    journalctl -t testserver-self-heal --since "24 hours ago" --no-pager 2>/dev/null | \
         grep -E "RESOLVED|FAILED" | tail -n 5 | sed 's/^/   /'
 fi
 
@@ -125,7 +125,7 @@ fi
 
 # Quick actions
 echo -e "${CYAN}🔧 Quick Actions:${NC}"
-echo "   View all service logs:     journalctl -t miraclemax-self-heal -f"
+echo "   View all service logs:     journalctl -t testserver-self-heal -f"
 echo "   View specific service:     journalctl -u <service-name> -f"
 echo "   Test self-healing:         sudo systemctl stop <service-name>"
 echo "   Force heal attempt:        sudo systemctl start <service-name>-self-heal"

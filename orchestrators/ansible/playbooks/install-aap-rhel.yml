@@ -1,0 +1,108 @@
+---
+# Deploy AAP 2.4 on RHEL Container
+# Requires user to provide AAP installer tarball path or download URL
+
+- name: Install AAP on RHEL Node
+  hosts: all
+  become: true
+  vars:
+    # Default to assuming the tarball is in user's Downloads or provided
+    aap_installer_local_path: "" 
+    aap_installer_url: "" # Can be used if we have a direct link
+    aap_version: "2.4"
+    
+    # Inventory configuration for the setup
+    admin_password: "password"
+    pg_password: "password"
+    automation_controller_url: "https://localhost"
+
+  pre_tasks:
+    - name: Check if installer path is provided
+      fail:
+        msg: "Please provide 'aap_installer_local_path' via -e or ensure the file exists."
+      when: aap_installer_local_path == "" and aap_installer_url == ""
+
+  tasks:
+    - name: Install prerequisites
+      dnf:
+        name:
+          - python3
+          - tar
+          - gzip
+          - unzip
+          - python3-pip
+        state: present
+
+    - name: Create installer directory
+      file:
+        path: /opt/aap-installer
+        state: directory
+        mode: '0755'
+
+    - name: Copy installer to node
+      copy:
+        src: "{{ aap_installer_local_path }}"
+        dest: "/opt/aap-installer/aap-setup.tar.gz"
+      when: aap_installer_local_path != ""
+
+    - name: Extract installer
+      unarchive:
+        src: "/opt/aap-installer/aap-setup.tar.gz"
+        dest: "/opt/aap-installer"
+        remote_src: true
+        extra_opts: [--strip-components=1]
+
+    - name: Force python3.11 as python
+      alternatives:
+        name: python
+        path: /usr/bin/python3
+        link: /usr/bin/python
+
+    - name: Install correct ansible-core version (2.14.x required by AAP 2.4)
+      pip:
+        name: "ansible-core>=2.14.0,<2.15.0"
+        state: forcereinstall
+        executable: pip3
+
+    # IMPORTANT: We use the container hostname (e.g. aap-rhel-node) to bypass the 'localhost' check
+    - name: Get container hostname
+      command: hostname
+      register: container_hostname
+      changed_when: false
+
+    - name: Add hostname to hosts file to ensure resolution
+      lineinfile:
+        path: /etc/hosts
+        line: "127.0.0.1 {{ container_hostname.stdout }}"
+        state: present
+
+    - name: Generate inventory file
+      copy:
+        dest: "/opt/aap-installer/inventory"
+        content: |
+          [automationcontroller]
+          {{ container_hostname.stdout }} ansible_connection=local
+
+          [automationcontroller:vars]
+          admin_password='{{ admin_password }}'
+          pg_password='{{ pg_password }}'
+          automationhub_importer_settings_file='/opt/aap-installer/pulp_importer.json'
+          # Allow HTTP/Self-signed for local testing
+          automation_controller_ssl_cert=/etc/pki/tls/certs/localhost.crt
+          automation_controller_ssl_key=/etc/pki/tls/private/localhost.key
+          
+          # Force installer to use the pip-installed ansible
+          ansible_python_interpreter=/usr/bin/python3
+
+          [all:vars]
+          ansible_become=true
+
+    - name: Run AAP Setup
+      command: ./setup.sh
+      args:
+        chdir: "/opt/aap-installer"
+      environment:
+        # Ensure we use the python path where we installed ansible-core
+        PATH: "/usr/local/bin:{{ ansible_facts['env']['PATH'] }}"
+      async: 3600
+      poll: 30

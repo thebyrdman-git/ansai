@@ -1,0 +1,26 @@
+---
+# Podman Desktop Setup
+# Installs Podman Desktop via Flatpak on RHEL/Fedora systems
+
+- name: Ensure Podman is installed
+  dnf:
+    name: podman
+    state: present
+
+- name: Ensure Flatpak is installed
+  dnf:
+    name: flatpak
+    state: present
+
+- name: Add Flathub repository
+  flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+
+- name: Install Podman Desktop via Flatpak
+  flatpak:
+    name: io.podman_desktop.PodmanDesktop
+    remote: flathub
+    state: present
+

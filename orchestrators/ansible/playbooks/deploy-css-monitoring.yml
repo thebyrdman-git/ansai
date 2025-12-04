@@ -1,6 +1,6 @@
 ---
 - name: Deploy CSS Error Monitoring System
-  hosts: miraclemax.local
+  hosts: testserver.local
   become: yes
   
   pre_tasks:
@@ -18,7 +18,7 @@
           - "  ✓ Automated email alerts"
           - "  ✓ Integration with self-healing infrastructure"
           - ""
-          - "Target: miraclemax.local"
+          - "Target: testserver.local"
           - "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
   roles:

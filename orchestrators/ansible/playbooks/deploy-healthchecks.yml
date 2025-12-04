@@ -1,6 +1,6 @@
 ---
 # Deploy Healthchecks.io External Monitoring
-# Dead Man's Switch for MiracleMax
+# Dead Man's Switch for TestServer
 #
 # Usage:
 #   ansible-playbook playbooks/deploy-healthchecks.yml
@@ -8,7 +8,7 @@
 # Philosophy: Ansai - Observable, Self-Healing, Config-as-Code
 
 - name: Deploy Healthchecks.io External Monitoring
-  hosts: miraclemax
+  hosts: testserver
   become: yes
   
   pre_tasks:
@@ -16,7 +16,7 @@
       debug:
         msg:
           - "🫀 ═══════════════════════════════════════"
-          - "   MiracleMax External Monitoring"
+          - "   TestServer External Monitoring"
           - "   Healthchecks.io Integration"
           - "═══════════════════════════════════════"
           - ""
@@ -34,7 +34,7 @@
   post_tasks:
     - name: Verify heartbeat script exists
       stat:
-        path: /usr/local/bin/miraclemax-heartbeat
+        path: /usr/local/bin/testserver-heartbeat
       register: heartbeat_script
       when: healthcheck_enabled and healthcheck_ping_url != ""
     
@@ -65,7 +65,7 @@
           - ""
           - "🫀 Heartbeat active: Every {{ healthcheck_interval / 60 }} minutes"
           - ""
-          - "🎉 MiracleMax is now fully observable and self-healing!"
+          - "🎉 TestServer is now fully observable and self-healing!"
           - ""
       when: heartbeat_script.stat.exists | default(false)
 

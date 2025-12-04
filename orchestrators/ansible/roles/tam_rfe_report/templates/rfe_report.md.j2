@@ -1,0 +1,55 @@
+# 🏦 {{ tam_rfe_report_customer_name }} RFE/Bug Tracker Update
+**Date:** {{ tam_rfe_report_date }}
+**TAM:** {{ tam_rfe_report_tam_name }} ({{ tam_rfe_report_tam_email }})
+
+---
+
+## Enhancement Requests (RFE)
+
+{% for group in tam_rfe_report_rfes %}
+### {{ group.category }}
+
+| RED HAT JIRA ID | Support Case | Enhancement Request | Status |
+|---|---|---|---|
+{% for item in group.items %}
+| [{{ item.jira }}]({{ tam_rfe_report_jira_url_template }}{{ item.jira }}) | {% if item.case == 'WIP' or item.case == 'TBD' %}WIP{% else %}[{{ item.case }}]({{ tam_rfe_report_case_url_template }}{{ item.case }}){% endif %} | {{ item.desc }} | {{ item.status }} |
+{% endfor %}
+
+{% endfor %}
+---
+
+## Bug Reports
+
+{% for group in tam_rfe_report_bugs %}
+### {{ group.category }}
+
+| RED HAT JIRA ID | Support Case | Bug Description | Status |
+|---|---|---|---|
+{% for item in group.items %}
+| [{{ item.jira }}]({{ tam_rfe_report_jira_url_template }}{{ item.jira }}) | {% if item.case == 'WIP' or item.case == 'TBD' %}WIP{% else %}[{{ item.case }}]({{ tam_rfe_report_case_url_template }}{{ item.case }}){% endif %} | {{ item.desc }} | {{ item.status }} |
+{% endfor %}
+
+{% endfor %}
+---
+
+## Status Legend
+
+### RFE Status
+- **Backlog**: Awaiting prioritization
+- **Refinement**: In active refinement
+- **Closed**: Completed and delivered
+
+### Bug Status
+- **New**: Awaiting initial triage
+- **Backlog**: In backlog queue
+- **Release Pending**: Ready for release
+- **Closed**: Resolved
+
+---
+
+## Quick Links
+- [Wells Fargo Support Portal](https://access.redhat.com/support/cases/)
+- [Red Hat Ansible Documentation](https://docs.ansible.com/)
+- [Contact Your TAM](mailto:{{ tam_rfe_report_tam_email }})
+
+

@@ -1,6 +1,6 @@
 ---
 # Universal Self-Healing Deployment
-# Deploys self-healing to ALL services on MiracleMax
+# Deploys self-healing to ALL services on TestServer
 
 - name: Display deployment info
   debug:
@@ -76,8 +76,8 @@
 
 - name: Create master status dashboard script
   template:
-    src: miraclemax-status.sh.j2
-    dest: /usr/local/bin/miraclemax-status
+    src: testserver-status.sh.j2
+    dest: /usr/local/bin/testserver-status
     owner: root
     group: root
     mode: '0755'
@@ -94,7 +94,7 @@
       - "🔧 Self-healing: {{ 'ENABLED' if self_healing_enabled else 'DISABLED' }}"
       - "📧 Reports sent to: {{ owner_email }}"
       - ""
-      - "View status: miraclemax-status"
-      - "View logs: journalctl -t miraclemax-self-heal"
+      - "View status: testserver-status"
+      - "View logs: journalctl -t testserver-self-heal"
       - "Test healing: sudo systemctl stop <service> && watch systemctl status <service>"
 

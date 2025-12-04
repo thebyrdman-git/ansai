@@ -1,4 +1,4 @@
-# MiracleMax Complete Monitoring Stack
+# TestServer Complete Monitoring Stack
 
 ## 🎯 What You Have Now
 
@@ -33,31 +33,31 @@
 
 ### View Overall Status
 ```bash
-ssh jbyrd@miraclemax.local "miraclemax-status"
+ssh jbyrd@testserver.local "testserver-status"
 ```
 
 ### View Self-Healing Activity
 ```bash
 # All healing events
-ssh jbyrd@miraclemax.local "journalctl -t miraclemax-self-heal"
+ssh jbyrd@testserver.local "journalctl -t testserver-self-heal"
 
 # Specific service
-ssh jbyrd@miraclemax.local "journalctl -u story-stages-self-heal"
+ssh jbyrd@testserver.local "journalctl -u story-stages-self-heal"
 
 # Real-time
-ssh jbyrd@miraclemax.local "journalctl -t miraclemax-self-heal -f"
+ssh jbyrd@testserver.local "journalctl -t testserver-self-heal -f"
 ```
 
 ### View Heartbeat Status
 ```bash
 # View logs
-ssh jbyrd@miraclemax.local "tail -f /var/log/healthcheck-heartbeat.log"
+ssh jbyrd@testserver.local "tail -f /var/log/healthcheck-heartbeat.log"
 
 # Manual test
-ssh jbyrd@miraclemax.local "sudo /usr/local/bin/miraclemax-heartbeat"
+ssh jbyrd@testserver.local "sudo /usr/local/bin/testserver-heartbeat"
 
 # Check cron
-ssh jbyrd@miraclemax.local "crontab -l | grep heartbeat"
+ssh jbyrd@testserver.local "crontab -l | grep heartbeat"
 ```
 
 ### Healthchecks.io Dashboard
@@ -70,7 +70,7 @@ ssh jbyrd@miraclemax.local "crontab -l | grep heartbeat"
 
 ### Type 1: Self-Healing Success
 ```
-Subject: ✅ MiracleMax: story-stages - RESOLVED
+Subject: ✅ TestServer: story-stages - RESOLVED
 
 Service: story-stages (books.jbyrd.org)
 
@@ -91,7 +91,7 @@ HEALING TIME: ~5 seconds
 
 ### Type 2: Self-Healing Failure
 ```
-Subject: ❌ MiracleMax: traefik - FAILED
+Subject: ❌ TestServer: traefik - FAILED
 
 ❌ ALL HEALING STRATEGIES FAILED
 
@@ -99,7 +99,7 @@ Service: traefik
 Status: STILL DOWN after healing attempts
 
 MANUAL INTERVENTION REQUIRED:
-  1. SSH to server: ssh jbyrd@miraclemax.local
+  1. SSH to server: ssh jbyrd@testserver.local
   2. Check logs: journalctl -u traefik -n 100
   ...
 ```
@@ -110,9 +110,9 @@ MANUAL INTERVENTION REQUIRED:
 
 ### Type 3: Heartbeat Stopped
 ```
-Subject: MiracleMax Server is DOWN
+Subject: TestServer Server is DOWN
 
-Your check "MiracleMax Server" is DOWN.
+Your check "TestServer Server" is DOWN.
 
 Last ping was 11 minutes ago.
 ```
@@ -129,9 +129,9 @@ Last ping was 11 minutes ago.
 
 ### Type 4: Heartbeat Resumed
 ```
-Subject: MiracleMax Server is now UP
+Subject: TestServer Server is now UP
 
-Your check "MiracleMax Server" is now UP.
+Your check "TestServer Server" is now UP.
 ```
 
 **What this means**: Server is responding again. Crisis over.
@@ -148,7 +148,7 @@ Your check "MiracleMax Server" is now UP.
 - Verify email
 
 **2. Create check:**
-- Name: MiracleMax Server
+- Name: TestServer Server
 - Period: 5 minutes
 - Grace: 10 minutes
 - Copy ping URL
@@ -233,10 +233,10 @@ ansible-playbook playbooks/deploy-complete-monitoring.yml
 ### Test Self-Healing
 ```bash
 # Stop a service (it will auto-heal)
-ssh jbyrd@miraclemax.local "sudo systemctl stop story-stages"
+ssh jbyrd@testserver.local "sudo systemctl stop story-stages"
 
 # Watch it recover (~15 seconds)
-watch -n 1 ssh jbyrd@miraclemax.local "systemctl status story-stages"
+watch -n 1 ssh jbyrd@testserver.local "systemctl status story-stages"
 
 # Check your email for healing report
 ```
@@ -246,7 +246,7 @@ watch -n 1 ssh jbyrd@miraclemax.local "systemctl status story-stages"
 ### Test Heartbeat
 ```bash
 # Trigger manual heartbeat
-ssh jbyrd@miraclemax.local "sudo /usr/local/bin/miraclemax-heartbeat"
+ssh jbyrd@testserver.local "sudo /usr/local/bin/testserver-heartbeat"
 
 # Check healthchecks.io dashboard
 # Should show: Last ping "Just now"
@@ -257,10 +257,10 @@ ssh jbyrd@miraclemax.local "sudo /usr/local/bin/miraclemax-heartbeat"
 ### Test External Monitoring (Simulate Server Down)
 ```bash
 # Pause heartbeat cron
-ssh jbyrd@miraclemax.local "sudo crontab -r"
+ssh jbyrd@testserver.local "sudo crontab -r"
 
 # Wait 11+ minutes
-# You'll receive email: "MiracleMax Server is DOWN"
+# You'll receive email: "TestServer Server is DOWN"
 
 # Restore cron
 cd ~/infrastructure/ansible

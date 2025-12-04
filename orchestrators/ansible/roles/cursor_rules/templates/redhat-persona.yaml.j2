@@ -53,18 +53,30 @@ rules:
       - "Never include customer-specific info"
       - "No case numbers, account names, or internal URLs"
 
+  containerization:
+    preferred:
+      - "Podman Desktop (GUI)"
+      - "Podman CLI"
+    policy:
+      - "Use Podman Desktop for all local container management on RHEL"
+      - "Treat RHEL machines as Podman-first environments"
+      - "Avoid Docker unless strictly required"
+
   tools:
     preferred:
+      - "Podman Desktop - Container management for RHEL"
       - "rhcase - Case management CLI"
       - "Taminator - RFE/Bug automation GUI"
       - "Portal API - Customer portal integration"
       - "JIRA - RFE tracking"
+      - "Linear - Personal Task Management (Customer Projects)"
     
     authentication:
       - "Portal token (rh_jwt cookie)"
       - "JIRA token for RFE access"
       - "GitLab PAT for CEE access"
       - "VPN required for internal resources"
+      - "Linear API Key (for task tracking)"
 
 # ============================================================================
 # TAM WORKFLOW AUTOMATION
@@ -106,4 +118,7 @@ new_tam_support:
     - "Encourage questions and learning"
     - "Support through challenges and setbacks"
     - "Inspire confidence and growth"
+
+
+
 

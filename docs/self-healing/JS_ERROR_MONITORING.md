@@ -74,14 +74,14 @@ Add this to the `<head>` section of your base templates:
 ### 4. Create Static JS Directory (if needed)
 
 ```bash
-ssh jbyrd@miraclemax.local "mkdir -p /var/www/story-stages/static/js"
-ssh jbyrd@miraclemax.local "mkdir -p /var/www/passgo/static/js"
+ssh jbyrd@testserver.local "mkdir -p /var/www/story-stages/static/js"
+ssh jbyrd@testserver.local "mkdir -p /var/www/passgo/static/js"
 ```
 
 ### 5. Restart Your Applications
 
 ```bash
-ssh jbyrd@miraclemax.local "sudo systemctl restart story-stages passgo"
+ssh jbyrd@testserver.local "sudo systemctl restart story-stages passgo"
 ```
 
 ## 📊 Monitoring Features
@@ -108,39 +108,39 @@ ssh jbyrd@miraclemax.local "sudo systemctl restart story-stages passgo"
 
 ### Run Validation Manually
 ```bash
-ssh jbyrd@miraclemax.local "sudo /usr/local/bin/js-validator.sh"
+ssh jbyrd@testserver.local "sudo /usr/local/bin/js-validator.sh"
 ```
 
 ### Check Runtime Errors
 ```bash
-ssh jbyrd@miraclemax.local "sudo /usr/local/bin/runtime-error-monitor.sh"
+ssh jbyrd@testserver.local "sudo /usr/local/bin/runtime-error-monitor.sh"
 ```
 
 ### View Validation Logs
 ```bash
-ssh jbyrd@miraclemax.local "sudo journalctl -u js-validation.service -f"
+ssh jbyrd@testserver.local "sudo journalctl -u js-validation.service -f"
 ```
 
 ### View Runtime Monitor Logs
 ```bash
-ssh jbyrd@miraclemax.local "sudo journalctl -u js-runtime-monitor.service -f"
+ssh jbyrd@testserver.local "sudo journalctl -u js-runtime-monitor.service -f"
 ```
 
 ### Check Error Logs
 ```bash
 # Story Stages errors
-ssh jbyrd@miraclemax.local "sudo tail -f /var/log/js-runtime-errors/story-stages_errors.log"
+ssh jbyrd@testserver.local "sudo tail -f /var/log/js-runtime-errors/story-stages_errors.log"
 
 # PassGo errors
-ssh jbyrd@miraclemax.local "sudo tail -f /var/log/js-runtime-errors/passgo_errors.log"
+ssh jbyrd@testserver.local "sudo tail -f /var/log/js-runtime-errors/passgo_errors.log"
 
 # Validation errors
-ssh jbyrd@miraclemax.local "sudo tail -f /var/log/js-validation/errors.log"
+ssh jbyrd@testserver.local "sudo tail -f /var/log/js-validation/errors.log"
 ```
 
 ### Check Timer Status
 ```bash
-ssh jbyrd@miraclemax.local "systemctl list-timers | grep -E '(js-validation|js-runtime-monitor)'"
+ssh jbyrd@testserver.local "systemctl list-timers | grep -E '(js-validation|js-runtime-monitor)'"
 ```
 
 ## 📧 Email Alerts
@@ -211,14 +211,14 @@ This system integrates with your existing self-healing infrastructure:
 
 ### Validator not running?
 ```bash
-ssh jbyrd@miraclemax.local "systemctl status js-validation.timer"
-ssh jbyrd@miraclemax.local "sudo systemctl start js-validation.timer"
+ssh jbyrd@testserver.local "systemctl status js-validation.timer"
+ssh jbyrd@testserver.local "sudo systemctl start js-validation.timer"
 ```
 
 ### Monitor not running?
 ```bash
-ssh jbyrd@miraclemax.local "systemctl status js-runtime-monitor.timer"
-ssh jbyrd@miraclemax.local "sudo systemctl start js-runtime-monitor.timer"
+ssh jbyrd@testserver.local "systemctl status js-runtime-monitor.timer"
+ssh jbyrd@testserver.local "sudo systemctl start js-runtime-monitor.timer"
 ```
 
 ### Not receiving emails?

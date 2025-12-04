@@ -1,0 +1,34 @@
+---
+tam_rfe_report_customer_name: "Customer Name"
+tam_rfe_report_date: "{{ ansible_date_time.date | default(lookup('pipe', 'date +%Y-%m-%d')) }}"
+tam_rfe_report_tam_name: "Jimmy Byrd"
+tam_rfe_report_tam_email: "jbyrd@redhat.com"
+tam_rfe_report_output_file: "{{ tam_rfe_report_customer_name | lower | replace(' ', '_') }}_rfe_update.md"
+
+# URL Templates
+tam_rfe_report_jira_url_template: "https://issues.redhat.com/browse/"
+tam_rfe_report_case_url_template: "https://access.redhat.com/support/cases/#/case/"
+
+# Report Data Structure
+# Group items by Category
+tam_rfe_report_rfes: []
+# Example:
+# tam_rfe_report_rfes:
+#   - category: "Infrastructure & Integration"
+#     items:
+#       - jira: "AAPRFE-2596"
+#         case: "04308536"  # or "WIP"
+#         desc: "[RFE] Enable EDA to leverage existing instance groups from controller"
+#         status: "New"
+
+tam_rfe_report_bugs: []
+# Example:
+# tam_rfe_report_bugs:
+#   - category: "Authentication & Security"
+#     items:
+#       - jira: "AAP-30264"
+#         case: "03919240"
+#         desc: "[BUG] AAP does not redirect to SAML login page after user logout"
+#         status: "New"
+
+

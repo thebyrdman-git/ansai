@@ -66,7 +66,7 @@ ANSAI enhances existing Ansible Galaxy roles (geerlingguy, cloudalchemy) with AI
 
 ### What I learned
 
-Running this on my homelab (`miraclemax.local`... err, "test server" 😄):
+Running this on my homelab (`testserver.local`... err, "test server" 😄):
 - 3 healing events in the first week
 - All analyzed correctly by AI
 - Prevented ~45 minutes of downtime

@@ -10,3 +10,7 @@
   when: cursor_rules_sync_to_github
   listen: sync_cursor_rules_to_github
 
+
+
+
+

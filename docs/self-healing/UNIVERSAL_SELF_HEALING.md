@@ -1,10 +1,10 @@
-# MiracleMax Universal Self-Healing System
+# TestServer Universal Self-Healing System
 
 ## 🤖 Philosophy
 
 **Answer to: "How will you know if a component stops working?"**
 
-**Universal Self-Healing**: Every service on MiracleMax automatically:
+**Universal Self-Healing**: Every service on TestServer automatically:
 1. ✅ Detects its own failures
 2. ✅ Attempts automatic recovery
 3. ✅ Emails you a detailed report of what broke and how it was fixed
@@ -16,7 +16,7 @@
 
 ## 🎯 What This System Does
 
-### When ANY Service Fails on MiracleMax:
+### When ANY Service Fails on TestServer:
 
 **Within Seconds:**
 1. Systemd detects the failure
@@ -106,10 +106,10 @@ Currently configured for:
 ### Successful Healing Example
 
 ```
-Subject: ✅ MiracleMax: story-stages - RESOLVED
+Subject: ✅ TestServer: story-stages - RESOLVED
 
 ═══════════════════════════════════════════════════════
-🤖 MiracleMax Self-Healing Report
+🤖 TestServer Self-Healing Report
 ═══════════════════════════════════════════════════════
 
 Service: story-stages
@@ -118,7 +118,7 @@ Port: 5002
 Priority: CRITICAL
 
 Time: Mon Nov 17 21:45:23 EST 2025
-Host: miraclemax
+Host: testserver
 
 AUTOMATIC ISSUE RESOLUTION
 
@@ -166,7 +166,7 @@ Enabled: enabled
 Uptime: Mon 2025-11-17 21:45:28 EST
 
 ═══════════════════════════════════════════════════════
-End Report - MiracleMax Self-Healing System
+End Report - TestServer Self-Healing System
 ═══════════════════════════════════════════════════════
 ```
 
@@ -175,7 +175,7 @@ End Report - MiracleMax Self-Healing System
 ### Failed Healing Example
 
 ```
-Subject: ❌ MiracleMax: traefik - FAILED
+Subject: ❌ TestServer: traefik - FAILED
 
 ═══════════════════════════════════════════════════════
 ❌ ALL HEALING STRATEGIES FAILED
@@ -189,7 +189,7 @@ Status: STILL DOWN after healing attempts
 MANUAL INTERVENTION REQUIRED:
 
 1. SSH to server:
-   ssh jbyrd@miraclemax.local
+   ssh jbyrd@testserver.local
 
 2. Check service status:
    sudo systemctl status traefik
@@ -225,7 +225,7 @@ For **each** monitored service:
 3. ✅ Service failure hook (`OnFailure=<service>-self-heal.service`)
 
 Plus:
-- ✅ Master status dashboard (`miraclemax-status`)
+- ✅ Master status dashboard (`testserver-status`)
 - ✅ Centralized logging
 - ✅ Email notification system
 
@@ -236,14 +236,14 @@ Plus:
 **One command shows everything:**
 
 ```bash
-miraclemax-status
+testserver-status
 ```
 
 **Output:**
 ```
 ╔════════════════════════════════════════════════════════════════╗
-║              🤖 MiracleMax Self-Healing Status                ║
-║              miraclemax.local                                  ║
+║              🤖 TestServer Self-Healing Status                ║
+║              testserver.local                                  ║
 ╚════════════════════════════════════════════════════════════════╝
 
 📊 System Overview:
@@ -298,13 +298,13 @@ watch -n 1 systemctl status story-stages
 
 ```bash
 # All healing activity
-journalctl -t miraclemax-self-heal
+journalctl -t testserver-self-heal
 
 # Specific service healing
 journalctl -u story-stages-self-heal
 
 # Real-time monitoring
-journalctl -t miraclemax-self-heal -f
+journalctl -t testserver-self-heal -f
 ```
 
 ### Force Healing Attempt
@@ -415,7 +415,7 @@ ansible-playbook playbooks/deploy-self-healing.yml
 - Email composed with full details
 
 **T+12s**: Email sent to jimmykbyrd@gmail.com  
-Subject: ✅ MiracleMax: story-stages - RESOLVED
+Subject: ✅ TestServer: story-stages - RESOLVED
 
 **T+13s**: Done!
 
@@ -447,7 +447,7 @@ If unsure, self-healing **escalates to you** via email rather than risk data los
 
 ## 📈 Success Metrics
 
-After deploying to MiracleMax, you can expect:
+After deploying to TestServer, you can expect:
 
 - **95% of service failures** automatically resolved
 - **< 15 seconds** average healing time
@@ -471,10 +471,10 @@ After deploying to MiracleMax, you can expect:
 
 ```bash
 # View all service status
-miraclemax-status
+testserver-status
 
 # View healing logs
-journalctl -t miraclemax-self-heal
+journalctl -t testserver-self-heal
 
 # Test healing
 sudo systemctl stop story-stages
@@ -496,7 +496,7 @@ sudo systemctl unmask story-stages-self-heal
 
 - **`~/infrastructure/ansible/roles/universal_self_heal/`** - Source code
 - **`/var/log/self-heal-*.log`** - Individual service healing logs
-- **`journalctl -t miraclemax-self-heal`** - Centralized healing logs
+- **`journalctl -t testserver-self-heal`** - Centralized healing logs
 - **`/var/run/*-heal-status`** - Real-time healing status files
 
 ---
@@ -511,7 +511,7 @@ sudo systemctl unmask story-stages-self-heal
 - What the root cause was
 - Current system status
 
-**For ALL services on MiracleMax.**
+**For ALL services on TestServer.**
 
 **No checking. No monitoring. Just emails when things happen.**
 

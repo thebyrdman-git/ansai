@@ -66,7 +66,7 @@ Add this to the `<head>` section of your templates:
 ### 4. Restart Your Applications
 
 ```bash
-ssh jbyrd@miraclemax.local "sudo systemctl restart story-stages passgo"
+ssh jbyrd@testserver.local "sudo systemctl restart story-stages passgo"
 ```
 
 ## 📊 Monitoring Features
@@ -104,39 +104,39 @@ ssh jbyrd@miraclemax.local "sudo systemctl restart story-stages passgo"
 
 ### Run CSS Validation Manually
 ```bash
-ssh jbyrd@miraclemax.local "sudo /usr/local/bin/css-validator.sh"
+ssh jbyrd@testserver.local "sudo /usr/local/bin/css-validator.sh"
 ```
 
 ### Check Runtime CSS Errors
 ```bash
-ssh jbyrd@miraclemax.local "sudo /usr/local/bin/runtime-css-monitor.sh"
+ssh jbyrd@testserver.local "sudo /usr/local/bin/runtime-css-monitor.sh"
 ```
 
 ### View Validation Logs
 ```bash
-ssh jbyrd@miraclemax.local "sudo journalctl -u css-validation.service -f"
+ssh jbyrd@testserver.local "sudo journalctl -u css-validation.service -f"
 ```
 
 ### View Runtime Monitor Logs
 ```bash
-ssh jbyrd@miraclemax.local "sudo journalctl -u css-runtime-monitor.service -f"
+ssh jbyrd@testserver.local "sudo journalctl -u css-runtime-monitor.service -f"
 ```
 
 ### Check Error Logs
 ```bash
 # Story Stages CSS errors
-ssh jbyrd@miraclemax.local "sudo tail -f /var/log/css-runtime-errors/story-stages_errors.log"
+ssh jbyrd@testserver.local "sudo tail -f /var/log/css-runtime-errors/story-stages_errors.log"
 
 # PassGo CSS errors
-ssh jbyrd@miraclemax.local "sudo tail -f /var/log/css-runtime-errors/passgo_errors.log"
+ssh jbyrd@testserver.local "sudo tail -f /var/log/css-runtime-errors/passgo_errors.log"
 
 # CSS validation errors
-ssh jbyrd@miraclemax.local "sudo tail -f /var/log/css-validation/errors.log"
+ssh jbyrd@testserver.local "sudo tail -f /var/log/css-validation/errors.log"
 ```
 
 ### Check Timer Status
 ```bash
-ssh jbyrd@miraclemax.local "systemctl list-timers | grep -E '(css-validation|css-runtime-monitor)'"
+ssh jbyrd@testserver.local "systemctl list-timers | grep -E '(css-validation|css-runtime-monitor)'"
 ```
 
 ## 📧 Email Alerts
@@ -206,14 +206,14 @@ This system integrates with your existing self-healing infrastructure:
 
 ### Validator not running?
 ```bash
-ssh jbyrd@miraclemax.local "systemctl status css-validation.timer"
-ssh jbyrd@miraclemax.local "sudo systemctl start css-validation.timer"
+ssh jbyrd@testserver.local "systemctl status css-validation.timer"
+ssh jbyrd@testserver.local "sudo systemctl start css-validation.timer"
 ```
 
 ### Monitor not running?
 ```bash
-ssh jbyrd@miraclemax.local "systemctl status css-runtime-monitor.timer"
-ssh jbyrd@miraclemax.local "sudo systemctl start css-runtime-monitor.timer"
+ssh jbyrd@testserver.local "systemctl status css-runtime-monitor.timer"
+ssh jbyrd@testserver.local "sudo systemctl start css-runtime-monitor.timer"
 ```
 
 ### Not receiving emails?

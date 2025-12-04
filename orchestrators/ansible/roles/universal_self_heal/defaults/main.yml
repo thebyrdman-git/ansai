@@ -1,6 +1,6 @@
 ---
 # Universal Self-Healing System Configuration
-# Applies to ALL services on miraclemax
+# Applies to ALL services on testserver
 
 # Owner email for all healing reports
 owner_email: your-email@example.com

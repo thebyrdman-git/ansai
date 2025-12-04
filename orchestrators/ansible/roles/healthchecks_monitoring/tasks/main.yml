@@ -1,6 +1,6 @@
 ---
 # Deploy Healthchecks.io External Monitoring
-# Dead Man's Switch for the entire MiracleMax stack
+# Dead Man's Switch for the entire TestServer stack
 
 - name: Display healthchecks deployment info
   debug:
@@ -48,8 +48,8 @@
 
 - name: Deploy heartbeat script
   template:
-    src: miraclemax-heartbeat.sh.j2
-    dest: /usr/local/bin/miraclemax-heartbeat
+    src: testserver-heartbeat.sh.j2
+    dest: /usr/local/bin/testserver-heartbeat
     owner: root
     group: root
     mode: '0755'
@@ -66,15 +66,15 @@
 
 - name: Deploy heartbeat cron job
   cron:
-    name: "MiracleMax Healthchecks.io Heartbeat"
+    name: "TestServer Healthchecks.io Heartbeat"
     minute: "*/{{ (healthcheck_interval / 60) | int }}"
-    job: "/usr/local/bin/miraclemax-heartbeat >> /var/log/healthcheck-heartbeat.log 2>&1"
+    job: "/usr/local/bin/testserver-heartbeat >> /var/log/healthcheck-heartbeat.log 2>&1"
     user: root
     state: present
   when: healthcheck_enabled and healthcheck_ping_url != ""
 
 - name: Test heartbeat script
-  command: /usr/local/bin/miraclemax-heartbeat
+  command: /usr/local/bin/testserver-heartbeat
   register: heartbeat_test
   changed_when: false
   failed_when: false
@@ -101,7 +101,7 @@
       - "   • Monitored services: {{ healthcheck_services | length }}"
       - ""
       - "🔧 Commands:"
-      - "   • Test heartbeat: sudo /usr/local/bin/miraclemax-heartbeat"
+      - "   • Test heartbeat: sudo /usr/local/bin/testserver-heartbeat"
       - "   • View logs: tail -f /var/log/healthcheck-heartbeat.log"
       - "   • View cron: crontab -l | grep heartbeat"
       - ""

@@ -1,0 +1,4 @@
+---
+# Defaults for podman_desktop role
+podman_desktop_version: latest
+

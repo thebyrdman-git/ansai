@@ -417,7 +417,7 @@ vault token capabilities app/database
 
 - **ansai-context-switch**: Load context-specific secrets via hooks
 - **ansai-dr-test**: Retrieve backup encryption keys
-- **ansai-miraclemax-deploy**: Get SSH keys and credentials
+- **ansai-testserver-deploy**: Get SSH keys and credentials
 - **ansai-budget-analyzer**: Fetch bank API credentials (privacy-first)
 - **ansai-email-processor**: Retrieve SMTP credentials
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Universal Self-Healing System for MiracleMax
+# Universal Self-Healing System for TestServer
 # Applies to: {{ service.name }}
 # Auto-detects, fixes, and reports issues
 
@@ -43,7 +43,7 @@ report() {
 init_report() {
     cat > "$REPORT_FILE" <<EOF
 ═══════════════════════════════════════════════════════
-🤖 MiracleMax Self-Healing Report
+🤖 TestServer Self-Healing Report
 ═══════════════════════════════════════════════════════
 
 Service: $SERVICE_NAME
@@ -92,14 +92,14 @@ $(journalctl -u $SERVICE_NAME -n 5 --no-pager 2>/dev/null || echo "No logs avail
 
 ═══════════════════════════════════════════════════════
 
-All MiracleMax Services Status:
+All TestServer Services Status:
 $(systemctl list-units --type=service --state=running --no-pager | grep -E "{{ monitored_services | map(attribute='name') | join('|') }}" || echo "Unable to list services")
 
 ═══════════════════════════════════════════════════════
-End Report - MiracleMax Self-Healing System
+End Report - TestServer Self-Healing System
 ═══════════════════════════════════════════════════════
 
-View all healing logs: journalctl -t miraclemax-self-heal
+View all healing logs: journalctl -t testserver-self-heal
 Check service: systemctl status $SERVICE_NAME
 View this service logs: journalctl -u $SERVICE_NAME -n 100
 EOF
@@ -118,7 +118,7 @@ try:
     msg = MIMEMultipart()
     msg['From'] = "$SMTP_USER"
     msg['To'] = "$OWNER_EMAIL"
-    msg['Subject'] = "$icon MiracleMax: $SERVICE_NAME - $status"
+    msg['Subject'] = "$icon TestServer: $SERVICE_NAME - $status"
     msg.attach(MIMEText(body, 'plain'))
     
     server = smtplib.SMTP("$SMTP_SERVER", $SMTP_PORT)
@@ -142,7 +142,7 @@ PYPYTHON
     fi
     
     # Always log to systemd journal
-    systemd-cat -t miraclemax-self-heal -p $priority < "$REPORT_FILE"
+    systemd-cat -t testserver-self-heal -p $priority < "$REPORT_FILE"
     
     # Save status
     echo "last_heal=$(date +%s)" > "$STATUS_FILE"
@@ -477,7 +477,7 @@ main() {
     report "MANUAL INTERVENTION REQUIRED:"
     report ""
     report "1. SSH to server:"
-    report "   ssh {{ ansible_user }}@miraclemax.local"
+    report "   ssh {{ ansible_user }}@testserver.local"
     report ""
     report "2. Check service status:"
     report "   sudo systemctl status $SERVICE_NAME"

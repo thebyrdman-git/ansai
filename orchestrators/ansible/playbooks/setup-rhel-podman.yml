@@ -1,0 +1,11 @@
+---
+- name: Setup Podman Desktop on RHEL Workstations
+  hosts: workstations
+  become: true
+  vars:
+    # Allow overriding hosts via -e "target_hosts=myhost"
+    target_hosts: workstations
+
+  roles:
+    - role: podman_desktop
+
