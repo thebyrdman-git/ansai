@@ -17,7 +17,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -51,19 +51,21 @@ jobs:
         run: mkdocs build --clean
         # Note: --strict removed due to broken doc links that need cleanup
 
-      - name: Copy static files
+      - name: Copy static files to built site
         run: |
           # Copy install.sh to site root for https://ansai.dev/install.sh
           cp install.sh site/install.sh
           echo "✅ Copied install.sh to site root"
 
       - name: Deploy to GitHub Pages
-        run: mkdocs gh-deploy --force
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          cname: ansai.dev
 
       - name: Notify deployment
         if: success()
         run: |
           echo "✅ Documentation deployed successfully to GitHub Pages"
           echo "🌐 Site URL: https://ansai.dev"
-
-
