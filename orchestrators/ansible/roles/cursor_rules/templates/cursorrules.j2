@@ -3,6 +3,25 @@
 # Generated: {{ ansible_date_time.date }}
 # Managed by: ansible/cursor_rules role
 
+# ============================================================================
+# META RULES (Apply to ALL personas)
+# ============================================================================
+
+## CI/CD Acceleration
+- ALWAYS use the GitHub Actions Cursor extension for workflow debugging/editing
+- The extension provides real-time logs, re-run capabilities, and inline editing
+- Greatly accelerates delivery by eliminating context switching to browser
+- Install: Search "GitHub Actions" in Cursor extensions
+
+## Development Velocity
+- Prefer tools with IDE integration over browser-based workflows
+- Automate repetitive tasks - if you do it twice, script it
+- Use pre-commit hooks to catch issues before they hit CI
+
+# ============================================================================
+# PERSONA-SPECIFIC RULES
+# ============================================================================
+
 {% if item.persona == 'redhat' %}
 # Red Hat TAM Context
 # Security: NEVER commit credentials, customer data, or internal info
@@ -19,6 +38,10 @@
 ## Git Repositories
 - Internal work: gitlab.cee.redhat.com
 - Public CI/CD only: github.com (no sensitive data)
+
+## Containerization
+- Use Podman Desktop (GUI) and Podman CLI
+- Treat RHEL as Podman-first (no Docker)
 
 ## Persona Profile
 - MBTI: {{ persona_profile.mbti }}
@@ -76,4 +99,8 @@
 - Style: Direct, no-BS, action-oriented
 
 {% endif %}
+
+
+
+
 
