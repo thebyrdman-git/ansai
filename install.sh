@@ -50,9 +50,15 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Check if running interactively (has a TTY)
-is_interactive() {
-    [[ -t 0 ]] || [[ -e /dev/tty ]]
+# Check if we can read from TTY (for interactive prompts)
+can_prompt() {
+    # Test if /dev/tty is readable
+    if [[ -r /dev/tty ]] && [[ -w /dev/tty ]]; then
+        # Actually try to use it
+        echo -n "" > /dev/tty 2>/dev/null
+        return $?
+    fi
+    return 1
 }
 
 # Prompt user or use default in non-interactive mode
@@ -60,9 +66,9 @@ prompt_yn() {
     local prompt="$1"
     local default="${2:-y}"
     
-    if is_interactive && [[ -e /dev/tty ]]; then
+    if can_prompt; then
         read -p "$prompt " -n 1 -r < /dev/tty
-        echo ""
+        echo "" > /dev/tty
         [[ $REPLY =~ ^[Yy]$ ]]
     else
         # Non-interactive: use default
@@ -76,9 +82,9 @@ prompt_choice() {
     local prompt="$1"
     local default="$2"
     
-    if is_interactive && [[ -e /dev/tty ]]; then
+    if can_prompt; then
         read -p "$prompt " -n 1 -r < /dev/tty
-        echo ""
+        echo "" > /dev/tty
         echo "$REPLY"
     else
         # Non-interactive: use default
@@ -462,9 +468,9 @@ echo -e "${CYAN}AI-powered automation starts now.${NC}\n"
 
 # Offer to reload shell
 echo -e "${YELLOW}Note: You need to reload your shell for PATH changes to take effect.${NC}"
-if is_interactive && [[ -e /dev/tty ]]; then
+if can_prompt; then
     read -p "Open a new terminal or run: source $SHELL_CONFIG (press any key)" -n 1 -r < /dev/tty
-    echo ""
+    echo "" > /dev/tty
 else
     echo -e "Run: ${BOLD}source $SHELL_CONFIG${NC}"
 fi
