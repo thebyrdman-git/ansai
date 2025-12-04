@@ -66,7 +66,7 @@ prompt_yn() {
         echo "" > /dev/tty
         [[ $REPLY =~ ^[Yy]$ ]]
     else
-        # Non-interactive: use default
+        # Non-interactive: show prompt and use default
         echo "$prompt [auto: $default]"
         [[ $default =~ ^[Yy]$ ]]
     fi
@@ -82,8 +82,8 @@ prompt_choice() {
         echo "" > /dev/tty
         echo "$REPLY"
     else
-        # Non-interactive: use default
-        echo "$prompt [auto: $default]"
+        # Non-interactive: use default (prompt goes to stderr, value to stdout)
+        echo "$prompt [auto: $default]" >&2
         echo "$default"
     fi
 }
