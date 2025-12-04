@@ -50,6 +50,43 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
+# Check if running interactively (has a TTY)
+is_interactive() {
+    [[ -t 0 ]] || [[ -e /dev/tty ]]
+}
+
+# Prompt user or use default in non-interactive mode
+prompt_yn() {
+    local prompt="$1"
+    local default="${2:-y}"
+    
+    if is_interactive && [[ -e /dev/tty ]]; then
+        read -p "$prompt " -n 1 -r < /dev/tty
+        echo ""
+        [[ $REPLY =~ ^[Yy]$ ]]
+    else
+        # Non-interactive: use default
+        echo "$prompt [auto: $default]"
+        [[ $default =~ ^[Yy]$ ]]
+    fi
+}
+
+# Prompt for choice or use default in non-interactive mode
+prompt_choice() {
+    local prompt="$1"
+    local default="$2"
+    
+    if is_interactive && [[ -e /dev/tty ]]; then
+        read -p "$prompt " -n 1 -r < /dev/tty
+        echo ""
+        echo "$REPLY"
+    else
+        # Non-interactive: use default
+        echo "$prompt [auto: $default]"
+        echo "$default"
+    fi
+}
+
 # Function to run pip (handles RHEL where pip3 isn't a standalone command)
 run_pip() {
     if command_exists pip3; then
@@ -109,9 +146,7 @@ echo -e "  3. Install AI dependencies (optional)"
 echo -e "  4. Create configuration directories"
 echo -e ""
 
-read -p "Continue with installation? (y/n) " -n 1 -r < /dev/tty
-echo ""
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+if ! prompt_yn "Continue with installation? (y/n)" "y"; then
     print_warning "Installation cancelled."
     exit 0
 fi
@@ -204,9 +239,7 @@ fi
 
 if [ -d "$ANSAI_DIR" ]; then
     print_warning "ANSAI directory already exists: $ANSAI_DIR"
-    read -p "Remove and reinstall? (y/n) " -n 1 -r < /dev/tty
-    echo ""
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    if prompt_yn "Remove and reinstall? (y/n)" "y"; then
         # If running from within ANSAI, copy script to /tmp first
         if [ "$RUNNING_FROM_ANSAI" = true ]; then
             print_step "Copying installer to /tmp to prevent self-deletion..."
@@ -287,8 +320,7 @@ echo -e ""
 echo -e "  ${CYAN}4) Skip${NC} - I'll install manually later"
 echo -e ""
 
-read -p "Choose option (1-4): " -n 1 -r AI_CHOICE < /dev/tty
-echo
+AI_CHOICE=$(prompt_choice "Choose option (1-4):" "4")
 
 case $AI_CHOICE in
     1)
@@ -332,9 +364,7 @@ if ! command_exists ansible; then
     echo -e "${YELLOW}Ansible not found.${NC}"
     echo -e "Ansible is ${BOLD}highly recommended${NC} for ANSAI automation."
     echo -e ""
-    read -p "Install Ansible now? (y/n) " -n 1 -r < /dev/tty
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    if prompt_yn "Install Ansible now? (y/n)" "n"; then
         print_step "Installing Ansible..."
         run_pip install --user ansible
         print_success "Ansible installed"
@@ -432,8 +462,12 @@ echo -e "${CYAN}AI-powered automation starts now.${NC}\n"
 
 # Offer to reload shell
 echo -e "${YELLOW}Note: You need to reload your shell for PATH changes to take effect.${NC}"
-read -p "Open a new terminal or run: source $SHELL_CONFIG (press any key)" -n 1 -r < /dev/tty
-echo ""
+if is_interactive && [[ -e /dev/tty ]]; then
+    read -p "Open a new terminal or run: source $SHELL_CONFIG (press any key)" -n 1 -r < /dev/tty
+    echo ""
+else
+    echo -e "Run: ${BOLD}source $SHELL_CONFIG${NC}"
+fi
 
 # Clean up temp installer if it exists
 if [ -f /tmp/ansai-install-temp.sh ]; then
