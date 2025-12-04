@@ -1,0 +1,344 @@
+#!/bin/bash
+# ansai-incident-report - AI-generated incident reports and post-mortems
+# Part of ANSAI AI-Powered Workflows
+
+set -euo pipefail
+
+# Configuration
+LITELLM_URL="${LITELLM_URL:-http://localhost:4000}"
+DEFAULT_MODEL="${ANSAI_AI_MODEL:-gpt-4o}"
+REPORTS_DIR="${ANSAI_REPORTS_DIR:-$HOME/.ansai/incident-reports}"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+# Help
+show_help() {
+    cat << EOF
+ansai-incident-report - AI-generated incident reports and post-mortems
+
+USAGE:
+    ansai-incident-report [OPTIONS]
+
+OPTIONS:
+    --service NAME      Service that had the incident
+    --start TIME        When incident started
+    --end TIME          When incident ended (default: now)
+    --severity LEVEL    Severity: critical, high, medium, low
+    --impact DESCRIPTION  Impact description
+    --template TYPE     Report template: postmortem, executive, technical
+    --interactive, -i   Interactive mode (ask questions)
+    --output FILE       Save report to file
+    --model MODEL       AI model to use (default: gpt-4o)
+    --help, -h          Show this help
+
+EXAMPLES:
+    # Interactive mode (recommended)
+    ansai-incident-report --interactive
+
+    # Generate from command line
+    ansai-incident-report \\
+        --service "web-api" \\
+        --start "2025-11-18 14:30" \\
+        --end "2025-11-18 15:45" \\
+        --severity critical \\
+        --impact "API unavailable for 75 minutes, affecting 10k users" \\
+        --template postmortem \\
+        --output incident-2025-11-18.md
+
+    # Quick executive summary
+    ansai-incident-report --service "database" --template executive
+
+REPORT TYPES:
+    postmortem  - Full post-mortem with timeline, root cause, action items
+    executive   - High-level summary for leadership
+    technical   - Detailed technical analysis
+
+AI FEATURES:
+    - Root cause analysis
+    - Timeline reconstruction
+    - Action item generation
+    - Prevention recommendations
+    - Communication templates
+EOF
+}
+
+# Interactive mode
+interactive_mode() {
+    echo -e "${BLUE}🔍 ANSAI Incident Report Generator (Interactive Mode)${NC}\n"
+    
+    # Collect information
+    read -p "Service name: " SERVICE
+    read -p "Incident start time (e.g., '2025-11-18 14:30'): " START_TIME
+    read -p "Incident end time (default: now): " END_TIME
+    END_TIME="${END_TIME:-$(date '+%Y-%m-%d %H:%M')}"
+    
+    echo -e "\nSeverity levels: critical, high, medium, low"
+    read -p "Severity: " SEVERITY
+    
+    echo -e "\nDescribe the impact (user-facing, business impact):"
+    read -p "Impact: " IMPACT
+    
+    echo -e "\nWhat was the root cause (if known, or 'investigating'):"
+    read -p "Root cause: " ROOT_CAUSE
+    
+    echo -e "\nWhat actions were taken to resolve:"
+    read -p "Resolution steps: " RESOLUTION
+    
+    echo -e "\nReport template: postmortem, executive, technical"
+    read -p "Template (default: postmortem): " TEMPLATE
+    TEMPLATE="${TEMPLATE:-postmortem}"
+    
+    # Generate report
+    generate_report "$SERVICE" "$START_TIME" "$END_TIME" "$SEVERITY" "$IMPACT" "$ROOT_CAUSE" "$RESOLUTION" "$TEMPLATE"
+}
+
+# Generate report
+generate_report() {
+    local service="$1"
+    local start="$2"
+    local end="$3"
+    local severity="$4"
+    local impact="$5"
+    local root_cause="$6"
+    local resolution="$7"
+    local template="$8"
+    
+    echo -e "${CYAN}🤖 AI generating $template report...${NC}" >&2
+    
+    # Create prompt based on template
+    local prompt=""
+    case "$template" in
+        executive)
+            prompt="Generate a concise executive summary for this incident:
+
+Service: $service
+Start: $start
+End: $end
+Severity: $severity
+Impact: $impact
+Root Cause: $root_cause
+Resolution: $resolution
+
+Include:
+- Brief overview (2-3 sentences)
+- Business impact
+- Resolution summary
+- Key takeaways
+- Preventive measures
+
+Format: Clear, non-technical language suitable for executives."
+            ;;
+        technical)
+            prompt="Generate a detailed technical incident report:
+
+Service: $service
+Start: $start
+End: $end
+Severity: $severity
+Impact: $impact
+Root Cause: $root_cause
+Resolution: $resolution
+
+Include:
+- Detailed timeline
+- Technical root cause analysis
+- System behavior analysis
+- Resolution steps with commands/code
+- Technical recommendations
+- Monitoring improvements needed
+
+Format: Technical detail suitable for engineering team."
+            ;;
+        postmortem|*)
+            prompt="Generate a comprehensive post-mortem report:
+
+Service: $service
+Start: $start
+End: $end
+Severity: $severity
+Impact: $impact
+Root Cause: $root_cause
+Resolution: $resolution
+
+Include:
+1. Executive Summary
+2. Impact Assessment (users, revenue, reputation)
+3. Timeline of Events
+4. Root Cause Analysis (5 Whys methodology)
+5. What Went Well
+6. What Went Wrong
+7. Action Items (with owners and deadlines)
+8. Prevention Measures
+9. Lessons Learned
+
+Format: Professional post-mortem suitable for all stakeholders."
+            ;;
+    esac
+    
+    # Prepare request
+    local request_body=$(cat << EOF
+{
+  "model": "$DEFAULT_MODEL",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are an expert SRE/DevOps engineer writing incident reports. Be thorough, objective, and focus on learning, not blame. Use markdown formatting."
+    },
+    {
+      "role": "user",
+      "content": $(echo "$prompt" | jq -Rs .)
+    }
+  ],
+  "temperature": 0.5,
+  "max_tokens": 3000
+}
+EOF
+)
+    
+    # Call LiteLLM
+    local response=$(curl -s -X POST "$LITELLM_URL/v1/chat/completions" \
+        -H "Content-Type: application/json" \
+        -d "$request_body")
+    
+    # Check for errors
+    if echo "$response" | jq -e '.error' >/dev/null 2>&1; then
+        local error_msg=$(echo "$response" | jq -r '.error.message')
+        echo -e "${RED}❌ AI report generation failed: $error_msg${NC}" >&2
+        exit 1
+    fi
+    
+    # Extract report
+    local report=$(echo "$response" | jq -r '.choices[0].message.content')
+    
+    # Add metadata header
+    cat << EOF
+---
+Generated: $(date)
+Service: $service
+Incident Start: $start
+Incident End: $end
+Severity: $severity
+Report Type: $template
+Generated by: ANSAI Incident Reporter
+---
+
+$report
+
+---
+
+## Additional Resources
+
+- Logs: \`journalctl -u $service --since "$start" --until "$end"\`
+- Metrics: Check your monitoring dashboard
+- Related Incidents: Search for similar patterns
+
+*This report was AI-generated and should be reviewed by the incident commander.*
+EOF
+}
+
+# Parse arguments
+INTERACTIVE=false
+SERVICE=""
+START_TIME=""
+END_TIME=""
+SEVERITY=""
+IMPACT=""
+ROOT_CAUSE=""
+RESOLUTION=""
+TEMPLATE="postmortem"
+OUTPUT_FILE=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --interactive|-i)
+            INTERACTIVE=true
+            shift
+            ;;
+        --service)
+            SERVICE="$2"
+            shift 2
+            ;;
+        --start)
+            START_TIME="$2"
+            shift 2
+            ;;
+        --end)
+            END_TIME="$2"
+            shift 2
+            ;;
+        --severity)
+            SEVERITY="$2"
+            shift 2
+            ;;
+        --impact)
+            IMPACT="$2"
+            shift 2
+            ;;
+        --template)
+            TEMPLATE="$2"
+            shift 2
+            ;;
+        --output)
+            OUTPUT_FILE="$2"
+            shift 2
+            ;;
+        --model)
+            DEFAULT_MODEL="$2"
+            shift 2
+            ;;
+        --help|-h)
+            show_help
+            exit 0
+            ;;
+        *)
+            echo "Error: Unknown option $1" >&2
+            show_help >&2
+            exit 1
+            ;;
+    esac
+done
+
+# Check LiteLLM
+if ! curl -s "$LITELLM_URL/health" >/dev/null 2>&1; then
+    echo -e "${RED}❌ LiteLLM proxy not running at $LITELLM_URL${NC}" >&2
+    echo -e "${CYAN}Start it with: ansai-litellm-proxy${NC}" >&2
+    exit 1
+fi
+
+# Create reports directory
+mkdir -p "$REPORTS_DIR"
+
+# Run appropriate mode
+if [ "$INTERACTIVE" = true ]; then
+    interactive_mode
+else
+    # Validate required fields
+    if [ -z "$SERVICE" ] || [ -z "$START_TIME" ]; then
+        echo -e "${RED}❌ Required: --service and --start${NC}" >&2
+        echo -e "${CYAN}Or use --interactive mode${NC}" >&2
+        exit 1
+    fi
+    
+    END_TIME="${END_TIME:-$(date '+%Y-%m-%d %H:%M')}"
+    ROOT_CAUSE="${ROOT_CAUSE:-investigating}"
+    RESOLUTION="${RESOLUTION:-ongoing}"
+    
+    # Generate report
+    REPORT=$(generate_report "$SERVICE" "$START_TIME" "$END_TIME" "$SEVERITY" "$IMPACT" "$ROOT_CAUSE" "$RESOLUTION" "$TEMPLATE")
+    
+    # Output or save
+    if [ -n "$OUTPUT_FILE" ]; then
+        echo "$REPORT" > "$OUTPUT_FILE"
+        echo -e "${GREEN}✅ Report saved to: $OUTPUT_FILE${NC}" >&2
+    else
+        echo "$REPORT"
+    fi
+fi
+
+

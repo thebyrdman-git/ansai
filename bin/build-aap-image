@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+# Resolve the repository root directory
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Define image name
+IMAGE_NAME="rhel9-aap-base"
+
+echo "Building $IMAGE_NAME..."
+# Build using the absolute path to the Containerfile and context
+podman build -t $IMAGE_NAME -f "$REPO_ROOT/images/rhel-aap/Containerfile" "$REPO_ROOT"
+
+echo "Build complete!"
+echo "Run with: bin/run-aap-container"
+

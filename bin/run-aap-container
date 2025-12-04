@@ -1,0 +1,51 @@
+#!/bin/bash
+set -e
+
+# Resolve the repository root directory
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+IMAGE_NAME="rhel9-aap-base"
+CONTAINER_NAME="aap-rhel-node"
+
+echo "Starting $CONTAINER_NAME..."
+
+# Run the container in detached mode
+# --privileged is often needed for systemd in containers
+# -p 2222:22 maps host port 2222 to container SSH port 22
+podman run -d \
+    --name $CONTAINER_NAME \
+    --privileged \
+    -p 2222:22 \
+    $IMAGE_NAME
+
+# Inject host SSH key for seamless access
+PUB_KEY=""
+if [ -f "$HOME/.ssh/id_ed25519.pub" ]; then
+    PUB_KEY=$(cat "$HOME/.ssh/id_ed25519.pub")
+elif [ -f "$HOME/.ssh/id_rsa.pub" ]; then
+    PUB_KEY=$(cat "$HOME/.ssh/id_rsa.pub")
+fi
+
+if [ -n "$PUB_KEY" ]; then
+    echo "Injecting local SSH public key..."
+    
+    # Wait a moment for the container/user to be ready if needed, 
+    # but since it's just files, it should be instant after run returns.
+    
+    # Create .ssh directory with correct permissions
+    podman exec -u ansible $CONTAINER_NAME mkdir -p /home/ansible/.ssh
+    podman exec -u ansible $CONTAINER_NAME chmod 700 /home/ansible/.ssh
+    
+    # Add key
+    podman exec -u ansible $CONTAINER_NAME sh -c "echo '$PUB_KEY' >> /home/ansible/.ssh/authorized_keys"
+    podman exec -u ansible $CONTAINER_NAME chmod 600 /home/ansible/.ssh/authorized_keys
+    
+    echo "✅ SSH key injected! You can now connect without a password."
+else
+    echo "⚠️  No SSH public key found (checked id_ed25519.pub and id_rsa.pub)."
+    echo "   You will need to manually set up access."
+fi
+
+echo "Container started!"
+echo "Access via: ssh -p 2222 ansible@localhost"
+

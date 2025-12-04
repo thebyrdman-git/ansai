@@ -140,18 +140,55 @@ if ! command_exists pip3; then
 fi
 print_success "pip3 installed"
 
-# Essential - Docker
-print_header "Step 2: Essential Tools (Docker)"
+# Essential - Podman (Docker-compatible, rootless, daemonless)
+print_header "Step 2: Container Runtime (Podman)"
 
-print_step "Checking Docker..."
-if command_exists docker; then
-    print_success "Docker already installed"
-elif brew list --cask docker-desktop &>/dev/null 2>&1; then
-    print_success "Docker Desktop installed (run it to enable docker command)"
+print_step "Checking Podman..."
+if command_exists podman; then
+    print_success "Podman already installed"
+    # Check if machine is running
+    if podman machine info &>/dev/null 2>&1; then
+        print_success "Podman machine is running"
+    else
+        print_step "Initializing Podman machine..."
+        podman machine init 2>/dev/null || true
+        podman machine start
+        print_success "Podman machine started"
+    fi
 else
-    print_warning "Docker Desktop requires manual installation with sudo"
-    print_info "Run manually: brew install --cask docker-desktop"
-    print_info "Or download from: https://www.docker.com/products/docker-desktop/"
+    print_step "Installing Podman and podman-compose..."
+    if brew install podman podman-compose; then
+        print_success "Podman installed"
+        
+        # Install Podman Desktop GUI
+        print_step "Installing Podman Desktop..."
+        if brew install --cask podman-desktop; then
+             print_success "Podman Desktop installed"
+        else
+             print_warning "Failed to install Podman Desktop (GUI)"
+        fi
+
+        print_step "Initializing Podman machine..."
+        podman machine init
+        podman machine start
+        print_success "Podman machine started"
+        
+        # Add Docker compatibility aliases
+        if ! grep -q 'alias docker=podman' ~/.zshrc 2>/dev/null && ! grep -q 'alias docker=podman' ~/.bashrc 2>/dev/null; then
+            for rc in ~/.zshrc ~/.bashrc; do
+                [ -f "$rc" ] || continue
+                cat >> "$rc" << 'PODMAN_EOF'
+
+# Podman - Docker-compatible container runtime
+alias docker=podman
+alias docker-compose=podman-compose
+PODMAN_EOF
+                print_info "Added Docker compatibility aliases to $rc"
+            done
+        fi
+    else
+        print_error "Failed to install Podman"
+    fi
 fi
 
 # AI Dependencies
@@ -226,8 +263,9 @@ print_header "Installation Complete! 🎉"
 echo -e "${BOLD}Installed Tools Summary:${NC}\n"
 
 # Check what's installed now
-echo -e "${CYAN}Essential:${NC}"
-command_exists docker && echo -e "  ${GREEN}✅${NC} Docker" || echo -e "  ${YELLOW}⏳${NC} Docker (open Docker Desktop to complete)"
+echo -e "${CYAN}Container Runtime:${NC}"
+command_exists podman && echo -e "  ${GREEN}✅${NC} Podman" || echo -e "  ${RED}❌${NC} Podman"
+command_exists podman-compose && echo -e "  ${GREEN}✅${NC} podman-compose" || echo -e "  ${RED}❌${NC} podman-compose"
 
 echo -e "\n${CYAN}AI Dependencies:${NC}"
 (command_exists litellm || [ -f "$HOME/.local/bin/litellm" ]) && echo -e "  ${GREEN}✅${NC} LiteLLM" || echo -e "  ${RED}❌${NC} LiteLLM"
@@ -254,16 +292,31 @@ command_exists sops && echo -e "  ${GREEN}✅${NC} sops" || echo -e "  ${RED}❌
 command_exists age && echo -e "  ${GREEN}✅${NC} age" || echo -e "  ${RED}❌${NC} age"
 
 # Ensure ~/.local/bin is in PATH for pipx tools
-if ! grep -q '.local/bin' ~/.zshrc 2>/dev/null; then
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
-    print_info "Added ~/.local/bin to PATH in ~/.zshrc"
+if ! grep -q '.local/bin' ~/.zshrc 2>/dev/null && ! grep -q '.local/bin' ~/.bashrc 2>/dev/null; then
+    for rc in ~/.zshrc ~/.bashrc; do
+        [ -f "$rc" ] || continue
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$rc"
+        print_info "Added ~/.local/bin to PATH in $rc"
+    done
+fi
+
+# Ensure ANSAI bin is in PATH
+ANSAI_BIN="$HOME/Documents/GitHub/ansai/bin"
+if [ -d "$ANSAI_BIN" ]; then
+    if ! grep -q "$ANSAI_BIN" ~/.zshrc 2>/dev/null && ! grep -q "$ANSAI_BIN" ~/.bashrc 2>/dev/null; then
+        for rc in ~/.zshrc ~/.bashrc; do
+            [ -f "$rc" ] || continue
+            echo "export PATH=\"$ANSAI_BIN:\$PATH\"" >> "$rc"
+            print_info "Added ANSAI bin to PATH in $rc"
+        done
+    fi
 fi
 
 echo -e ""
-print_info "Docker Desktop requires manual install: brew install --cask docker"
+print_info "Podman uses 'docker' and 'docker-compose' aliases for compatibility."
 print_info "For pyenv, add 'eval \"\$(pyenv init -)\"' to your shell profile."
-print_info "For direnv, add 'eval \"\$(direnv hook zsh)\"' to your ~/.zshrc."
-print_info "Run 'source ~/.zshrc' or open a new terminal to use new tools."
+print_info "For direnv, add 'eval \"\$(direnv hook zsh)\"' or 'eval \"\$(direnv hook bash)\"' to your shell profile."
+print_info "Run 'source ~/.zshrc' or 'source ~/.bashrc' to use new tools."
 
 echo -e "\n${GREEN}${BOLD}Your ANSAI development environment is ready! 🚀${NC}\n"
 

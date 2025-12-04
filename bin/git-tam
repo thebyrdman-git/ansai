@@ -1,0 +1,111 @@
+#!/bin/bash
+# git-tam - TAM Task Tracker (GitHub Projects)
+# Usage: git-tam <command> [args]
+
+set -euo pipefail
+
+# Configuration
+PROJECT_NUMBER="1"
+OWNER="thebyrdman-git"
+CONFIG_DIR="$HOME/.config/git-tam"
+CACHE_FILE="$CONFIG_DIR/cache.json"
+
+# Colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m'
+BOLD='\033[1m'
+
+# Helper: Check dependencies
+check_deps() {
+    if ! command -v gh &>/dev/null; then
+        echo "Error: 'gh' CLI is required."
+        exit 1
+    fi
+    if ! command -v jq &>/dev/null; then
+        echo "Error: 'jq' is required."
+        exit 1
+    fi
+}
+
+# Helper: Ensure cache dir
+init_config() {
+    mkdir -p "$CONFIG_DIR"
+}
+
+# Helper: Run GraphQL
+graphql() {
+    local query="$1"
+    gh api graphql -f query="$query"
+}
+
+# Command: List Items
+cmd_list() {
+    echo -e "${BLUE}${BOLD}TAM Master Tracker (Project #$PROJECT_NUMBER)${NC}"
+    
+    # Fetch items using 'gh project item-list'
+    # We filter columns for clean output
+    gh project item-list "$PROJECT_NUMBER" --owner "$OWNER" --format json | \
+    jq -r '.items[] | "\(.content.title) [\(.status // "No Status")] (\(.content.number // "Draft"))"' | \
+    while read -r line; do
+        echo "- $line"
+    done
+}
+
+# Command: Add Draft Item
+cmd_add() {
+    local title="$1"
+    local status="${2:-Todo}"
+    
+    echo "Creating draft issue: '$title'..."
+    
+    # Create draft item
+    local id=$(gh project item-create "$PROJECT_NUMBER" --owner "$OWNER" --title "$title" --format json | jq -r '.id')
+    
+    if [[ -n "$id" ]]; then
+        echo -e "${GREEN}Created Item ID: $id${NC}"
+        # Note: Setting status requires field ID lookup which is complex in v1 script.
+        # For v1, we just create the item.
+        echo "Item added to project board."
+    else
+        echo -e "${RED}Failed to create item.${NC}"
+    fi
+}
+
+# Command: Open Board
+cmd_open() {
+    local url="https://github.com/users/$OWNER/projects/$PROJECT_NUMBER"
+    echo "Opening $url..."
+    if command -v open &>/dev/null; then
+        open "$url"
+    elif command -v xdg-open &>/dev/null; then
+        xdg-open "$url"
+    else
+        echo "Please open: $url"
+    fi
+}
+
+# Main
+check_deps
+init_config
+
+case "${1:-help}" in
+    list) cmd_list ;;
+    add) 
+        if [[ -z "${2:-}" ]]; then
+            echo "Usage: git-tam add <title>"
+            exit 1
+        fi
+        cmd_add "$2"
+        ;;
+    open) cmd_open ;;
+    *)
+        echo "Usage: git-tam {list|add|open}"
+        echo "  list       List all items"
+        echo "  add <msg>  Add a new draft task"
+        echo "  open       Open board in browser"
+        ;;
+esac
+

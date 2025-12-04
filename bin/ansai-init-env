@@ -1,0 +1,30 @@
+#!/bin/bash
+# Source this script to initialize your environment
+# Usage: source bin/ansai-init-env
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+
+# Load credentials from local file (not committed to git)
+CREDS_FILE="$REPO_ROOT/.env.local"
+if [[ -f "$CREDS_FILE" ]]; then
+    # shellcheck disable=SC1090
+    source "$CREDS_FILE"
+    echo "✅ Loaded credentials from .env.local"
+else
+    echo "⚠️  No .env.local found. Create one with:"
+    echo "   cp $REPO_ROOT/.env.local.example $CREDS_FILE"
+fi
+
+# Export for AAP installer
+export REGISTRY_USERNAME REGISTRY_PASSWORD
+export AAP_ADMIN_PASSWORD AAP_PG_PASSWORD
+
+if command -v crc >/dev/null; then
+    eval $(crc oc-env)
+    echo "✅ Added 'oc' to PATH via crc"
+fi
+
+echo "ℹ️  Environment initialized"
+
+

@@ -1,0 +1,285 @@
+#!/bin/bash
+# ansai-deploy-safe - AI-powered deployment safety checks
+# Part of ANSAI AI-Powered Workflows
+
+set -euo pipefail
+
+# Configuration
+LITELLM_URL="${LITELLM_URL:-http://localhost:4000}"
+DEFAULT_MODEL="${ANSAI_AI_MODEL:-gpt-4o}"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+# Help
+show_help() {
+    cat << EOF
+ansai-deploy-safe - AI-powered deployment safety checks
+
+USAGE:
+    ansai-deploy-safe [OPTIONS] <deployment-file-or-command>
+
+OPTIONS:
+    --type TYPE         Deployment type: kubernetes, ansible, docker, terraform
+    --env ENVIRONMENT   Target environment: production, staging, dev
+    --checklist FILE    Custom checklist file
+    --strict            Fail on any warnings
+    --explain           Explain each check in detail
+    --help, -h          Show this help
+
+EXAMPLES:
+    # Check Kubernetes manifest
+    ansai-deploy-safe --type kubernetes deployment.yaml
+
+    # Check Ansible playbook for production
+    ansai-deploy-safe --type ansible --env production deploy.yml
+
+    # Check with strict mode (fail on warnings)
+    ansai-deploy-safe --type kubernetes --env production --strict deployment.yaml
+
+    # Analyze git diff before deployment
+    git diff main..HEAD | ansai-deploy-safe --type kubernetes --env production
+
+SAFETY CHECKS:
+    - Security vulnerabilities
+    - Resource limits (CPU, memory)
+    - Configuration risks
+    - Best practice violations
+    - Production-specific risks
+    - Rollback plan validation
+    - Health check configuration
+    - Monitoring/alerting presence
+
+AI FEATURES:
+    - Context-aware analysis
+    - Risk assessment
+    - Remediation suggestions
+    - Impact prediction
+    - Similar incident warnings
+EOF
+}
+
+# Deployment safety check
+check_deployment() {
+    local content="$1"
+    local type="$2"
+    local env="$3"
+    local strict="$4"
+    
+    echo -e "${CYAN}🤖 AI analyzing deployment safety...${NC}" >&2
+    
+    # Create prompt
+    local prompt="Analyze this $type deployment for $env environment.
+
+Deployment content:
+\`\`\`
+$content
+\`\`\`
+
+Perform comprehensive safety checks:
+
+1. **Security Analysis**
+   - Secrets management
+   - Access controls
+   - Network policies
+   - Image vulnerabilities
+   - Privilege escalation risks
+
+2. **Resource Management**
+   - CPU/memory limits
+   - Storage configuration
+   - Scaling policies
+   - Resource quotas
+
+3. **Production Readiness** (for production deployments)
+   - Health checks (liveness, readiness)
+   - Graceful shutdown
+   - Rollback strategy
+   - Monitoring/alerting
+   - Logging configuration
+
+4. **Best Practices**
+   - Configuration management
+   - Naming conventions
+   - Labels/annotations
+   - Documentation
+
+5. **Risk Assessment**
+   - High-risk changes
+   - Blast radius
+   - Impact prediction
+   - Similar past incidents
+
+Provide:
+- Overall risk level: LOW, MEDIUM, HIGH, CRITICAL
+- Specific issues found (with severity)
+- Remediation steps
+- Go/No-Go recommendation
+
+Format as markdown with clear sections."
+
+    # Prepare request
+    local request_body=$(cat << EOF
+{
+  "model": "$DEFAULT_MODEL",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are an expert DevOps/SRE engineer performing deployment safety reviews. Be thorough but practical. Focus on preventing outages."
+    },
+    {
+      "role": "user",
+      "content": $(echo "$prompt" | jq -Rs .)
+    }
+  ],
+  "temperature": 0.2,
+  "max_tokens": 2500
+}
+EOF
+)
+    
+    # Call LiteLLM
+    local response=$(curl -s -X POST "$LITELLM_URL/v1/chat/completions" \
+        -H "Content-Type: application/json" \
+        -d "$request_body")
+    
+    # Check for errors
+    if echo "$response" | jq -e '.error' >/dev/null 2>&1; then
+        local error_msg=$(echo "$response" | jq -r '.error.message')
+        echo -e "${RED}❌ AI analysis failed: $error_msg${NC}" >&2
+        exit 1
+    fi
+    
+    # Extract analysis
+    local analysis=$(echo "$response" | jq -r '.choices[0].message.content')
+    
+    echo -e "${GREEN}✅ Safety Analysis Complete${NC}\n"
+    echo "$analysis"
+    
+    # Check for risk level and exit accordingly
+    if echo "$analysis" | grep -qi "CRITICAL\|HIGH"; then
+        echo -e "\n${RED}🚨 HIGH or CRITICAL risks detected!${NC}" >&2
+        if [ "$strict" = true ]; then
+            echo -e "${RED}❌ Deployment blocked by strict mode${NC}" >&2
+            exit 1
+        else
+            echo -e "${YELLOW}⚠️  Review recommended before deployment${NC}" >&2
+            exit 2
+        fi
+    elif echo "$analysis" | grep -qi "MEDIUM" && [ "$strict" = true ]; then
+        echo -e "\n${YELLOW}⚠️  MEDIUM risks detected in strict mode${NC}" >&2
+        exit 2
+    else
+        echo -e "\n${GREEN}✅ Deployment safety checks passed${NC}" >&2
+    fi
+}
+
+# Parse arguments
+TYPE=""
+ENV="production"
+STRICT=false
+EXPLAIN=false
+INPUT_FILE=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --type)
+            TYPE="$2"
+            shift 2
+            ;;
+        --env)
+            ENV="$2"
+            shift 2
+            ;;
+        --strict)
+            STRICT=true
+            shift
+            ;;
+        --explain)
+            EXPLAIN=true
+            shift
+            ;;
+        --model)
+            DEFAULT_MODEL="$2"
+            shift 2
+            ;;
+        --help|-h)
+            show_help
+            exit 0
+            ;;
+        -*)
+            echo "Error: Unknown option $1" >&2
+            show_help >&2
+            exit 1
+            ;;
+        *)
+            INPUT_FILE="$1"
+            shift
+            ;;
+    esac
+done
+
+# Check LiteLLM
+if ! curl -s "$LITELLM_URL/health" >/dev/null 2>&1; then
+    echo -e "${RED}❌ LiteLLM proxy not running at $LITELLM_URL${NC}" >&2
+    echo -e "${CYAN}Start it with: ansai-litellm-proxy${NC}" >&2
+    exit 1
+fi
+
+# Get deployment content
+CONTENT=""
+if [ -n "$INPUT_FILE" ]; then
+    if [ -f "$INPUT_FILE" ]; then
+        CONTENT=$(cat "$INPUT_FILE")
+        
+        # Auto-detect type if not specified
+        if [ -z "$TYPE" ]; then
+            case "$INPUT_FILE" in
+                *.yaml|*.yml)
+                    if grep -q "apiVersion:" "$INPUT_FILE"; then
+                        TYPE="kubernetes"
+                    else
+                        TYPE="ansible"
+                    fi
+                    ;;
+                *.tf)
+                    TYPE="terraform"
+                    ;;
+                Dockerfile|*.dockerfile)
+                    TYPE="docker"
+                    ;;
+                *)
+                    TYPE="generic"
+                    ;;
+            esac
+            echo -e "${BLUE}📋 Auto-detected type: $TYPE${NC}" >&2
+        fi
+    else
+        echo -e "${RED}❌ File not found: $INPUT_FILE${NC}" >&2
+        exit 1
+    fi
+elif [ ! -t 0 ]; then
+    CONTENT=$(cat)
+    if [ -z "$TYPE" ]; then
+        TYPE="generic"
+    fi
+else
+    echo -e "${RED}❌ No deployment file or stdin provided${NC}" >&2
+    show_help >&2
+    exit 1
+fi
+
+if [ -z "$CONTENT" ]; then
+    echo -e "${RED}❌ No content to analyze${NC}" >&2
+    exit 1
+fi
+
+# Run safety check
+check_deployment "$CONTENT" "$TYPE" "$ENV" "$STRICT"
+
+

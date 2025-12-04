@@ -1,0 +1,251 @@
+#!/bin/bash
+# ansai-log-analyzer - AI-powered log analysis and anomaly detection
+# Part of ANSAI AI-Powered Workflows
+
+set -euo pipefail
+
+# Configuration
+LITELLM_URL="${LITELLM_URL:-http://localhost:4000}"
+DEFAULT_MODEL="${ANSAI_AI_MODEL:-gpt-4o}"
+CONTEXT_WINDOW="${ANSAI_LOG_CONTEXT:-100}"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+# Help function
+show_help() {
+    cat << EOF
+ansai-log-analyzer - AI-powered log analysis and anomaly detection
+
+USAGE:
+    ansai-log-analyzer [OPTIONS] <log-file-or-command>
+
+OPTIONS:
+    --service NAME      Analyze logs for specific service
+    --since TIMESPEC    Analyze logs since timespec (e.g., "1 hour ago")
+    --model MODEL       AI model to use (default: gpt-4o)
+    --format FORMAT     Output format: text, json, markdown (default: text)
+    --focus ASPECT      Focus analysis on: errors, performance, security, all
+    --help, -h          Show this help
+
+EXAMPLES:
+    # Analyze specific log file
+    ansai-log-analyzer /var/log/nginx/error.log
+
+    # Analyze systemd service logs
+    ansai-log-analyzer --service nginx --since "1 hour ago"
+
+    # Pipe logs directly
+    journalctl -u myapp.service | ansai-log-analyzer
+
+    # Focus on security issues
+    ansai-log-analyzer --focus security /var/log/auth.log
+
+    # Get JSON output for automation
+    ansai-log-analyzer --format json --service postgresql
+
+ANALYSIS FEATURES:
+    - Root cause identification
+    - Anomaly detection
+    - Pattern recognition
+    - Correlation with system events
+    - Actionable recommendations
+    - Severity assessment
+
+REQUIRES:
+    - LiteLLM proxy running (ansai-litellm-proxy)
+    - API key configured (OPENAI_API_KEY, etc.)
+EOF
+}
+
+# Parse arguments
+SERVICE=""
+SINCE=""
+MODEL="$DEFAULT_MODEL"
+FORMAT="text"
+FOCUS="all"
+INPUT_FILE=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --service)
+            SERVICE="$2"
+            shift 2
+            ;;
+        --since)
+            SINCE="$2"
+            shift 2
+            ;;
+        --model)
+            MODEL="$2"
+            shift 2
+            ;;
+        --format)
+            FORMAT="$2"
+            shift 2
+            ;;
+        --focus)
+            FOCUS="$2"
+            shift 2
+            ;;
+        --help|-h)
+            show_help
+            exit 0
+            ;;
+        -*)
+            echo "Error: Unknown option $1" >&2
+            show_help >&2
+            exit 1
+            ;;
+        *)
+            INPUT_FILE="$1"
+            shift
+            ;;
+    esac
+done
+
+# Check if LiteLLM is running
+if ! curl -s "$LITELLM_URL/health" >/dev/null 2>&1; then
+    echo -e "${RED}❌ LiteLLM proxy not running at $LITELLM_URL${NC}" >&2
+    echo -e "${CYAN}Start it with: ansai-litellm-proxy${NC}" >&2
+    exit 1
+fi
+
+# Get logs from appropriate source
+LOGS=""
+if [ -n "$SERVICE" ]; then
+    echo -e "${BLUE}📊 Analyzing logs for service: $SERVICE${NC}" >&2
+    if [ -n "$SINCE" ]; then
+        LOGS=$(journalctl -u "$SERVICE" --since "$SINCE" 2>/dev/null | tail -n "$CONTEXT_WINDOW" || echo "")
+    else
+        LOGS=$(journalctl -u "$SERVICE" -n "$CONTEXT_WINDOW" 2>/dev/null || echo "")
+    fi
+elif [ -n "$INPUT_FILE" ]; then
+    echo -e "${BLUE}📊 Analyzing log file: $INPUT_FILE${NC}" >&2
+    if [ -f "$INPUT_FILE" ]; then
+        LOGS=$(tail -n "$CONTEXT_WINDOW" "$INPUT_FILE")
+    else
+        echo -e "${RED}❌ File not found: $INPUT_FILE${NC}" >&2
+        exit 1
+    fi
+elif [ ! -t 0 ]; then
+    echo -e "${BLUE}📊 Analyzing logs from stdin${NC}" >&2
+    LOGS=$(cat | tail -n "$CONTEXT_WINDOW")
+else
+    echo -e "${RED}❌ No log source specified${NC}" >&2
+    show_help >&2
+    exit 1
+fi
+
+if [ -z "$LOGS" ]; then
+    echo -e "${YELLOW}⚠️  No logs found${NC}" >&2
+    exit 1
+fi
+
+# Create AI analysis prompt based on focus
+PROMPT=""
+case "$FOCUS" in
+    errors)
+        PROMPT="Analyze these logs and identify all errors, their root causes, and provide remediation steps:"
+        ;;
+    performance)
+        PROMPT="Analyze these logs for performance issues, bottlenecks, and optimization opportunities:"
+        ;;
+    security)
+        PROMPT="Analyze these logs for security issues, suspicious activities, and potential vulnerabilities:"
+        ;;
+    all|*)
+        PROMPT="Analyze these logs comprehensively. Identify:
+1. Root causes of any errors or failures
+2. Patterns and anomalies
+3. Performance issues
+4. Security concerns
+5. Correlations with system events
+6. Actionable recommendations
+
+Provide a clear, prioritized analysis:"
+        ;;
+esac
+
+# Prepare request
+REQUEST_BODY=$(cat << EOF
+{
+  "model": "$MODEL",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are an expert log analyst. Provide concise, actionable analysis. Focus on root causes, not symptoms. Prioritize by severity."
+    },
+    {
+      "role": "user",
+      "content": "$PROMPT\n\n\`\`\`\n$LOGS\n\`\`\`"
+    }
+  ],
+  "temperature": 0.3,
+  "max_tokens": 2000
+}
+EOF
+)
+
+echo -e "${CYAN}🤖 AI analyzing logs...${NC}" >&2
+
+# Call LiteLLM
+RESPONSE=$(curl -s -X POST "$LITELLM_URL/v1/chat/completions" \
+    -H "Content-Type: application/json" \
+    -d "$REQUEST_BODY")
+
+# Check for errors
+if echo "$RESPONSE" | jq -e '.error' >/dev/null 2>&1; then
+    ERROR_MSG=$(echo "$RESPONSE" | jq -r '.error.message')
+    echo -e "${RED}❌ AI analysis failed: $ERROR_MSG${NC}" >&2
+    exit 1
+fi
+
+# Extract analysis
+ANALYSIS=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
+
+# Format output
+case "$FORMAT" in
+    json)
+        cat << EOF
+{
+  "timestamp": "$(date -Iseconds)",
+  "source": "${SERVICE:-${INPUT_FILE:-stdin}}",
+  "focus": "$FOCUS",
+  "model": "$MODEL",
+  "analysis": $(echo "$ANALYSIS" | jq -Rs .)
+}
+EOF
+        ;;
+    markdown)
+        cat << EOF
+# Log Analysis Report
+
+**Generated:** $(date)
+**Source:** ${SERVICE:-${INPUT_FILE:-stdin}}
+**Focus:** $FOCUS
+**Model:** $MODEL
+
+---
+
+## AI Analysis
+
+$ANALYSIS
+
+---
+
+*Generated by ANSAI Log Analyzer*
+EOF
+        ;;
+    text|*)
+        echo -e "${GREEN}✅ Analysis Complete${NC}\n"
+        echo "$ANALYSIS"
+        ;;
+esac
+
+

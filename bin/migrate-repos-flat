@@ -1,0 +1,68 @@
+#!/bin/bash
+set -e
+
+# Migration Script: Documents/GitHub -> Home Directory
+# Moves and renames projects to match the new flat structure.
+
+# Colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+SOURCE_DIR="$HOME/Documents/GitHub"
+TARGET_DIR="$HOME"
+
+echo -e "${BLUE}Starting Migration: $SOURCE_DIR -> $TARGET_DIR${NC}\n"
+
+move_project() {
+    local src_name=$1
+    local dest_name=$2
+    local full_src="$SOURCE_DIR/$src_name"
+    local full_dest="$TARGET_DIR/$dest_name"
+
+    if [ -d "$full_src" ]; then
+        if [ -d "$full_dest" ]; then
+            echo -e "${YELLOW}⚠️  Destination exists: $full_dest (Skipping)${NC}"
+        else
+            echo -e "Moving ${BLUE}$src_name${NC} -> ${GREEN}$dest_name${NC}..."
+            mv "$full_src" "$full_dest"
+            echo -e "${GREEN}✅ Moved${NC}"
+        fi
+    else
+        echo -e "${YELLOW}⚠️  Source not found: $full_src (Skipping)${NC}"
+    fi
+}
+
+# 1. ansai -> ansai-community
+move_project "ansai" "ansai-community"
+
+# 2. ansai-workflow-automator -> ansai-redhat
+move_project "ansai-workflow-automator" "ansai-redhat"
+
+# 3. bugnosis -> bugnosis
+move_project "bugnosis" "bugnosis"
+
+# 4. finance (if it exists, assuming it might be family-finance or similar based on file list, but strictly following request)
+# Checked list: 'family-finance' exists in Documents/GitHub
+move_project "family-finance" "finance"
+
+echo -e "\n${BLUE}Updating Shell Config (PATH)...${NC}"
+
+# Update .bashrc / .zshrc
+for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
+    if [ -f "$rc" ]; then
+        # Remove old PATH if present
+        sed -i.bak '/Documents\/GitHub\/ansai\/bin/d' "$rc"
+        
+        # Add new PATH
+        if ! grep -q "ansai-community/bin" "$rc"; then
+            echo 'export PATH="$HOME/ansai-community/bin:$PATH"' >> "$rc"
+            echo -e "Updated $rc"
+        fi
+    fi
+done
+
+echo -e "\n${GREEN}Migration Complete! 🚀${NC}"
+echo -e "Please run: ${BOLD}source ~/.bashrc${NC} (or ~/.zshrc)"
+

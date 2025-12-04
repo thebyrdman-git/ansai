@@ -1,0 +1,129 @@
+#!/bin/bash
+# ansai-linear - Manage Linear issues for ANSAI projects
+# Usage: ansai-linear <command> [args]
+
+set -euo pipefail
+
+# Config
+CONFIG_DIR="$HOME/.config/ansai"
+TOKEN_FILE="$CONFIG_DIR/linear_token"
+
+# Colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+BOLD='\033[1m'
+
+# Load Token
+if [[ -f "$TOKEN_FILE" ]]; then
+    TOKEN=$(cat "$TOKEN_FILE")
+elif [[ -n "${LINEAR_API_KEY:-}" ]]; then
+    TOKEN="$LINEAR_API_KEY"
+else
+    echo "Error: No API token found. Save to ~/.config/ansai/linear_token"
+    exit 1
+fi
+
+# GraphQL Helper
+graphql() {
+    local query="$1"
+    # Escape quotes in query for JSON
+    local json_query=$(echo "$query" | jq -sRr @json)
+    
+    curl -s -X POST \
+      -H "Content-Type: application/json" \
+      -H "Authorization: $TOKEN" \
+      -d "{\"query\": $json_query}" \
+      "https://api.linear.app/graphql"
+}
+
+# Get Team ID by Name (e.g. "ANSAI")
+get_team_id() {
+    local name="$1"
+    local query="query { teams(filter: { name: { eq: \"$name\" } }) { nodes { id name } } }"
+    graphql "$query" | jq -r '.data.teams.nodes[0].id // empty'
+}
+
+# List Teams
+cmd_teams() {
+    local query="query { teams { nodes { name key id } } }"
+    echo -e "${BLUE}${BOLD}Linear Teams:${NC}"
+    graphql "$query" | jq -r '.data.teams.nodes[] | "\(.name) (\(.key))"'
+}
+
+# Create Issue
+cmd_create() {
+    local team_name="$1"
+    local title="$2"
+    local description="${3:-}"
+    local project="${4:-}"
+    
+    local team_id=$(get_team_id "$team_name")
+    
+    if [[ -z "$team_id" ]]; then
+        # Fallback: Try searching by Key
+        local query="query { teams(filter: { key: { eq: \"$team_name\" } }) { nodes { id } } }"
+        team_id=$(graphql "$query" | jq -r '.data.teams.nodes[0].id // empty')
+    fi
+    
+    if [[ -z "$team_id" ]]; then
+        echo "Error: Team '$team_name' not found."
+        cmd_teams
+        exit 1
+    fi
+
+    # Construct Mutation
+    # Note: Linear GraphQL requires project ID for project assignment, not name.
+    # For simplicity in CLI, we stick to Team ID unless Project ID lookup is added.
+    local mutation="mutation { issueCreate(input: { teamId: \"$team_id\", title: \"$title\", description: \"$description\" }) { issue { identifier url } success } }"
+    
+    local result=$(graphql "$mutation")
+    local key=$(echo "$result" | jq -r '.data.issueCreate.issue.identifier // empty')
+    local url=$(echo "$result" | jq -r '.data.issueCreate.issue.url // empty')
+    
+    if [[ -n "$key" ]]; then
+        echo -e "${GREEN}Created $key:${NC} $title"
+        echo "  $url"
+    else
+        echo "Failed to create issue."
+        echo "$result"
+    fi
+}
+
+# List Issues
+cmd_list() {
+    local team_name="${1:-}"
+    
+    local filter=""
+    if [[ -n "$team_name" ]]; then
+        local team_id=$(get_team_id "$team_name")
+         # Fallback: Try searching by Key
+        if [[ -z "$team_id" ]]; then
+            local query="query { teams(filter: { key: { eq: \"$team_name\" } }) { nodes { id } } }"
+            team_id=$(graphql "$query" | jq -r '.data.teams.nodes[0].id // empty')
+        fi
+        
+        if [[ -n "$team_id" ]]; then
+            filter="(filter: { team: { id: { eq: \"$team_id\" } } })"
+        fi
+    fi
+    
+    local query="query { issues$filter { nodes { identifier title state { name } } } }"
+    
+    echo -e "${BLUE}${BOLD}Issues:${NC}"
+    graphql "$query" | jq -r '.data.issues.nodes[] | "\(.identifier)\t[\(.state.name)]\t\(.title)"'
+}
+
+# Main
+case "${1:-help}" in
+    teams) cmd_teams ;;
+    create) cmd_create "$2" "$3" "${4:-}" ;;
+    list) cmd_list "${2:-}" ;;
+    *)
+        echo "Usage: ansai-linear {teams|list|create}"
+        echo "  teams           List all teams"
+        echo "  list [team]     List issues"
+        echo "  create <team> <title> [desc]   Create issue"
+        ;;
+esac
+

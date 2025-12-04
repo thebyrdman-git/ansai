@@ -1,0 +1,82 @@
+#!/bin/bash
+set -euo pipefail
+
+# Colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+print_header() {
+    echo -e "\n${BLUE}═══════════════════════════════════════════════════${NC}"
+    echo -e "${BLUE}  $1${NC}"
+    echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
+}
+
+# Check if logged in
+if ! oc whoami &>/dev/null; then
+    echo -e "${YELLOW}Not logged into OpenShift. Please run:${NC}"
+    echo "eval \$(crc oc-env)"
+    echo "oc login -u kubeadmin https://api.crc.testing:6443"
+    exit 1
+fi
+
+VERSION=${1:-""}
+
+if [[ -z "$VERSION" ]]; then
+    echo "Usage: $0 [2.4|2.6]"
+    echo "Example: $0 2.4"
+    exit 1
+fi
+
+# Define namespaces
+NS_24="aap"      # As defined in our setup guide
+NS_26="aap-26"   # Future placeholder
+
+print_header "Switching AAP Context to v${VERSION}"
+
+if [[ "$VERSION" == "2.4" ]]; then
+    echo -e "🎯 Target: ${GREEN}AAP 2.4${NC} (Namespace: $NS_24)"
+    
+    # Scale down 2.6 if it exists
+    if oc get project "$NS_26" &>/dev/null; then
+        echo "⬇️  Scaling down AAP 2.6..."
+        oc scale deployment --all --replicas=0 -n "$NS_26"
+        oc scale statefulset --all --replicas=0 -n "$NS_26"
+    fi
+
+    # Scale up 2.4
+    echo "⬆️  Scaling up AAP 2.4..."
+    oc scale deployment --all --replicas=1 -n "$NS_24"
+    oc scale statefulset --all --replicas=1 -n "$NS_24"
+    
+    # Switch context
+    oc project "$NS_24"
+    
+elif [[ "$VERSION" == "2.6" ]]; then
+    echo -e "🎯 Target: ${GREEN}AAP 2.6${NC} (Namespace: $NS_26)"
+    
+    # Scale down 2.4
+    echo "⬇️  Scaling down AAP 2.4..."
+    oc scale deployment --all --replicas=0 -n "$NS_24"
+    oc scale statefulset --all --replicas=0 -n "$NS_24"
+    
+    # Scale up 2.6
+    if oc get project "$NS_26" &>/dev/null; then
+        echo "⬆️  Scaling up AAP 2.6..."
+        oc scale deployment --all --replicas=1 -n "$NS_26"
+        oc scale statefulset --all --replicas=1 -n "$NS_26"
+        oc project "$NS_26"
+    else
+        echo -e "${YELLOW}Namespace $NS_26 does not exist yet.${NC}"
+        echo "Please install AAP 2.6 first."
+    fi
+else
+    echo "Invalid version: $VERSION. Use 2.4 or 2.6."
+    exit 1
+fi
+
+print_header "Done! Active Environment: AAP $VERSION"
+oc get pods
+
+
