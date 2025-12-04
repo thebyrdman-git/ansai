@@ -170,13 +170,17 @@ fabric --version
 
 **Solution:**
 ```bash
-# Install with pipx (recommended)
-pip3 install --user pipx
-pipx ensurepath
-pipx install fabric-ai
+# Fabric is a Go binary, not a Python package
 
-# Or with pip
-pip3 install --user fabric-ai
+# macOS (Homebrew):
+brew install fabric-ai
+
+# Linux (requires Go installed):
+go install github.com/danielmiessler/fabric@latest
+# Add to PATH: export PATH="$HOME/go/bin:$PATH"
+
+# Or download binary from:
+# https://github.com/danielmiessler/fabric/releases
 
 # Verify
 fabric --version

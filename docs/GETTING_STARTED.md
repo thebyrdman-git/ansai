@@ -105,8 +105,12 @@ curl http://localhost:4000/health
 **Best for:** Log analysis, text transformation
 
 ```bash
-# Install Fabric
-pipx install fabric-ai
+# Install Fabric (Go binary)
+# macOS:
+brew install fabric-ai
+
+# Linux (requires Go):
+go install github.com/danielmiessler/fabric@latest
 
 # Set up patterns
 fabric --setup
