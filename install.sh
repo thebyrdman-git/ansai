@@ -313,8 +313,9 @@ echo -e "Choose your AI backend:\n"
 echo -e "  ${CYAN}1) LiteLLM${NC} - Multi-model proxy (OpenAI, Claude, Groq, local models)"
 echo -e "     Cost optimization, intelligent routing, automatic fallback"
 echo -e ""
-echo -e "  ${CYAN}2) Fabric${NC} - AI text processing framework"
+echo -e "  ${CYAN}2) Fabric${NC} - AI text processing framework (Go binary)"
 echo -e "     Pattern-based analysis, log processing, text transformation"
+echo -e "     ${YELLOW}Note: Requires Go or Homebrew to install${NC}"
 echo -e ""
 echo -e "  ${CYAN}3) Both${NC} - Full AI capabilities (recommended)"
 echo -e ""
@@ -331,27 +332,42 @@ case $AI_CHOICE in
         ;;
     2)
         print_step "Installing Fabric..."
-        if command_exists pipx; then
-            pipx install fabric-ai
+        if command_exists brew; then
+            brew install fabric-ai
+            print_success "Fabric installed via Homebrew"
+        elif command_exists go; then
+            go install github.com/danielmiessler/fabric@latest
+            print_success "Fabric installed via Go"
         else
-            run_pip install --user fabric-ai
+            print_warning "Fabric requires Homebrew (macOS) or Go to install"
+            print_info "macOS: brew install fabric-ai"
+            print_info "Linux: Install Go, then: go install github.com/danielmiessler/fabric@latest"
+            print_info "Or download binary: https://github.com/danielmiessler/fabric/releases"
         fi
-        print_success "Fabric installed"
         ;;
     3)
-        print_step "Installing LiteLLM and Fabric..."
+        print_step "Installing LiteLLM..."
         run_pip install --user 'litellm[proxy]'
-        if command_exists pipx; then
-            pipx install fabric-ai
+        print_success "LiteLLM installed"
+        
+        print_step "Installing Fabric..."
+        if command_exists brew; then
+            brew install fabric-ai
+            print_success "Fabric installed via Homebrew"
+        elif command_exists go; then
+            go install github.com/danielmiessler/fabric@latest
+            print_success "Fabric installed via Go"
         else
-            run_pip install --user fabric-ai
+            print_warning "Fabric requires Homebrew (macOS) or Go to install"
+            print_info "macOS: brew install fabric-ai"
+            print_info "Linux: go install github.com/danielmiessler/fabric@latest"
         fi
-        print_success "LiteLLM and Fabric installed"
         ;;
     4)
         print_info "Skipping AI dependencies. Install later with:"
-        echo -e "   ${CYAN}python3 -m pip install 'litellm[proxy]'${NC}"
-        echo -e "   ${CYAN}pipx install fabric-ai${NC}"
+        echo -e "   ${CYAN}LiteLLM: python3 -m pip install 'litellm[proxy]'${NC}"
+        echo -e "   ${CYAN}Fabric:  brew install fabric-ai (macOS)${NC}"
+        echo -e "   ${CYAN}         go install github.com/danielmiessler/fabric@latest (Linux)${NC}"
         ;;
     *)
         print_warning "Invalid choice. Skipping AI dependencies."
