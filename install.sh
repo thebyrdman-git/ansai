@@ -109,7 +109,7 @@ echo -e "  3. Install AI dependencies (optional)"
 echo -e "  4. Create configuration directories"
 echo -e ""
 
-read -p "Continue with installation? (y/n) " -n 1 -r
+read -p "Continue with installation? (y/n) " -n 1 -r < /dev/tty
 echo ""
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     print_warning "Installation cancelled."
@@ -204,7 +204,7 @@ fi
 
 if [ -d "$ANSAI_DIR" ]; then
     print_warning "ANSAI directory already exists: $ANSAI_DIR"
-    read -p "Remove and reinstall? (y/n) " -n 1 -r
+    read -p "Remove and reinstall? (y/n) " -n 1 -r < /dev/tty
     echo ""
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         # If running from within ANSAI, copy script to /tmp first
@@ -287,7 +287,7 @@ echo -e ""
 echo -e "  ${CYAN}4) Skip${NC} - I'll install manually later"
 echo -e ""
 
-read -p "Choose option (1-4): " -n 1 -r AI_CHOICE
+read -p "Choose option (1-4): " -n 1 -r AI_CHOICE < /dev/tty
 echo
 
 case $AI_CHOICE in
@@ -332,7 +332,7 @@ if ! command_exists ansible; then
     echo -e "${YELLOW}Ansible not found.${NC}"
     echo -e "Ansible is ${BOLD}highly recommended${NC} for ANSAI automation."
     echo -e ""
-    read -p "Install Ansible now? (y/n) " -n 1 -r
+    read -p "Install Ansible now? (y/n) " -n 1 -r < /dev/tty
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         print_step "Installing Ansible..."
@@ -432,7 +432,7 @@ echo -e "${CYAN}AI-powered automation starts now.${NC}\n"
 
 # Offer to reload shell
 echo -e "${YELLOW}Note: You need to reload your shell for PATH changes to take effect.${NC}"
-read -p "Open a new terminal or run: source $SHELL_CONFIG (press any key)" -n 1 -r
+read -p "Open a new terminal or run: source $SHELL_CONFIG (press any key)" -n 1 -r < /dev/tty
 echo ""
 
 # Clean up temp installer if it exists
