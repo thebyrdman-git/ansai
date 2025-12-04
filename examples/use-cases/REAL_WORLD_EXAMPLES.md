@@ -62,7 +62,7 @@ These are some of the most popular automation patterns:
     - role: geerlingguy.postgresql
       vars:
         postgresql_version: "15"
-    
+
     - role: ansai_ai_db_optimizer
       vars:
         ai_enabled: true
@@ -162,7 +162,7 @@ Predictive Insights:
           - minimize_latency
           - maximize_throughput
           - optimize_cache
-        
+
     - name: Intelligent SSL/TLS configuration
       ansai_ai_security:
         service: nginx
@@ -335,7 +335,7 @@ Recommendations before deploying:
             metric: node_cpu_usage
             ai_baseline: true
             alert_on_anomaly: true
-            
+
           - name: "Predictive disk space"
             metric: node_filesystem_avail
             ai_forecast: "7 days"
@@ -468,7 +468,7 @@ CRITICAL (Fix immediately):
    - Publicly exploited
    - Patch available: OpenSSL 1.1.1w
    - Impact: HIGH (internet-facing service)
-   
+
 HIGH (Fix within 7 days):
 2. Outdated kernel - Multiple CVEs
    - Privilege escalation
@@ -534,7 +534,7 @@ AI identified 8 quick wins for CIS compliance:
 
 ### 1. Install ANSAI
 ```bash
-curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
+curl -sSL https://ansai.dev/install.sh | bash
 ```
 
 ### 2. Install Traditional Roles
@@ -554,7 +554,7 @@ ansible-galaxy install cloudalchemy.prometheus
   roles:
     # Traditional role (from Galaxy)
     - role: geerlingguy.postgresql
-    
+
     # ANSAI AI enhancement
     - role: ansai_ai_db_optimizer
     - role: ansai_predictive_maintenance
@@ -599,9 +599,7 @@ my-ansai-role/
 
 ---
 
-**Part of the ANSAI Framework**  
+**Part of the ANSAI Framework**
 Learn more: https://ansai.dev
 
 **Transform traditional automation into intelligent automation.** 🚀
-
-

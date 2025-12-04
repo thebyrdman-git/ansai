@@ -21,7 +21,7 @@ This page showcases how to enhance popular Ansible Galaxy roles with ANSAI's AI 
 
 ### 1. Intelligent Docker Management
 
-**Base Role:** [`geerlingguy.docker`](https://galaxy.ansible.com/geerlingguy/docker) by Jeff Geerling  
+**Base Role:** [`geerlingguy.docker`](https://galaxy.ansible.com/geerlingguy/docker) by Jeff Geerling
 **Downloads:** 10M+ | **Stars:** 1.2k+
 
 **What it does:** Installs and configures Docker on any Linux system.
@@ -61,7 +61,7 @@ This page showcases how to enhance popular Ansible Galaxy roles with ANSAI's AI 
 
 ### 2. Self-Healing Nginx
 
-**Base Role:** [`geerlingguy.nginx`](https://galaxy.ansible.com/geerlingguy/nginx)  
+**Base Role:** [`geerlingguy.nginx`](https://galaxy.ansible.com/geerlingguy/nginx)
 **Downloads:** 8M+ | **Stars:** 850+
 
 **What it does:** Installs, configures, and manages Nginx web server.
@@ -97,7 +97,7 @@ This page showcases how to enhance popular Ansible Galaxy roles with ANSAI's AI 
 ```
 🤖 NGINX FAILURE ANALYSIS
 
-ROOT CAUSE: 
+ROOT CAUSE:
 Worker processes exhausted due to upstream timeout. PHP-FPM
 not responding, causing all workers to block.
 
@@ -120,7 +120,7 @@ instead of blocking workers.
 
 ### 3. PostgreSQL with Predictive Tuning
 
-**Base Role:** [`geerlingguy.postgresql`](https://galaxy.ansible.com/geerlingguy/postgresql)  
+**Base Role:** [`geerlingguy.postgresql`](https://galaxy.ansible.com/geerlingguy/postgresql)
 **Downloads:** 2M+ | **Stars:** 450+
 
 **What it does:** Installs and configures PostgreSQL database.
@@ -205,7 +205,7 @@ APPLY? [Y/n]
       - job_name: 'node'
         static_configs:
           - targets: ['localhost:9100']
-    
+
     # ANSAI AI enhancement
     ansai_ai_analysis:
       enable_anomaly_detection: true
@@ -233,7 +233,7 @@ Database backup job started at 12:00, consuming resources
 
 IMPACT:
 ✗ CPU spike (backup compression)
-✗ Memory usage (backup buffer)  
+✗ Memory usage (backup buffer)
 ✗ Disk I/O (backup writes)
 ✗ Network (backup to S3)
 ✗ App response time (resource contention)
@@ -250,7 +250,7 @@ Alert count: 5 alerts → 1 insight
 
 ### 5. MySQL Replication with Intelligent Failover
 
-**Base Role:** [`geerlingguy.mysql`](https://galaxy.ansible.com/geerlingguy/mysql)  
+**Base Role:** [`geerlingguy.mysql`](https://galaxy.ansible.com/geerlingguy/mysql)
 **Downloads:** 5M+ | **Stars:** 600+
 
 **What it does:** Installs MySQL/MariaDB with replication support.
@@ -303,7 +303,7 @@ TRADITIONAL APPROACH: Fail over immediately
 AI RECOMMENDATION: Wait 45 seconds
   Reasoning: Query will complete in ~60s based on execution plan
   Safer: Let query finish, then verify consistency
-  
+
 Monitoring query progress... [=========>  ] 85%
 Query completed. Replication caught up.
 ❌ Failover not needed. Crisis averted.
@@ -313,7 +313,7 @@ Query completed. Replication caught up.
 
 ### 6. Security Hardening with AI Compliance
 
-**Base Role:** [`geerlingguy.security`](https://galaxy.ansible.com/geerlingguy/security)  
+**Base Role:** [`geerlingguy.security`](https://galaxy.ansible.com/geerlingguy/security)
 **Downloads:** 3M+ | **Stars:** 500+
 
 **What it does:** Applies security hardening (firewall, SSH, fail2ban).
@@ -355,29 +355,29 @@ CRITICAL FINDINGS:
 
 1. [FAIL] Unencrypted passwords in /opt/app/config.ini
    Risk: High - Credentials exposed
-   
+
    AI RECOMMENDATION:
    Move passwords to environment variables or Ansible Vault.
-   
+
    Auto-fix available:
    $ ansai-vault-migrate /opt/app/config.ini
 
 2. [FAIL] SSH accepts password authentication
    Risk: Medium - Brute force attacks possible
-   
+
    AI RECOMMENDATION:
    Set 'PasswordAuthentication no' in /etc/ssh/sshd_config
    Ensure SSH keys are deployed first.
-   
+
    Auto-fix: [Y/n]
 
 3. [WARN] PostgreSQL listening on 0.0.0.0
    Risk: Low - Database exposed to network
-   
+
    AI CONTEXT:
    Database is behind firewall (port 5432 blocked).
    Risk mitigated but not eliminated.
-   
+
    Consider: Bind to 127.0.0.1 + SSH tunnel for admin access
 ```
 
@@ -385,7 +385,7 @@ CRITICAL FINDINGS:
 
 ### 7. Node.js App Deployment with Smart Restarts
 
-**Base Role:** [`geerlingguy.nodejs`](https://galaxy.ansible.com/geerlingguy/nodejs)  
+**Base Role:** [`geerlingguy.nodejs`](https://galaxy.ansible.com/geerlingguy/nodejs)
 **Downloads:** 4M+ | **Stars:** 400+
 
 **What it does:** Installs Node.js, npm, and manages Node applications.
@@ -415,7 +415,7 @@ CRITICAL FINDINGS:
 🚀 DEPLOYING: my-api v2.3.1
 
 [1/6] Pull latest code... ✅
-[2/6] Install dependencies... ✅  
+[2/6] Install dependencies... ✅
 [3/6] Run tests... ✅
 [4/6] Start new instance on port 3001... ✅
 [5/6] Health check... ✅
@@ -458,7 +458,7 @@ ansible-galaxy install cloudalchemy.prometheus
 ### Step 2: Install ANSAI
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
+curl -sSL https://ansai.dev/install.sh | bash
 ```
 
 ### Step 3: Combine in Your Playbook
@@ -468,7 +468,7 @@ curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh
   roles:
     # Use proven community role for setup
     - geerlingguy.docker
-    
+
     # Add ANSAI intelligence on top
     - ansai.self_heal
   vars:
@@ -533,11 +533,10 @@ ANSAI is built on the shoulders of giants. Special thanks to:
 
 <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 8px;">
 
-**Standing on the shoulders of giants.**  
-**Adding AI to proven solutions.**  
+**Standing on the shoulders of giants.**
+**Adding AI to proven solutions.**
 **Making infrastructure intelligent.**
 
 **That's ANSAI.**
 
 </div>
-

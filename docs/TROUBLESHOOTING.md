@@ -95,7 +95,7 @@ pip3 --version
 ls -ld $HOME
 
 # If using sudo (don't!), install as regular user:
-curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
+curl -sSL https://ansai.dev/install.sh | bash
 
 # If .ansai directory has wrong permissions
 chmod -R u+rwX ~/.ansai
@@ -713,7 +713,5 @@ https://github.com/thebyrdman-git/ansai/issues/new
 
 ---
 
-**Part of the ANSAI Framework**  
+**Part of the ANSAI Framework**
 Learn more: https://ansai.dev
-
-

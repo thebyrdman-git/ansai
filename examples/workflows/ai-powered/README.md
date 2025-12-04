@@ -115,10 +115,10 @@ ansai-incident-report --service "database" --template executive
 
 ## Executive Summary
 
-On November 18, 2025, our web API experienced a 75-minute outage from 
-14:30 to 15:45 UTC, affecting approximately 10,000 users. The root cause 
-was database connection pool exhaustion triggered by a traffic spike from 
-a marketing campaign. The incident was resolved by restarting services 
+On November 18, 2025, our web API experienced a 75-minute outage from
+14:30 to 15:45 UTC, affecting approximately 10,000 users. The root cause
+was database connection pool exhaustion triggered by a traffic spike from
+a marketing campaign. The incident was resolved by restarting services
 and increasing the connection pool size.
 
 ## Impact Assessment
@@ -327,7 +327,7 @@ ansai-deploy-safe --type kubernetes --env production deployment.yaml
 
 1. **Install ANSAI**:
 ```bash
-curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
+curl -sSL https://ansai.dev/install.sh | bash
 ```
 
 2. **Start AI Backend** (LiteLLM):
@@ -561,10 +561,8 @@ Have an AI-powered workflow idea? **Share it!**
 
 ---
 
-**Part of the ANSAI Framework**  
+**Part of the ANSAI Framework**
 Learn more: https://ansai.dev
 
-**These workflows demonstrate why ANSAI exists:**  
+**These workflows demonstrate why ANSAI exists:**
 **AI makes automation intelligent, not just automated.** 🚀
-
-

@@ -18,12 +18,12 @@ Perfect for:
 
 **[0:00 - 0:30] Introduction**
 
-> "Hi! I'm going to show you ANSAI - AI-powered automation infrastructure. 
-> 
+> "Hi! I'm going to show you ANSAI - AI-powered automation infrastructure.
+>
 > ANSAI is Ansible plus AI. It transforms traditional automation into intelligent automation.
-> 
+>
 > Without AI, it's just scripts. With ANSAI, your infrastructure actually thinks.
-> 
+>
 > Let me show you how easy it is to get started."
 
 **[0:30 - 1:00] Installation**
@@ -31,11 +31,11 @@ Perfect for:
 > "First, installation is a single command."
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
+curl -sSL https://ansai.dev/install.sh | bash
 ```
 
 > "The installer checks prerequisites, sets up your PATH, and offers to install AI backends like LiteLLM or Fabric.
-> 
+>
 > I'll choose LiteLLM for multi-model support."
 
 *[Show installer output, select option 1 for LiteLLM]*
@@ -80,7 +80,7 @@ ansai-log-analyzer test.log
 > - Root cause: Database connection issues
 > - Pattern: Multiple connection errors
 > - Recommendation: Check if PostgreSQL is running on port 5432
-> 
+>
 > It's not just grepping for 'ERROR'. It's actually analyzing and making connections."
 
 **[3:30 - 4:30] Deploy to Server**
@@ -120,9 +120,9 @@ ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
 > - Set up AI
 > - Analyzed logs intelligently
 > - Deployed to a real server
-> 
+>
 > Your infrastructure is now thinking, not just executing.
-> 
+>
 > Check out ansai.dev for more examples. Thanks for watching!"
 
 ---
@@ -136,7 +136,7 @@ ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
 **[0:00 - 0:45] Setup the Scenario**
 
 > "I'm going to simulate a production incident and show you how ANSAI's AI finds the root cause.
-> 
+>
 > The scenario: Our web API is slow. Users are complaining. Let's investigate."
 
 *[Show a web app with slow response times]*
@@ -154,7 +154,7 @@ journalctl -u web-api.service --since "30 minutes ago" > api-logs.txt
 *[cat the logs, scroll through - show it's overwhelming]*
 
 > "Over 5,000 lines. Lots of noise. This would take me hours to analyze manually.
-> 
+>
 > Let's see what the AI finds."
 
 **[2:00 - 4:00] AI Analysis**
@@ -170,34 +170,34 @@ ansai-log-analyzer --service web-api --since "30 minutes ago" --format text
 *[Show AI output]*
 
 > "Wow. Look at this:
-> 
+>
 > **Root Cause:** Database connection pool exhausted
-> 
+>
 > **Contributing Factors:**
 > - Traffic spike: 300% above baseline
 > - Connection pool: 100/100 (maxed out)
 > - No connection timeout configured
-> 
+>
 > **Trigger:** Marketing campaign launched at 2:30 PM
-> 
+>
 > The AI not only found the immediate cause - connection pool exhaustion - but it traced it back to the marketing campaign and identified configuration gaps.
-> 
+>
 > This is what I mean by intelligent automation. It's not just showing errors. It's explaining WHY."
 
 **[4:00 - 5:30] AI Recommendations**
 
 > "But it doesn't stop there. Look at the recommendations:
-> 
+>
 > **Immediate:**
 > 1. Increase connection pool from 100 to 200
 > 2. Add connection timeout (30 seconds)
 > 3. Implement rate limiting
-> 
+>
 > **Long-term:**
 > 1. Add connection pool monitoring
 > 2. Auto-scaling based on utilization
 > 3. Coordinate with marketing for high-traffic events
-> 
+>
 > This is actionable. I can fix this right now."
 
 **[5:30 - 6:30] Apply Fix**
@@ -240,7 +240,7 @@ ansai-incident-report --interactive
 *[Show AI generating the report]*
 
 > "And just like that, I have a complete post-mortem with timeline, root cause analysis, action items, and lessons learned.
-> 
+>
 > This would normally take me an hour to write. AI did it in 30 seconds."
 
 **[7:30 - 8:00] Wrap Up**
@@ -250,9 +250,9 @@ ansai-incident-report --interactive
 > - Explained WHY it happened
 > - Provided actionable recommendations
 > - Generated a complete post-mortem
-> 
+>
 > This is what intelligent infrastructure looks like.
-> 
+>
 > Links in the description. Thanks for watching!"
 
 ---
@@ -266,9 +266,9 @@ ansai-incident-report --interactive
 **[0:00 - 0:30] Introduction**
 
 > "Ever deployed something to production and immediately regretted it?
-> 
+>
 > Let me show you how ANSAI uses AI to catch issues BEFORE they hit production.
-> 
+>
 > This is ansai-deploy-safe - your AI safety reviewer."
 
 **[0:30 - 1:30] The Deployment**
@@ -309,21 +309,21 @@ ansai-deploy-safe --type kubernetes --env production --strict deployment.yaml
 > - Configuration risks
 > - Production readiness
 > - Best practices
-> 
+>
 > And here are the results..."
 
 *[Show AI output]*
 
 > "Whoa. The AI found some serious issues:
-> 
+>
 > **CRITICAL:**
 > - No resource limits (can crash the node)
 > - Missing readiness probe (traffic to unhealthy pods)
 > - Using 'latest' tag (breaks rollbacks)
 > - No monitoring configured (blind deployment)
-> 
+>
 > **Overall Assessment: HIGH RISK - NO GO**
-> 
+>
 > If I had deployed this, I would have had problems. The AI just saved me from a production incident."
 
 **[3:30 - 5:00] Fix the Issues**
@@ -374,7 +374,7 @@ ansai-deploy-safe --type kubernetes --env production --strict deployment.yaml
 *[Show new output]*
 
 > "**Overall Assessment: LOW RISK - GO**
-> 
+>
 > All checks passed! This is safe to deploy."
 
 **[5:30 - 6:00] Wrap Up**
@@ -383,9 +383,9 @@ ansai-deploy-safe --type kubernetes --env production --strict deployment.yaml
 > - Caught 4 critical issues before production
 > - Provided specific fixes
 > - Validated the corrected deployment
-> 
+>
 > This is like having an SRE reviewing every deployment. But it's instant, consistent, and never gets tired.
-> 
+>
 > Check out ansai.dev. Thanks for watching!"
 
 ---
@@ -532,10 +532,8 @@ ansai-deploy-safe --type kubernetes --env production --strict deployment.yaml
 
 ---
 
-**Good luck with your recording!** 🎬  
+**Good luck with your recording!** 🎬
 **These scripts are templates - make them your own!** 🚀
 
-**Part of the ANSAI Framework**  
+**Part of the ANSAI Framework**
 Learn more: https://ansai.dev
-
-

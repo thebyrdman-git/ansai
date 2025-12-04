@@ -52,6 +52,11 @@ Talk to your infrastructure. Ask questions. Give commands.
 ### One-Line Installation
 
 ```bash
+curl -sSL https://ansai.dev/install.sh | bash
+```
+
+Or from GitHub directly:
+```bash
 curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
 ```
 
@@ -254,7 +259,7 @@ That's it! Your services are now self-healing with intelligent diagnostics.
 - Build resilient systems that heal themselves
 - Focus on innovation, not firefighting
 
-### For System Administrators  
+### For System Administrators
 - Automate routine maintenance tasks
 - Prevent issues before they become incidents
 - Standardize configurations across environments

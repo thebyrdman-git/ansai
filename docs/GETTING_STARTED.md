@@ -8,10 +8,10 @@
 
 By the end of this guide, you'll have:
 
-✅ ANSAI installed and configured  
-✅ AI backend running (LiteLLM or Fabric)  
-✅ Your first AI-powered automation deployed  
-✅ Self-healing services with intelligent diagnostics  
+✅ ANSAI installed and configured
+✅ AI backend running (LiteLLM or Fabric)
+✅ Your first AI-powered automation deployed
+✅ Self-healing services with intelligent diagnostics
 
 **Time required:** 5-10 minutes
 
@@ -37,7 +37,7 @@ Before you start, you'll need:
 ### Quick Install (One-Liner)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
+curl -sSL https://ansai.dev/install.sh | bash
 ```
 
 **Or manual install:**
@@ -167,7 +167,7 @@ export ANSAI_SMTP_PASSWORD="your-app-password"
 EOF
 ```
 
-**📧 Gmail Users:** 
+**📧 Gmail Users:**
 - Use an [App Password](https://support.google.com/accounts/answer/185833), not your regular password
 - Enable 2FA first, then generate app password
 
@@ -219,7 +219,7 @@ ansible-playbook playbooks/deploy-ai-powered-monitoring.yml -i inventory/hosts.y
 - ✅ Email alerts with diagnostics
 - ✅ Automatic remediation for common failures
 
-**✅ You should see:** 
+**✅ You should see:**
 ```
 ╔════════════════════════════════════════════════════════════╗
 ║  ✅ AI-Powered Monitoring Deployed Successfully!          ║
@@ -539,7 +539,7 @@ sudo journalctl -u sshd-self-heal.service
 
 ```bash
 # Installation
-curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
+curl -sSL https://ansai.dev/install.sh | bash
 
 # Start AI backend
 litellm --config ~/.config/ansai/litellm_config.yaml --port 4000 &
@@ -560,9 +560,7 @@ ssh your-server "sudo systemctl stop sshd"
 
 ---
 
-**Welcome to ANSAI!** 🚀  
+**Welcome to ANSAI!** 🚀
 **AI-powered automation starts now.**
 
 **Questions?** https://github.com/thebyrdman-git/ansai/discussions
-
-

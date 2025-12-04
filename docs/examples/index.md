@@ -9,27 +9,27 @@
 <div class="grid cards" markdown>
 
 -   **🌟 Community Roles + ANSAI**
-    
+
     ANSAI enhancements for popular Ansible Galaxy roles
-    
+
     [See Integrations →](COMMUNITY_ROLES.md)
 
 -   **🤖 AI-Powered Workflows**
-    
+
     Intelligent automation with LLMs
-    
+
     [Explore AI Workflows →](#ai-powered-workflows)
 
 -   **📦 Real-World Use Cases**
-    
+
     Galaxy-inspired, AI-enhanced
-    
+
     [See Use Cases →](#real-world-use-cases)
 
 -   **🏗️ Build Your Own**
-    
+
     Contribute workflows
-    
+
     [Contribution Guide →](#contributing)
 
 </div>
@@ -196,7 +196,7 @@ git diff main..HEAD | ansai-deploy-safe --type kubernetes --env production
 
 ### Database Management (Galaxy-Inspired) 🗄️
 
-**Traditional:** `geerlingguy.postgresql`  
+**Traditional:** `geerlingguy.postgresql`
 **ANSAI Enhancement:** AI query optimization, predictive maintenance
 
 **What you get:**
@@ -216,7 +216,7 @@ git diff main..HEAD | ansai-deploy-safe --type kubernetes --env production
 
 ### Web Server Optimization (Galaxy-Inspired) 🌐
 
-**Traditional:** `geerlingguy.nginx`  
+**Traditional:** `geerlingguy.nginx`
 **ANSAI Enhancement:** AI performance tuning, intelligent caching
 
 **What you get:**
@@ -236,7 +236,7 @@ git diff main..HEAD | ansai-deploy-safe --type kubernetes --env production
 
 ### Kubernetes Management (Galaxy-Inspired) ☸️
 
-**Traditional:** `community.kubernetes`  
+**Traditional:** `community.kubernetes`
 **ANSAI Enhancement:** AI resource sizing, predictive scaling
 
 **What you get:**
@@ -256,7 +256,7 @@ git diff main..HEAD | ansai-deploy-safe --type kubernetes --env production
 
 ### Monitoring & Alerting (Galaxy-Inspired) 📊
 
-**Traditional:** `cloudalchemy.prometheus` + `cloudalchemy.grafana`  
+**Traditional:** `cloudalchemy.prometheus` + `cloudalchemy.grafana`
 **ANSAI Enhancement:** AI anomaly detection, alert correlation
 
 **What you get:**
@@ -276,7 +276,7 @@ git diff main..HEAD | ansai-deploy-safe --type kubernetes --env production
 
 ### Security Hardening (Galaxy-Inspired) 🔒
 
-**Traditional:** `dev-sec.os-hardening`  
+**Traditional:** `dev-sec.os-hardening`
 **ANSAI Enhancement:** AI threat intelligence, behavioral analysis
 
 **What you get:**
@@ -299,16 +299,16 @@ git diff main..HEAD | ansai-deploy-safe --type kubernetes --env production
 ### Coming Soon!
 
 **Planned tutorials:**
-1. **ANSAI Quick Start** (5 minutes)  
+1. **ANSAI Quick Start** (5 minutes)
    Install → Deploy → First AI analysis
 
-2. **AI Log Analysis Demo** (8 minutes)  
+2. **AI Log Analysis Demo** (8 minutes)
    Real incident, AI root cause, resolution
 
-3. **Deployment Safety Demo** (6 minutes)  
+3. **Deployment Safety Demo** (6 minutes)
    Kubernetes manifest review, AI recommendations
 
-4. **Building Your First Workflow** (15 minutes)  
+4. **Building Your First Workflow** (15 minutes)
    Step-by-step workflow creation
 
 **Want to contribute a video?** [Let us know →](https://github.com/thebyrdman-git/ansai/discussions)
@@ -393,7 +393,7 @@ git diff main..HEAD | ansai-deploy-safe --type kubernetes --env production
 
 ### 1. Install ANSAI
 ```bash
-curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
+curl -sSL https://ansai.dev/install.sh | bash
 ```
 
 ### 2. Set up AI Backend
@@ -431,19 +431,19 @@ cp examples/workflows/TEMPLATE.sh my-workflow.sh
 ### Get Help & Share Ideas
 
 -   **💬 Discussions:** Ask questions, share ideas
-    
+
     [Join Discussions →](https://github.com/thebyrdman-git/ansai/discussions)
 
 -   **🎨 Show & Tell:** Share your creations
-    
+
     [Show What You Built →](https://github.com/thebyrdman-git/ansai/discussions/categories/show-and-tell)
 
 -   **💡 Ideas:** Request features
-    
+
     [Submit Ideas →](https://github.com/thebyrdman-git/ansai/discussions/categories/ideas)
 
 -   **🐛 Issues:** Report bugs
-    
+
     [File Issues →](https://github.com/thebyrdman-git/ansai/issues)
 
 ---
@@ -457,9 +457,7 @@ cp examples/workflows/TEMPLATE.sh my-workflow.sh
 
 ---
 
-**Part of the ANSAI Framework**  
+**Part of the ANSAI Framework**
 Learn more: https://ansai.dev
 
 **Build intelligent automation. Share what you create.** 🚀
-
-

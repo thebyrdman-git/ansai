@@ -77,16 +77,16 @@
 ## 💡 What Are People Building?
 
 !!! success "ChatOps from Anywhere"
-    *"Combined ANSAI's healing blocks with Slack. Now my team restarts services from their phones. Built in 2 hours."*  
-    **Blocks Used:** Service healing + notifications  
+    *"Combined ANSAI's healing blocks with Slack. Now my team restarts services from their phones. Built in 2 hours."*
+    **Blocks Used:** Service healing + notifications
 
 !!! success "Automated Cost Optimization"
-    *"Built a workflow that scales down dev environments at night, back up in morning. Saved 40% on AWS."*  
-    **Blocks Used:** Orchestration + scheduling + AWS APIs  
+    *"Built a workflow that scales down dev environments at night, back up in morning. Saved 40% on AWS."*
+    **Blocks Used:** Orchestration + scheduling + AWS APIs
 
 !!! success "Full Deployment Pipeline"
-    *"Started with self-healing, now have automated rollbacks, DB migrations, compliance checks. It's our entire infrastructure."*  
-    **Blocks Used:** Multiple patterns combined  
+    *"Started with self-healing, now have automated rollbacks, DB migrations, compliance checks. It's our entire infrastructure."*
+    **Blocks Used:** Multiple patterns combined
 
 **[Share What You Built →](https://github.com/thebyrdman-git/ansai/issues)**
 
@@ -118,7 +118,7 @@
 ```
 🤖 AI-POWERED ROOT CAUSE ANALYSIS
 
-ROOT CAUSE: The my-flask-app service failed due to a systemd 
+ROOT CAUSE: The my-flask-app service failed due to a systemd
 service timeout, triggered by lack of response from the application.
 
 WHY IT FAILED:
@@ -133,7 +133,7 @@ RECOMMENDED FIX:
 3. Increase systemd timeout to 120s in service file
 
 PREVENTION:
-Monitor connection pool usage and implement automatic pool 
+Monitor connection pool usage and implement automatic pool
 recycling when utilization exceeds 80%.
 ```
 
@@ -173,11 +173,11 @@ ALERT: my-flask-app has stopped responding
 ══════════════════════════════════════════════════
 
 ROOT CAUSE:
-The my-flask-app service failed due to a systemd service timeout, 
+The my-flask-app service failed due to a systemd service timeout,
 triggered by a lack of response from the application.
 
 WHY IT FAILED:
- • The application process was running for an extended period without 
+ • The application process was running for an extended period without
    issues, but suddenly stopped responding
  • The systemd service timeout was triggered, causing service stop
  • Application logs show no errors before the timeout
@@ -190,8 +190,8 @@ RECOMMENDED FIX:
 4. Add connection pool timeout: pool_timeout = 30
 
 PREVENTION:
-Implement a health check mechanism within the application to detect 
-and respond to potential issues before the service timeout is 
+Implement a health check mechanism within the application to detect
+and respond to potential issues before the service timeout is
 triggered. Add a periodic check or watchdog timer to the application.
 
 Analysis powered by: llama-3.1-8b-instant via Groq
@@ -360,11 +360,11 @@ ansai-demo  # See real AI root cause analysis
 🤖 [ANSAI] AI analysis in progress...
 
 🤖 AI ROOT CAUSE: Database connection pool exhausted
-   
+
    WHY IT FAILED:
    • No timeout configured, connections hung indefinitely
    • All 50 connections consumed and not released
-   
+
    RECOMMENDED FIX:
    Add to your database config:
      pool_timeout = 30
@@ -391,7 +391,7 @@ graph TB
     C --> D[💡 AI Identifies Root Cause<br/>Database pool exhausted]
     D --> E[⚡ Execute Healing Strategy<br/>Restart + cleanup]
     E --> F[📧 Report to You<br/>What, Why, How to Prevent]
-    
+
     style A fill:#ff6b6b
     style B fill:#4ecdc4
     style C fill:#45b7d1
@@ -424,7 +424,7 @@ ANSAI's AI analyzes and tells you:
 🤖 AI ROOT CAUSE ANALYSIS
 
 ROOT CAUSE:
-The my-flask-app service failed due to a systemd service timeout, 
+The my-flask-app service failed due to a systemd service timeout,
 triggered by lack of response from the application.
 
 WHY IT FAILED:
@@ -440,8 +440,8 @@ RECOMMENDED FIX:
 3. Increase systemd timeout to 120s in service file
 
 PREVENTION:
-Monitor connection pool usage and implement automatic pool recycling 
-when utilization exceeds 80%. Add alerting for connection wait times 
+Monitor connection pool usage and implement automatic pool recycling
+when utilization exceeds 80%. Add alerting for connection wait times
 > 5 seconds.
 ```
 
@@ -540,7 +540,7 @@ Talk to your infrastructure:
 ### One-Line Installation
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
+curl -sSL https://ansai.dev/install.sh | bash
 ```
 
 **What this does:**
@@ -647,7 +647,7 @@ ansible-playbook orchestrators/ansible/playbooks/deploy-self-healing.yml \
 
 🤖 AI ROOT CAUSE ANALYSIS:
 The service failed due to database connection pool exhaustion.
-The application exhausted all 50 connections because connection 
+The application exhausted all 50 connections because connection
 timeout was not configured, causing requests to hang indefinitely.
 
 RECOMMENDED FIX:
@@ -677,13 +677,13 @@ HEALING: Restarting service + closing stale connections
     task: "Parse nginx logs for errors"
     # ANSAI chooses: Groq llama-3.1-8b ($0.10/M tokens)
     # Reason: Simple parsing, speed matters
-    
+
 - name: Debug complex distributed system failure
   ansai_ai_analyze:
     task: "Why is order processing failing across 5 microservices?"
     # ANSAI chooses: Claude Sonnet ($15/M tokens)
     # Reason: Complex reasoning needed, worth the cost
-    
+
 - name: Summarize deployment logs
   ansai_ai_analyze:
     task: "Summarize 10k lines of deployment output"
@@ -702,7 +702,7 @@ HEALING: Restarting service + closing stale connections
 
 ```bash
 # 1. Install ANSAI
-curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
+curl -sSL https://ansai.dev/install.sh | bash
 
 # 2. Set AI key (Groq free tier: 30 requests/min)
 export ANSAI_GROQ_API_KEY="gsk_your_key_here"
@@ -734,7 +734,7 @@ monitored_services:
   - name: worker
     port: null
     critical: false
-    
+
 owner_email: you@example.com
 ai_analysis_enabled: true
 EOF
@@ -777,7 +777,7 @@ ansible-playbook playbooks/deploy-self-healing.yml -e @/tmp/services.yml
 **Not sure where to start? Check out our interactive tutorials:**
 
 !!! tip "🚀 NEW: Executable Tutorials"
-    Run tutorials directly: `curl -sSL https://ansai.dev/tutorials/01-auto-scale.sh | bash`  
+    Run tutorials directly: `curl -sSL https://ansai.dev/tutorials/01-auto-scale.sh | bash`
     Or [browse all tutorials →](examples/tutorials/)
 
 <div class="grid" markdown>
@@ -818,7 +818,7 @@ ansible-playbook playbooks/deploy-self-healing.yml -e @/tmp/services.yml
 ### 🎯 Community Requested
 **What Builders Want:**
 - Certificate lifecycle automation with AI renewal prediction
-- Database optimization with AI-powered query analysis  
+- Database optimization with AI-powered query analysis
 - Security compliance with AI-driven remediation
 - Chaos engineering with AI-predicted blast radius
 - Multi-cloud orchestration with AI cost optimization
@@ -956,7 +956,7 @@ Try it: Deploy self-healing without AI. You get "service restarted." Deploy with
 
 ### "Do I need to know Ansible?"
 
-**Basic YAML helps, but not required.** 
+**Basic YAML helps, but not required.**
 
 Copy-paste the examples above, change service names, deploy. The installer sets up everything.
 
@@ -968,9 +968,9 @@ If you want to customize healing strategies, basic Ansible knowledge helps.
 
 ## Your Infrastructure. Your Rules. Your Creativity.
 
-**ANSAI provides the building blocks.**  
-**You create whatever you need.**  
-**Share with the community.**  
+**ANSAI provides the building blocks.**
+**You create whatever you need.**
+**Share with the community.**
 **We all get better.**
 
 [Join the Community →](https://github.com/thebyrdman-git/ansai){ .md-button .md-button--large }

@@ -10,32 +10,32 @@ Each tutorial is an interactive script that walks you through building a real AN
 
 ### 🏗️ Infrastructure Automation
 
-1. **[Auto-Scale Based on Error Rates →](01-auto-scale-on-errors.sh)**  
+1. **[Auto-Scale Based on Error Rates →](01-auto-scale-on-errors.sh)**
    Automatically scale resources when error rates spike
-   
-2. **[ChatOps for Infrastructure →](02-chatops-infrastructure.sh)**  
+
+2. **[ChatOps for Infrastructure →](02-chatops-infrastructure.sh)**
    Control your infrastructure from Slack/Discord
-   
-3. **[Multi-Cloud Orchestration →](03-multi-cloud-orchestration.sh)**  
+
+3. **[Multi-Cloud Orchestration →](03-multi-cloud-orchestration.sh)**
    Deploy to AWS with automatic DigitalOcean fallback
-   
-4. **[Cost Optimization Scheduling →](04-cost-optimization-scheduling.sh)**  
+
+4. **[Cost Optimization Scheduling →](04-cost-optimization-scheduling.sh)**
    Shutdown dev environments at night, save 50%
 
 ### 🔒 Security & Compliance
 
-5. **[Compliance Auto-Remediation →](05-compliance-remediation.sh)**  
+5. **[Compliance Auto-Remediation →](05-compliance-remediation.sh)**
    Automatically fix security misconfigurations
-   
-6. **[Chaos Engineering Testing →](06-chaos-engineering.sh)**  
+
+6. **[Chaos Engineering Testing →](06-chaos-engineering.sh)**
    Test self-healing with random service failures
 
 ### 🤖 Advanced AI Ops
 
-7. **[Self-Optimizing Database →](07-database-tuning.sh)**  
+7. **[Self-Optimizing Database →](07-database-tuning.sh)**
    AI-powered PostgreSQL/MySQL configuration tuning
-   
-8. **[Predictive Maintenance →](08-predictive-maintenance.sh)**  
+
+8. **[Predictive Maintenance →](08-predictive-maintenance.sh)**
    Detect and fix issues before they happen
 
 ---
@@ -122,7 +122,7 @@ Tutorials are designed to be:
 
 ```bash
 # 1. Install ANSAI
-curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
+curl -sSL https://ansai.dev/install.sh | bash
 
 # 2. Set up AI provider
 export ANSAI_GROQ_API_KEY="your-key-here"  # Get free key at console.groq.com
@@ -256,4 +256,3 @@ Based on community feedback:
 ---
 
 **Happy learning! Build intelligent automation.** 🚀
-
