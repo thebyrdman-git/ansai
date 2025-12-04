@@ -591,8 +591,8 @@ EOF
 
 # 3. Deploy AI-powered self-healing
 cd ~/.ansai/orchestrators/ansible
-ansible-playbook orchestrators/ansible/playbooks/deploy-self-healing.yml \
-  -e "monitored_services=[{name: 'my-app', port: 5000, critical: true}]" \
+ansible-playbook playbooks/deploy-self-healing.yml \
+  -e 'monitored_services=[{"name": "my-app", "port": 5000, "critical": true}]' \
   -e "owner_email=you@example.com"
 ```
 

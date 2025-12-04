@@ -1,28 +1,32 @@
 ---
-# Deploy Universal Self-Healing to ALL Services on MiracleMax
+# Deploy Universal Self-Healing System
 #
 # Usage:
-#   ansible-playbook playbooks/deploy-self-healing.yml
-#   ansible-playbook playbooks/deploy-self-healing.yml --check --diff  # Dry run
+#   ansible-playbook playbooks/deploy-self-healing.yml -i inventory/hosts.yml
+#   ansible-playbook playbooks/deploy-self-healing.yml -i inventory/hosts.yml --check --diff  # Dry run
+#
+# With custom services:
+#   ansible-playbook playbooks/deploy-self-healing.yml -i inventory/hosts.yml \
+#     -e 'monitored_services=[{"name": "nginx", "port": 80, "critical": true}]'
 #
 # Philosophy: Ansai - Self-Healing, Observable, Config-as-Code
 
 - name: Deploy Universal Self-Healing System
-  hosts: miraclemax
-  become: yes
+  hosts: "{{ target_hosts | default('all') }}"
+  become: true
   
   pre_tasks:
     - name: Display deployment banner
       debug:
         msg:
           - "🤖 ═══════════════════════════════════════"
-          - "   MiracleMax Universal Self-Healing"
+          - "   ANSAI Universal Self-Healing"
           - "   Deployment Starting..."
           - "═══════════════════════════════════════"
           - ""
           - "Target: {{ inventory_hostname }}"
-          - "Services: {{ monitored_services | map(attribute='name') | list | join(', ') }}"
-          - "Owner: {{ owner_email }}"
+          - "Services: {{ monitored_services | default([]) | map(attribute='name') | list | join(', ') | default('(using role defaults)') }}"
+          - "Owner: {{ owner_email | default('(not set)') }}"
           - ""
     
     - name: Verify target host is reachable
@@ -46,34 +50,32 @@
     - name: Verify self-healing deployment
       stat:
         path: "/usr/local/bin/self-heal/{{ item.name }}-self-heal.sh"
-      loop: "{{ monitored_services }}"
+      loop: "{{ monitored_services | default([]) }}"
       register: heal_scripts
-      failed_when: not heal_scripts.stat.exists
+      when: monitored_services is defined and monitored_services | length > 0
     
     - name: Display deployment summary
       debug:
         msg:
           - ""
           - "✅ ═══════════════════════════════════════"
-          - "   Universal Self-Healing Deployed!"
+          - "   ANSAI Universal Self-Healing Deployed!"
           - "═══════════════════════════════════════"
           - ""
           - "📊 Configuration:"
-          - "   • Monitored services: {{ monitored_services | length }}"
-          - "   • Self-healing: {{ 'ENABLED' if self_healing_enabled else 'DISABLED' }}"
-          - "   • Alert email: {{ owner_email }}"
-          - "   • Failure threshold: {{ failure_threshold }}"
+          - "   • Monitored services: {{ monitored_services | default([]) | length }}"
+          - "   • Self-healing: {{ 'ENABLED' if (self_healing_enabled | default(true)) else 'DISABLED' }}"
+          - "   • Alert email: {{ owner_email | default('(not configured)') }}"
+          - "   • Failure threshold: {{ failure_threshold | default(3) }}"
           - ""
           - "🔧 Commands:"
-          - "   • View status: miraclemax-status"
-          - "   • View logs: journalctl -t miraclemax-self-heal"
-          - "   • Test healing: sudo systemctl stop story-stages"
+          - "   • View logs: journalctl -t ansai-self-heal"
+          - "   • Test healing: sudo systemctl stop <service-name>"
           - ""
-          - "📧 You will receive emails when:"
-          - "   • A service fails and is automatically healed"
-          - "   • Healing fails and manual intervention is needed"
-          - "   • Any critical service experiences issues"
+          - "📧 Alerts (if email configured):"
+          - "   • Service fails and is automatically healed"
+          - "   • Healing fails and manual intervention needed"
           - ""
-          - "🤖 Self-healing is now active for all services!"
+          - "🤖 Self-healing is now active!"
           - ""
 
