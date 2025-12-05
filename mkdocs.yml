@@ -131,6 +131,7 @@ markdown_extensions:
 nav:
   - 🏠 Home: index.md
   - 🚀 Getting Started: GETTING_STARTED.md
+  - 🤖 AI Capabilities: ai-capabilities.md
   - 🆘 Troubleshooting: TROUBLESHOOTING.md
   
   - 🧱 Building Blocks:
