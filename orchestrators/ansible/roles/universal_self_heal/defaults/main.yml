@@ -73,9 +73,43 @@ self_healing_enabled: true
 # Alert on every healing attempt (true) or only failures (false)
 alert_on_success: true
 
-# AI-Powered Root Cause Analysis (via Groq)
+# ============================================================================
+# AI-Powered Root Cause Analysis
+# ============================================================================
 ai_analysis_enabled: true
+
+# AI Backend: groq, ollama, litellm, openai
+# - groq: Fast cloud inference (free tier available)
+# - ollama: 100% local, no API keys needed
+# - litellm: Multi-model proxy (use ansai-litellm-proxy)
+# - openai: OpenAI API directly
+ai_backend: groq
+
+# Groq Configuration (default - fast & free tier)
 groq_api_key: "{{ lookup('env', 'ANSAI_GROQ_API_KEY') }}"
 groq_model: llama-3.1-8b-instant
 groq_api_url: https://api.groq.com/openai/v1/chat/completions
+
+# Ollama Configuration (local - no API keys needed)
+ollama_url: http://localhost:11434
+ollama_model: llama3
+
+# LiteLLM Configuration (proxy - any model)
+litellm_url: http://localhost:4000
+litellm_model: gpt-4
+
+# OpenAI Configuration (direct)
+openai_api_key: "{{ lookup('env', 'OPENAI_API_KEY') }}"
+openai_model: gpt-4o-mini
+openai_api_url: https://api.openai.com/v1/chat/completions
+
+# ============================================================================
+# Alert Configuration  
+# ============================================================================
+# Alert method: email, webhook, both, none
+alert_method: email
+
+# Webhook Configuration (Slack, Discord, etc.)
+webhook_url: ""
+webhook_format: slack  # slack, discord, generic
 

@@ -260,11 +260,72 @@ grep "AI_ENABLED" /usr/local/bin/self-heal/*.sh
 
 ---
 
+---
+
+## ansai-ask: Interactive AI Assistant
+
+Chat with AI about your infrastructure directly from the command line.
+
+### Basic Usage
+
+```bash
+# Ask a question
+ansai-ask "why might nginx fail to start?"
+
+# Analyze a log file
+ansai-ask --analyze /var/log/nginx/error.log
+
+# Ask about a specific service
+ansai-ask --service nginx "why is it using so much memory?"
+
+# Pipe logs for analysis  
+journalctl -u myapp --since "1 hour ago" | ansai-ask --stdin "what's causing these errors?"
+
+# Interactive chat mode
+ansai-ask --interactive
+```
+
+### Backend Selection
+
+```bash
+# Auto-detect best available backend
+ansai-ask "your question"
+
+# Use specific backend
+ansai-ask --backend ollama "your question"
+ansai-ask --backend groq "your question"
+```
+
+---
+
+## Webhook Alerts (Slack, Discord)
+
+Instead of email, send alerts to Slack, Discord, or any webhook.
+
+### Configuration
+
+```yaml
+# In your playbook or defaults/main.yml
+alert_method: webhook      # email, webhook, both, none
+webhook_url: "https://hooks.slack.com/services/xxx/yyy/zzz"
+webhook_format: slack      # slack, discord, generic
+```
+
+### Supported Formats
+
+- **Slack** - Rich formatted messages with attachments
+- **Discord** - Embed messages with colors and fields
+- **Generic** - JSON payload for custom integrations
+
+---
+
 ## What's Next
 
 We're actively building more AI capabilities:
 
-- [ ] **ansai-ask** - Chat with AI about your infrastructure
+- [x] **ansai-ask** - Chat with AI about your infrastructure ✅
+- [x] **Ollama support** - Local AI, no API keys ✅
+- [x] **Webhook alerts** - Slack, Discord integration ✅
 - [ ] **Web Dashboard** - Visual AI insights
 - [ ] **Predictive Alerts** - AI predicts failures before they happen
 - [ ] **Auto-tuning** - AI optimizes your service configurations

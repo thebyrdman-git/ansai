@@ -33,9 +33,30 @@ SMTP_PASS="{{ smtp_password }}"
 
 # AI Configuration
 AI_ENABLED="{{ ai_analysis_enabled | lower }}"
+AI_BACKEND="{{ ai_backend | default('groq') }}"
+
+# Groq
 GROQ_API_KEY="{{ groq_api_key }}"
 GROQ_MODEL="{{ groq_model }}"
 GROQ_API_URL="{{ groq_api_url }}"
+
+# Ollama (local)
+OLLAMA_URL="{{ ollama_url }}"
+OLLAMA_MODEL="{{ ollama_model }}"
+
+# LiteLLM (proxy)
+LITELLM_URL="{{ litellm_url }}"
+LITELLM_MODEL="{{ litellm_model }}"
+
+# OpenAI
+OPENAI_API_KEY="{{ openai_api_key }}"
+OPENAI_MODEL="{{ openai_model }}"
+OPENAI_API_URL="{{ openai_api_url }}"
+
+# Alert Configuration
+ALERT_METHOD="{{ alert_method | default('email') }}"
+WEBHOOK_URL="{{ webhook_url }}"
+WEBHOOK_FORMAT="{{ webhook_format | default('slack') }}"
 
 # Logging
 log() {
@@ -69,7 +90,77 @@ AUTOMATIC ISSUE RESOLUTION
 EOF
 }
 
-# Send email report
+# Send webhook notification
+send_webhook() {
+    local title="$1"
+    local status="$2"
+    local color="$3"
+    
+    if [ -z "$WEBHOOK_URL" ]; then
+        return 0
+    fi
+    
+    local body=$(cat "$REPORT_FILE" | head -50)  # Truncate for webhook
+    
+    case "$WEBHOOK_FORMAT" in
+        slack)
+            curl -s -X POST "$WEBHOOK_URL" \
+                -H "Content-Type: application/json" \
+                -d @- <<EOFSLACK
+{
+    "attachments": [{
+        "color": "$color",
+        "title": "$title",
+        "text": "Service: $SERVICE_NAME\nStatus: $status\nHost: $(hostname)",
+        "fields": [
+            {"title": "Port", "value": "$SERVICE_PORT", "short": true},
+            {"title": "Time", "value": "$(date)", "short": true}
+        ],
+        "footer": "ANSAI Self-Healing",
+        "mrkdwn_in": ["text"]
+    }]
+}
+EOFSLACK
+            ;;
+        discord)
+            curl -s -X POST "$WEBHOOK_URL" \
+                -H "Content-Type: application/json" \
+                -d @- <<EOFDISCORD
+{
+    "embeds": [{
+        "title": "$title",
+        "description": "Service: $SERVICE_NAME\\nStatus: $status",
+        "color": $([ "$color" = "good" ] && echo "3066993" || echo "15158332"),
+        "fields": [
+            {"name": "Host", "value": "$(hostname)", "inline": true},
+            {"name": "Port", "value": "$SERVICE_PORT", "inline": true}
+        ],
+        "footer": {"text": "ANSAI Self-Healing"}
+    }]
+}
+EOFDISCORD
+            ;;
+        generic|*)
+            curl -s -X POST "$WEBHOOK_URL" \
+                -H "Content-Type: application/json" \
+                -d @- <<EOFGENERIC
+{
+    "title": "$title",
+    "service": "$SERVICE_NAME",
+    "status": "$status",
+    "host": "$(hostname)",
+    "port": "$SERVICE_PORT",
+    "timestamp": "$(date -Iseconds)",
+    "body": $(echo "$body" | python3 -c "import sys, json; print(json.dumps(sys.stdin.read()))")
+}
+EOFGENERIC
+            ;;
+    esac
+    
+    log "Webhook notification sent to $WEBHOOK_FORMAT endpoint"
+}
+
+# Send alert report (email, webhook, or both)
 send_email_report() {
     local subject="$1"
     local success="$2"
@@ -78,10 +169,12 @@ send_email_report() {
         icon="✅"
         status="RESOLVED"
         priority="info"
+        color="good"
     else
         icon="❌"
         status="FAILED"
         priority="crit"
+        color="danger"
     fi
     
     # Add system status to report
@@ -101,19 +194,49 @@ $(journalctl -u $SERVICE_NAME -n 5 --no-pager 2>/dev/null || echo "No logs avail
 
 ═══════════════════════════════════════════════════════
 
-All TestServer Services Status:
+All ANSAI Services Status:
 $(systemctl list-units --type=service --state=running --no-pager | grep -E "{{ monitored_services | map(attribute='name') | join('|') }}" || echo "Unable to list services")
 
 ═══════════════════════════════════════════════════════
-End Report - TestServer Self-Healing System
+End Report - ANSAI Self-Healing System
 ═══════════════════════════════════════════════════════
 
-View all healing logs: journalctl -t testserver-self-heal
+View all healing logs: journalctl -t ansai-self-heal
 Check service: systemctl status $SYSTEMD_UNIT
 View this service logs: journalctl -u $SYSTEMD_UNIT -n 100
 EOF
 
-    # Send via Python SMTP
+    # Send alerts based on configuration
+    case "$ALERT_METHOD" in
+        email)
+            send_email_notification "$subject" "$status"
+            ;;
+        webhook)
+            send_webhook "$icon ANSAI: $SERVICE_NAME - $status" "$status" "$color"
+            ;;
+        both)
+            send_email_notification "$subject" "$status"
+            send_webhook "$icon ANSAI: $SERVICE_NAME - $status" "$status" "$color"
+            ;;
+        none)
+            log "Alerts disabled - skipping notification"
+            ;;
+    esac
+    
+    # Always log to systemd journal
+    systemd-cat -t ansai-self-heal -p $priority < "$REPORT_FILE"
+    
+    # Save status
+    echo "last_heal=$(date +%s)" > "$STATUS_FILE"
+    echo "last_status=$status" >> "$STATUS_FILE"
+    echo "service=$SERVICE_NAME" >> "$STATUS_FILE"
+}
+
+# Send email notification
+send_email_notification() {
+    local subject="$1"
+    local status="$2"
+    
     python3 << PYPYTHON
 import smtplib
 from email.mime.text import MIMEText
@@ -127,7 +250,7 @@ try:
     msg = MIMEMultipart()
     msg['From'] = "$SMTP_USER"
     msg['To'] = "$OWNER_EMAIL"
-    msg['Subject'] = "$icon TestServer: $SERVICE_NAME - $status"
+    msg['Subject'] = "$icon ANSAI: $SERVICE_NAME - $status"
     msg.attach(MIMEText(body, 'plain'))
     
     server = smtplib.SMTP("$SMTP_SERVER", $SMTP_PORT)
@@ -149,23 +272,43 @@ PYPYTHON
     else
         log "WARNING: Failed to send email report"
     fi
-    
-    # Always log to systemd journal
-    systemd-cat -t testserver-self-heal -p $priority < "$REPORT_FILE"
-    
-    # Save status
-    echo "last_heal=$(date +%s)" > "$STATUS_FILE"
-    echo "last_status=$status" >> "$STATUS_FILE"
-    echo "service=$SERVICE_NAME" >> "$STATUS_FILE"
 }
 
 # AI-Powered Root Cause Analysis
 ai_analyze_failure() {
-    if [ "$AI_ENABLED" != "true" ] || [ -z "$GROQ_API_KEY" ]; then
+    if [ "$AI_ENABLED" != "true" ]; then
         return 0
     fi
     
-    log "🤖 Performing AI root cause analysis..."
+    # Check if we have the required config for the selected backend
+    case "$AI_BACKEND" in
+        groq)
+            if [ -z "$GROQ_API_KEY" ]; then
+                log "⚠️  AI analysis skipped: GROQ_API_KEY not set"
+                return 0
+            fi
+            ;;
+        ollama)
+            if ! curl -s "$OLLAMA_URL/api/tags" >/dev/null 2>&1; then
+                log "⚠️  AI analysis skipped: Ollama not running at $OLLAMA_URL"
+                return 0
+            fi
+            ;;
+        openai)
+            if [ -z "$OPENAI_API_KEY" ]; then
+                log "⚠️  AI analysis skipped: OPENAI_API_KEY not set"
+                return 0
+            fi
+            ;;
+        litellm)
+            if ! curl -s "$LITELLM_URL/health" >/dev/null 2>&1; then
+                log "⚠️  AI analysis skipped: LiteLLM not running at $LITELLM_URL"
+                return 0
+            fi
+            ;;
+    esac
+    
+    log "🤖 Performing AI root cause analysis via $AI_BACKEND..."
     report ""
     report "══════════════════════════════════════════════════"
     report "🤖 AI-POWERED ROOT CAUSE ANALYSIS"
@@ -202,38 +345,95 @@ Provide a BRIEF root cause analysis in this format:
 
 Be specific, actionable, and concise. Focus on the most likely cause based on the logs."
     
-    # Call Groq API
-    local ai_response=$(curl -s -X POST "$GROQ_API_URL" \
-        -H "Authorization: Bearer $GROQ_API_KEY" \
-        -H "Content-Type: application/json" \
-        -d @- <<EOFCURL
+    local ai_response=""
+    local model_used=""
+    
+    # Call appropriate AI backend
+    case "$AI_BACKEND" in
+        groq)
+            model_used="$GROQ_MODEL via Groq"
+            ai_response=$(curl -s -X POST "$GROQ_API_URL" \
+                -H "Authorization: Bearer $GROQ_API_KEY" \
+                -H "Content-Type: application/json" \
+                -d @- <<EOFCURL
 {
     "model": "$GROQ_MODEL",
     "messages": [
-        {
-            "role": "system",
-            "content": "You are a Linux systems expert. Provide concise, actionable root cause analysis."
-        },
-        {
-            "role": "user",
-            "content": $(echo "$prompt" | python3 -c "import sys, json; print(json.dumps(sys.stdin.read()))")
-        }
+        {"role": "system", "content": "You are a Linux systems expert. Provide concise, actionable root cause analysis."},
+        {"role": "user", "content": $(echo "$prompt" | python3 -c "import sys, json; print(json.dumps(sys.stdin.read()))")}
     ],
     "temperature": 0.3,
     "max_tokens": 500
 }
 EOFCURL
-    )
+            )
+            ;;
+        ollama)
+            model_used="$OLLAMA_MODEL via Ollama (local)"
+            ai_response=$(curl -s -X POST "$OLLAMA_URL/api/chat" \
+                -H "Content-Type: application/json" \
+                -d @- <<EOFCURL
+{
+    "model": "$OLLAMA_MODEL",
+    "messages": [
+        {"role": "system", "content": "You are a Linux systems expert. Provide concise, actionable root cause analysis."},
+        {"role": "user", "content": $(echo "$prompt" | python3 -c "import sys, json; print(json.dumps(sys.stdin.read()))")}
+    ],
+    "stream": false
+}
+EOFCURL
+            )
+            ;;
+        openai)
+            model_used="$OPENAI_MODEL via OpenAI"
+            ai_response=$(curl -s -X POST "$OPENAI_API_URL" \
+                -H "Authorization: Bearer $OPENAI_API_KEY" \
+                -H "Content-Type: application/json" \
+                -d @- <<EOFCURL
+{
+    "model": "$OPENAI_MODEL",
+    "messages": [
+        {"role": "system", "content": "You are a Linux systems expert. Provide concise, actionable root cause analysis."},
+        {"role": "user", "content": $(echo "$prompt" | python3 -c "import sys, json; print(json.dumps(sys.stdin.read()))")}
+    ],
+    "temperature": 0.3,
+    "max_tokens": 500
+}
+EOFCURL
+            )
+            ;;
+        litellm)
+            model_used="$LITELLM_MODEL via LiteLLM"
+            ai_response=$(curl -s -X POST "$LITELLM_URL/v1/chat/completions" \
+                -H "Content-Type: application/json" \
+                -d @- <<EOFCURL
+{
+    "model": "$LITELLM_MODEL",
+    "messages": [
+        {"role": "system", "content": "You are a Linux systems expert. Provide concise, actionable root cause analysis."},
+        {"role": "user", "content": $(echo "$prompt" | python3 -c "import sys, json; print(json.dumps(sys.stdin.read()))")}
+    ],
+    "temperature": 0.3,
+    "max_tokens": 500
+}
+EOFCURL
+            )
+            ;;
+    esac
     
-    # Extract and format response
+    # Extract and format response (handle both OpenAI and Ollama response formats)
     local analysis=$(echo "$ai_response" | python3 -c "
 import sys, json
 try:
     data = json.load(sys.stdin)
+    # OpenAI/Groq/LiteLLM format
     if 'choices' in data and len(data['choices']) > 0:
         print(data['choices'][0]['message']['content'])
+    # Ollama format
+    elif 'message' in data and 'content' in data['message']:
+        print(data['message']['content'])
     elif 'error' in data:
-        print(f\"AI Error: {data['error'].get('message', 'Unknown error')}\")
+        print(f\"AI Error: {data['error'].get('message', str(data['error']))}\")
     else:
         print('AI analysis unavailable')
 except Exception as e:
@@ -243,7 +443,7 @@ except Exception as e:
     if [ -n "$analysis" ] && ! echo "$analysis" | grep -q "Error"; then
         report "$analysis"
         report ""
-        report "Analysis powered by: $GROQ_MODEL via Groq"
+        report "Analysis powered by: $model_used"
         log "✅ AI analysis completed"
     else
         report "AI analysis failed: $analysis"
