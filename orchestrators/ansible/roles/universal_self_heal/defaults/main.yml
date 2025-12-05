@@ -43,11 +43,20 @@ monitored_services:
       - config_validation
       - port_conflict
   
+  # Socket-activated service example (like cockpit)
+  # - name: cockpit
+  #   port: 9090
+  #   socket_activated: true    # Use .socket instead of .service
+  #   critical: false
+  #   healing_strategies:
+  #     - service_restart
+  
   # Add more services as needed
   # - name: service-name
   #   port: port-number
   #   domain: domain.example.com
   #   critical: true/false
+  #   socket_activated: false   # Set to true for socket-activated services
   #   healing_strategies:
   #     - service_restart
   #     - custom_strategy

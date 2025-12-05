@@ -11,6 +11,14 @@ SERVICE_PORT="{{ service.port }}"
 SERVICE_DOMAIN="{{ service.domain | default('N/A') }}"
 OWNER_EMAIL="{{ owner_email }}"
 CRITICAL="{{ service.critical | default('false') }}"
+SOCKET_ACTIVATED="{{ service.socket_activated | default(false) | lower }}"
+
+# For socket-activated services, check the .socket unit instead of .service
+if [[ "$SOCKET_ACTIVATED" == "true" ]]; then
+    SYSTEMD_UNIT="${SERVICE_NAME}.socket"
+else
+    SYSTEMD_UNIT="${SERVICE_NAME}.service"
+fi
 
 # Paths
 LOG_FILE="/var/log/self-heal-{{ service.name }}.log"
@@ -83,9 +91,10 @@ send_email_report() {
 Post-Healing System Status
 ═══════════════════════════════════════════════════════
 
-Service: $(systemctl is-active $SERVICE_NAME 2>/dev/null || echo "UNKNOWN")
-Enabled: $(systemctl is-enabled $SERVICE_NAME 2>/dev/null || echo "UNKNOWN")
-Uptime: $(systemctl show $SERVICE_NAME --property=ActiveEnterTimestamp --value 2>/dev/null | cut -d' ' -f2-4 || echo "N/A")
+Service: $(systemctl is-active $SYSTEMD_UNIT 2>/dev/null || echo "UNKNOWN")
+Enabled: $(systemctl is-enabled $SYSTEMD_UNIT 2>/dev/null || echo "UNKNOWN")
+Uptime: $(systemctl show $SYSTEMD_UNIT --property=ActiveEnterTimestamp --value 2>/dev/null | cut -d' ' -f2-4 || echo "N/A")
+Type: $([ "$SOCKET_ACTIVATED" = "true" ] && echo "Socket-Activated" || echo "Regular Service")
 
 Recent Logs:
 $(journalctl -u $SERVICE_NAME -n 5 --no-pager 2>/dev/null || echo "No logs available")
@@ -100,8 +109,8 @@ End Report - TestServer Self-Healing System
 ═══════════════════════════════════════════════════════
 
 View all healing logs: journalctl -t testserver-self-heal
-Check service: systemctl status $SERVICE_NAME
-View this service logs: journalctl -u $SERVICE_NAME -n 100
+Check service: systemctl status $SYSTEMD_UNIT
+View this service logs: journalctl -u $SYSTEMD_UNIT -n 100
 EOF
 
     # Send via Python SMTP
@@ -164,7 +173,7 @@ ai_analyze_failure() {
     report ""
     
     # Gather diagnostic data
-    local service_status=$(systemctl status $SERVICE_NAME --no-pager 2>&1 | head -20)
+    local service_status=$(systemctl status $SYSTEMD_UNIT --no-pager 2>&1 | head -20)
     local recent_logs=$(journalctl -u $SERVICE_NAME -n 50 --no-pager 2>&1)
     local system_info=$(free -h && df -h && uptime)
     
@@ -250,29 +259,29 @@ heal_service_restart() {
     report "══════════════════════════════════════════════════"
     report ""
     report "DIAGNOSIS:"
-    report "  • Service status: $(systemctl is-active $SERVICE_NAME 2>&1 || echo 'inactive')"
-    report "  • Last exit status: $(systemctl show $SERVICE_NAME --property=ExecMainStatus --value 2>/dev/null || echo 'unknown')"
-    report "  • Memory usage: $(systemctl show $SERVICE_NAME --property=MemoryCurrent --value 2>/dev/null | awk '{print $1/1024/1024 " MB"}' || echo 'unknown')"
+    report "  • Service status: $(systemctl is-active $SYSTEMD_UNIT 2>&1 || echo 'inactive')"
+    report "  • Last exit status: $(systemctl show $SYSTEMD_UNIT --property=ExecMainStatus --value 2>/dev/null || echo 'unknown')"
+    report "  • Memory usage: $(systemctl show $SYSTEMD_UNIT --property=MemoryCurrent --value 2>/dev/null | awk '{print $1/1024/1024 " MB"}' || echo 'unknown')"
     report ""
     report "HEALING STRATEGY: Standard Service Restart"
-    report "  Action: systemctl restart $SERVICE_NAME"
+    report "  Action: systemctl restart $SYSTEMD_UNIT"
     report ""
     
-    log "Attempting service restart for $SERVICE_NAME..."
+    log "Attempting service restart for $SYSTEMD_UNIT..."
     
-    local restart_output=$(systemctl restart $SERVICE_NAME 2>&1)
+    local restart_output=$(systemctl restart $SYSTEMD_UNIT 2>&1)
     report "Restart command output:"
     report "$restart_output"
     report ""
     
     sleep 5
     
-    if systemctl is-active --quiet $SERVICE_NAME; then
+    if systemctl is-active --quiet $SYSTEMD_UNIT; then
         report "✅ SUCCESS: Service restarted and is now active"
         report ""
         report "HOW IT WAS FIXED:"
         report "  1. Detected $SERVICE_NAME was inactive/failed"
-        report "  2. Executed: systemctl restart $SERVICE_NAME"
+        report "  2. Executed: systemctl restart $SYSTEMD_UNIT"
         report "  3. Waited 5 seconds for startup"
         report "  4. Verified service is active"
         {% if service.port %}report "  5. Service listening on port $SERVICE_PORT"{% endif %}
@@ -296,7 +305,7 @@ heal_service_restart() {
         return 0
     else
         report "❌ Service restart completed but service is still not active"
-        report "  Current status: $(systemctl status $SERVICE_NAME --no-pager | head -n 20)"
+        report "  Current status: $(systemctl status $SYSTEMD_UNIT --no-pager | head -n 20)"
         log "❌ Service restart failed for $SERVICE_NAME"
         return 1
     fi
@@ -339,17 +348,17 @@ heal_port_conflict() {
         kill -9 "$port_user" 2>&1 | tee -a "$REPORT_FILE"
         sleep 2
         
-        systemctl restart $SERVICE_NAME
+        systemctl restart $SYSTEMD_UNIT
         sleep 5
         
-        if systemctl is-active --quiet $SERVICE_NAME; then
+        if systemctl is-active --quiet $SYSTEMD_UNIT; then
             report ""
             report "✅ SUCCESS: Stale process removed, service restarted"
             report ""
             report "HOW IT WAS FIXED:"
             report "  1. Detected stale $SERVICE_NAME process on port $SERVICE_PORT"
             report "  2. Forcefully terminated stale process (PID $port_user)"
-            report "  3. Restarted $SERVICE_NAME service"
+            report "  3. Restarted $SYSTEMD_UNIT"
             report "  4. Service successfully claimed port $SERVICE_PORT"
             report ""
             report "ROOT CAUSE: Previous service instance didn't terminate cleanly"
@@ -376,7 +385,7 @@ heal_port_conflict() {
         report "  To resolve manually:"
         report "    1. Investigate: ps -p $port_user -f"
         report "    2. Check config: Check if $SERVICE_NAME should use a different port"
-        report "    3. If safe to kill: sudo kill $port_user && sudo systemctl restart $SERVICE_NAME"
+        report "    3. If safe to kill: sudo kill $port_user && sudo systemctl restart $SYSTEMD_UNIT"
         report ""
         
         log "Port conflict requires manual intervention (different service)"
@@ -405,10 +414,10 @@ heal_config_validation() {
                 
                 if echo "$config_check" | grep -q "Configuration loaded"; then
                     report "  ✅ Configuration is valid"
-                    systemctl restart $SERVICE_NAME
+                    systemctl restart $SYSTEMD_UNIT
                     sleep 3
                     
-                    if systemctl is-active --quiet $SERVICE_NAME; then
+                    if systemctl is-active --quiet $SYSTEMD_UNIT; then
                         report ""
                         report "✅ SUCCESS: Service restarted with valid config"
                         log "✅ Traefik config validated and service restarted"
@@ -436,7 +445,7 @@ main() {
     init_report
     
     # Check if service is actually down
-    if systemctl is-active --quiet $SERVICE_NAME; then
+    if systemctl is-active --quiet $SYSTEMD_UNIT; then
         log "$SERVICE_NAME is running - no healing needed"
         exit 0
     fi
@@ -480,7 +489,7 @@ main() {
     report "   ssh {{ ansible_user }}@testserver.local"
     report ""
     report "2. Check service status:"
-    report "   sudo systemctl status $SERVICE_NAME"
+    report "   sudo systemctl status $SYSTEMD_UNIT"
     report ""
     report "3. View recent logs:"
     report "   sudo journalctl -u $SERVICE_NAME -n 100"
@@ -489,7 +498,7 @@ main() {
     report "   free -h && df -h"
     report ""
     report "5. Try manual restart:"
-    report "   sudo systemctl restart $SERVICE_NAME"
+    report "   sudo systemctl restart $SYSTEMD_UNIT"
     report ""
     report "6. If still failing, check:"
     report "   • Configuration files"
