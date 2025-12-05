@@ -1,0 +1,114 @@
+---
+# Universal Self-Healing Deployment
+# Deploys self-healing to ALL services on MiracleMax
+
+- name: Display deployment info
+  debug:
+    msg:
+      - "🤖 Deploying Universal Self-Healing System"
+      - "Target: {{ inventory_hostname }}"
+      - "Services: {{ monitored_services | length }}"
+      - "Owner: {{ owner_email }}"
+
+- name: Create self-heal directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - /usr/local/bin/self-heal
+    - /var/log
+    - /var/run
+
+- name: Deploy universal self-heal script for each service
+  template:
+    src: universal-self-heal.sh.j2
+    dest: "/usr/local/bin/self-heal/{{ service.name }}-self-heal.sh"
+    owner: root
+    group: root
+    mode: '0755'
+  loop: "{{ monitored_services }}"
+  loop_control:
+    loop_var: service
+  when: self_healing_enabled
+
+- name: Create systemd service for each monitored service
+  template:
+    src: service-self-heal.service.j2
+    dest: "/etc/systemd/system/{{ service.name }}-self-heal.service"
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ monitored_services }}"
+  loop_control:
+    loop_var: service
+  when: self_healing_enabled
+  notify: reload systemd
+
+- name: Create unit drop-in directory for each service
+  file:
+    path: "/etc/systemd/system/{{ service.name }}.d"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop: "{{ monitored_services }}"
+  loop_control:
+    loop_var: service
+  when: self_healing_enabled
+
+- name: Configure service to trigger self-heal on failure
+  copy:
+    dest: "/etc/systemd/system/{{ service.name }}.d/self-heal.conf"
+    content: |
+      [Unit]
+      OnFailure={{ service.name }}-self-heal.service
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ monitored_services }}"
+  loop_control:
+    loop_var: service
+  when: self_healing_enabled
+  notify: reload systemd
+
+- name: Deploy diagnostic script
+  copy:
+    src: diagnose-self-healing.sh
+    dest: /usr/local/bin/diagnose-self-healing
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create master status dashboard script
+  template:
+    src: miraclemax-status.sh.j2
+    dest: /usr/local/bin/miraclemax-status
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Reload systemd to pick up changes
+  systemd:
+    daemon_reload: yes
+
+- name: Display deployment summary
+  debug:
+    msg:
+      - "✅ Universal self-healing deployed"
+      - "📊 Monitoring {{ monitored_services | length }} services"
+      - "🔧 Self-healing: {{ 'ENABLED' if self_healing_enabled else 'DISABLED' }}"
+      - "📧 Reports sent to: {{ owner_email }}"
+      - ""
+      - "🔍 Diagnostic tools:"
+      - "   • Check configuration: diagnose-self-healing <service-name>"
+      - "   • View status: miraclemax-status"
+      - "   • View logs: journalctl -t miraclemax-self-heal"
+      - ""
+      - "🧪 Test healing:"
+      - "   sudo systemctl stop <service>"
+      - "   # Wait a few seconds, then check:"
+      - "   sudo journalctl -u <service>-self-heal.service -n 50"
+

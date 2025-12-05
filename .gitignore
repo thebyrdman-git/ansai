@@ -228,3 +228,4 @@ TALK_*.txt
 .bfg-report/
 ..bfg-report/
 
+orchestrators/ansible/inventory/hosts.yml

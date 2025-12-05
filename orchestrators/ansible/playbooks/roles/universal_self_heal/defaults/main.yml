@@ -1,0 +1,72 @@
+---
+# Universal Self-Healing System Configuration
+# Applies to ALL services on miraclemax
+
+# Owner email for all healing reports
+owner_email: your-email@example.com
+
+# SMTP configuration for email alerts
+smtp_server: smtp.gmail.com
+smtp_port: 587
+smtp_user: your-email@example.com
+smtp_password: "{{ lookup('env', 'ANSAI_SMTP_PASSWORD') }}"
+
+# Services to monitor and self-heal
+# Add any service here to enable automatic healing
+monitored_services:
+  - name: my-flask-app
+    port: 5000
+    domain: app.example.com
+    critical: true
+    healing_strategies:
+      - service_restart
+      - database_check
+      - port_conflict
+      - environment_check
+    
+  - name: my-api
+    port: 5001
+    domain: api.example.com
+    critical: true
+    healing_strategies:
+      - service_restart
+      - database_check
+      - port_conflict
+      - environment_check
+  
+  - name: traefik
+    port: 80
+    domain: null
+    critical: true
+    healing_strategies:
+      - service_restart
+      - config_validation
+      - port_conflict
+  
+  # Add more services as needed
+  # - name: service-name
+  #   port: port-number
+  #   domain: domain.example.com
+  #   critical: true/false
+  #   healing_strategies:
+  #     - service_restart
+  #     - custom_strategy
+
+# Healing check interval (minutes)
+check_interval: 2
+
+# Failure threshold before healing attempt
+failure_threshold: 3
+
+# Self-healing enabled/disabled
+self_healing_enabled: true
+
+# Alert on every healing attempt (true) or only failures (false)
+alert_on_success: true
+
+# AI-Powered Root Cause Analysis (via Groq)
+ai_analysis_enabled: true
+groq_api_key: "{{ lookup('env', 'ANSAI_GROQ_API_KEY') }}"
+groq_model: llama-3.1-8b-instant
+groq_api_url: https://api.groq.com/openai/v1/chat/completions
+

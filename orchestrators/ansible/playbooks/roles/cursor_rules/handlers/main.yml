@@ -1,0 +1,12 @@
+---
+# Cursor Rules Role - Handlers
+
+- name: sync_cursor_rules_to_github
+  ansible.builtin.shell: |
+    cd {{ cursor_rules_source_repo }}
+    git add -A
+    git diff --cached --quiet || git commit -m "chore: Auto-sync cursor rules and personas"
+    git push origin main
+  when: cursor_rules_sync_to_github
+  listen: sync_cursor_rules_to_github
+

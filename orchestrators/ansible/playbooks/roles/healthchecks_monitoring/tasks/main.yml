@@ -1,0 +1,116 @@
+---
+# Deploy Healthchecks.io External Monitoring
+# Dead Man's Switch for the entire MiracleMax stack
+
+- name: Display healthchecks deployment info
+  debug:
+    msg:
+      - "🫀 Deploying Healthchecks.io External Monitoring"
+      - "Target: {{ inventory_hostname }}"
+      - "Check name: {{ healthcheck_name }}"
+      - "Interval: {{ healthcheck_interval / 60 }} minutes"
+      - "Alert email: {{ healthcheck_alert_email }}"
+
+- name: Check if ping URL is configured
+  fail:
+    msg: |
+      ⚠️  Healthcheck ping URL not configured!
+      
+      Please complete these steps:
+      
+      1. Sign up at https://healthchecks.io (FREE)
+      2. Create a new check:
+         - Name: {{ healthcheck_name }}
+         - Period: {{ healthcheck_interval }} seconds ({{ healthcheck_interval / 60 }} minutes)
+         - Grace: {{ healthcheck_grace }} seconds ({{ healthcheck_grace / 60 }} minutes)
+      3. Copy the ping URL
+      4. Set it in your Ansible config:
+         
+         Edit: ansible/roles/healthchecks_monitoring/defaults/main.yml
+         Set: healthcheck_ping_url: "https://hc-ping.com/YOUR-UUID-HERE"
+      
+      5. Re-run this playbook
+      
+      The ping URL looks like: https://hc-ping.com/abc123de-1234-5678-90ab-cdef12345678
+  when: healthcheck_ping_url == "" and healthcheck_enabled
+
+- name: Create healthcheck directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - /usr/local/bin
+    - /var/log
+  when: healthcheck_enabled
+
+- name: Deploy heartbeat script
+  template:
+    src: miraclemax-heartbeat.sh.j2
+    dest: /usr/local/bin/miraclemax-heartbeat
+    owner: root
+    group: root
+    mode: '0755'
+  when: healthcheck_enabled and healthcheck_ping_url != ""
+
+- name: Create heartbeat log file
+  file:
+    path: /var/log/healthcheck-heartbeat.log
+    state: touch
+    owner: root
+    group: root
+    mode: '0644'
+  when: healthcheck_enabled
+
+- name: Deploy heartbeat cron job
+  cron:
+    name: "MiracleMax Healthchecks.io Heartbeat"
+    minute: "*/{{ (healthcheck_interval / 60) | int }}"
+    job: "/usr/local/bin/miraclemax-heartbeat >> /var/log/healthcheck-heartbeat.log 2>&1"
+    user: root
+    state: present
+  when: healthcheck_enabled and healthcheck_ping_url != ""
+
+- name: Test heartbeat script
+  command: /usr/local/bin/miraclemax-heartbeat
+  register: heartbeat_test
+  changed_when: false
+  failed_when: false
+  when: healthcheck_enabled and healthcheck_ping_url != ""
+
+- name: Display heartbeat test result
+  debug:
+    msg:
+      - "🧪 Heartbeat test result:"
+      - "{{ heartbeat_test.stdout_lines | default(['Not tested - ping URL not configured']) }}"
+  when: healthcheck_enabled
+
+- name: Display deployment summary
+  debug:
+    msg:
+      - ""
+      - "✅ Healthchecks.io monitoring deployed!"
+      - ""
+      - "📊 Configuration:"
+      - "   • Monitor: {{ healthcheck_name }}"
+      - "   • Heartbeat: Every {{ healthcheck_interval / 60 }} minutes"
+      - "   • Grace period: {{ healthcheck_grace / 60 }} minutes"
+      - "   • Alert email: {{ healthcheck_alert_email }}"
+      - "   • Monitored services: {{ healthcheck_services | length }}"
+      - ""
+      - "🔧 Commands:"
+      - "   • Test heartbeat: sudo /usr/local/bin/miraclemax-heartbeat"
+      - "   • View logs: tail -f /var/log/healthcheck-heartbeat.log"
+      - "   • View cron: crontab -l | grep heartbeat"
+      - ""
+      - "🫀 How it works:"
+      - "   • Server pings healthchecks.io every {{ healthcheck_interval / 60 }} minutes"
+      - "   • If ping stops (ANY reason), you get an email"
+      - "   • Monitors: App crashes, self-heal failures, server down, etc."
+      - ""
+      - "🎯 Complete coverage: Self-healing (95%) + Healthchecks (5%) = 100%"
+      - ""
+  when: healthcheck_enabled and healthcheck_ping_url != ""
+

@@ -1,0 +1,282 @@
+#!/bin/bash
+# CSS Template Validator
+# Automatically checks templates for CSS errors and missing files
+# Part of the miraclemax self-healing infrastructure
+
+set -euo pipefail
+
+# Configuration
+LOG_DIR="/var/log/css-validation"
+ERROR_LOG="${LOG_DIR}/errors.log"
+LAST_ALERT_FILE="${LOG_DIR}/last_alert"
+ALERT_COOLDOWN=3600  # 1 hour between similar alerts
+
+# Email configuration
+OWNER_EMAIL="{{ owner_email }}"
+SMTP_SERVER="{{ smtp_server }}"
+SMTP_PORT="{{ smtp_port }}"
+SMTP_USER="{{ smtp_user }}"
+SMTP_PASSWORD="{{ smtp_password }}"
+
+# Ensure log directory exists
+mkdir -p "${LOG_DIR}"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Validation results
+ERRORS_FOUND=0
+WARNINGS_FOUND=0
+VALIDATION_RESULTS=""
+
+# Function to send email alert
+send_alert() {
+    local subject="$1"
+    local body="$2"
+    
+    # Check cooldown
+    if [[ -f "${LAST_ALERT_FILE}" ]]; then
+        local last_alert=$(cat "${LAST_ALERT_FILE}")
+        local current_time=$(date +%s)
+        local time_diff=$((current_time - last_alert))
+        
+        if [[ ${time_diff} -lt ${ALERT_COOLDOWN} ]]; then
+            echo "Alert on cooldown (${time_diff}s / ${ALERT_COOLDOWN}s)"
+            return
+        fi
+    fi
+    
+    # Send email using Python
+    python3 << PYEOF
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import sys
+
+try:
+    msg = MIMEMultipart()
+    msg['From'] = "${SMTP_USER}"
+    msg['To'] = "${OWNER_EMAIL}"
+    msg['Subject'] = "${subject}"
+    
+    body = """${body}"""
+    msg.attach(MIMEText(body, 'plain'))
+    
+    server = smtplib.SMTP("${SMTP_SERVER}", ${SMTP_PORT})
+    server.starttls()
+    server.login("${SMTP_USER}", "${SMTP_PASSWORD}")
+    server.send_message(msg)
+    server.quit()
+    
+    print("✅ Alert sent successfully")
+    sys.exit(0)
+except Exception as e:
+    print(f"❌ Failed to send alert: {e}")
+    sys.exit(1)
+PYEOF
+    
+    # Update last alert timestamp
+    date +%s > "${LAST_ALERT_FILE}"
+}
+
+# Function to check if CSS file exists
+check_css_file_exists() {
+    local css_file="$1"
+    local app_path="$2"
+    
+    # Try common locations
+    local paths=(
+        "${app_path}${css_file}"
+        "${app_path}/static${css_file}"
+        "${app_path}/static/css/${css_file##*/}"
+    )
+    
+    for path in "${paths[@]}"; do
+        if [[ -f "${path}" ]]; then
+            return 0
+        fi
+    done
+    
+    return 1
+}
+
+# Function to validate CSS references in a template
+validate_template_css() {
+    local file="$1"
+    local app_name="$2"
+    local app_path="$3"
+    
+    # Extract CSS references from <link> tags
+    local css_refs=$(grep -oP '(?<=href=")[^"]*\.css(?=")' "${file}" 2>/dev/null || true)
+    
+    while IFS= read -r css_file; do
+        [[ -z "${css_file}" ]] && continue
+        
+        # Skip external URLs
+        if [[ "${css_file}" =~ ^https?:// ]]; then
+            continue
+        fi
+        
+        # Check if file exists
+        if ! check_css_file_exists "${css_file}" "${app_path}"; then
+            ERRORS_FOUND=$((ERRORS_FOUND + 1))
+            VALIDATION_RESULTS="${VALIDATION_RESULTS}\n❌ [${app_name}] Missing CSS file:"
+            VALIDATION_RESULTS="${VALIDATION_RESULTS}\n   Template: ${file}"
+            VALIDATION_RESULTS="${VALIDATION_RESULTS}\n   Missing: ${css_file}"
+        fi
+    done <<< "${css_refs}"
+    
+    # Check for inline <style> blocks with common errors
+    if grep -q '<style>' "${file}"; then
+        # Check for missing closing braces
+        local style_blocks=$(sed -n '/<style>/,/<\/style>/p' "${file}")
+        local open_braces=$(echo "${style_blocks}" | grep -o '{' | wc -l)
+        local close_braces=$(echo "${style_blocks}" | grep -o '}' | wc -l)
+        
+        if [[ ${open_braces} -ne ${close_braces} ]]; then
+            WARNINGS_FOUND=$((WARNINGS_FOUND + 1))
+            VALIDATION_RESULTS="${VALIDATION_RESULTS}\n⚠️  [${app_name}] Mismatched braces in <style> block:"
+            VALIDATION_RESULTS="${VALIDATION_RESULTS}\n   Template: ${file}"
+            VALIDATION_RESULTS="${VALIDATION_RESULTS}\n   Opening: ${open_braces}, Closing: ${close_braces}"
+        fi
+    fi
+}
+
+# Function to validate CSS file syntax
+validate_css_syntax() {
+    local css_file="$1"
+    local app_name="$2"
+    
+    # Basic CSS syntax checks
+    # Check for missing semicolons (common error)
+    local missing_semicolons=$(grep -nP '[^;]\s*\}' "${css_file}" | grep -v '/\*' || true)
+    if [[ -n "${missing_semicolons}" ]]; then
+        WARNINGS_FOUND=$((WARNINGS_FOUND + 1))
+        VALIDATION_RESULTS="${VALIDATION_RESULTS}\n⚠️  [${app_name}] Potential missing semicolons:"
+        VALIDATION_RESULTS="${VALIDATION_RESULTS}\n   File: ${css_file}"
+    fi
+    
+    # Check for mismatched braces
+    local open_braces=$(grep -o '{' "${css_file}" | wc -l)
+    local close_braces=$(grep -o '}' "${css_file}" | wc -l)
+    
+    if [[ ${open_braces} -ne ${close_braces} ]]; then
+        ERRORS_FOUND=$((ERRORS_FOUND + 1))
+        VALIDATION_RESULTS="${VALIDATION_RESULTS}\n❌ [${app_name}] Mismatched braces in CSS:"
+        VALIDATION_RESULTS="${VALIDATION_RESULTS}\n   File: ${css_file}"
+        VALIDATION_RESULTS="${VALIDATION_RESULTS}\n   Opening: ${open_braces}, Closing: ${close_braces}"
+    fi
+    
+    # Check for invalid color values
+    local invalid_colors=$(grep -nP 'color:\s*#[^0-9a-fA-F;]+' "${css_file}" || true)
+    if [[ -n "${invalid_colors}" ]]; then
+        WARNINGS_FOUND=$((WARNINGS_FOUND + 1))
+        VALIDATION_RESULTS="${VALIDATION_RESULTS}\n⚠️  [${app_name}] Potential invalid color values:"
+        VALIDATION_RESULTS="${VALIDATION_RESULTS}\n   File: ${css_file}"
+    fi
+}
+
+# Function to validate an application
+validate_app() {
+    local app_name="$1"
+    local template_dirs="$2"
+    local static_dirs="$3"
+    local app_path="$4"
+    
+    echo -e "${YELLOW}🎨 Validating ${app_name} CSS...${NC}"
+    
+    # Validate templates for CSS references
+    IFS=',' read -ra DIRS <<< "${template_dirs}"
+    for dir in "${DIRS[@]}"; do
+        if [[ ! -d "${dir}" ]]; then
+            echo -e "${RED}   ⚠️  Template directory not found: ${dir}${NC}"
+            continue
+        fi
+        
+        # Find all HTML/template files
+        while IFS= read -r -d '' file; do
+            validate_template_css "${file}" "${app_name}" "${app_path}"
+        done < <(find "${dir}" -type f \( -name "*.html" -o -name "*.jinja2" -o -name "*.j2" \) -print0)
+    done
+    
+    # Validate CSS files
+    IFS=',' read -ra CSS_DIRS <<< "${static_dirs}"
+    for dir in "${CSS_DIRS[@]}"; do
+        if [[ ! -d "${dir}" ]]; then
+            echo -e "${BLUE}   ℹ️  CSS directory not found: ${dir}${NC}"
+            continue
+        fi
+        
+        # Find all CSS files
+        while IFS= read -r -d '' file; do
+            validate_css_syntax "${file}" "${app_name}"
+        done < <(find "${dir}" -type f -name "*.css" -print0)
+    done
+}
+
+# Main validation loop
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "🎨 CSS Template Validation"
+echo "   $(date '+%Y-%m-%d %H:%M:%S')"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+{% for app in monitored_apps %}
+validate_app "{{ app.name }}" "{{ app.template_dirs | join(',') }}" "{{ app.static_dirs | join(',') }}" "{{ app.app_path }}"
+{% endfor %}
+
+# Report results
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+if [[ ${ERRORS_FOUND} -eq 0 && ${WARNINGS_FOUND} -eq 0 ]]; then
+    echo -e "${GREEN}✅ No CSS errors or warnings detected${NC}"
+    exit 0
+else
+    echo -e "${RED}❌ Found ${ERRORS_FOUND} errors${NC}"
+    echo -e "${YELLOW}⚠️  Found ${WARNINGS_FOUND} warnings${NC}"
+    echo -e "${VALIDATION_RESULTS}"
+    
+    # Log errors
+    {
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo "CSS Validation Report: $(date '+%Y-%m-%d %H:%M:%S')"
+        echo "Errors: ${ERRORS_FOUND}, Warnings: ${WARNINGS_FOUND}"
+        echo -e "${VALIDATION_RESULTS}"
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    } >> "${ERROR_LOG}"
+    
+    # Send alert for errors (not warnings)
+    if [[ ${ERRORS_FOUND} -gt 0 ]]; then
+        send_alert \
+            "🎨 CSS Validation Errors Detected on miraclemax" \
+            "CSS validation has detected ${ERRORS_FOUND} errors and ${WARNINGS_FOUND} warnings in your templates.
+
+CSS VALIDATION REPORT
+═════════════════════
+${VALIDATION_RESULTS}
+
+SYSTEM INFO
+═══════════
+Host: miraclemax.local
+Timestamp: $(date '+%Y-%m-%d %H:%M:%S')
+Log: ${ERROR_LOG}
+
+RECOMMENDED ACTION
+══════════════════
+1. Check for missing CSS files in your static directories
+2. Verify all CSS references in templates are correct
+3. Fix any CSS syntax errors (mismatched braces, invalid colors)
+4. Re-run validator: sudo /usr/local/bin/css-validator.sh
+
+Your ansai workflows are protecting you! 🛡️"
+        
+        exit 1
+    fi
+    
+    exit 0
+fi
+

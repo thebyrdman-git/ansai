@@ -1,0 +1,14 @@
+---
+# Example variables for cockpit self-healing deployment
+monitored_services:
+  - name: cockpit
+    port: 9090
+    socket_activated: true
+    critical: false
+    healing_strategies:
+      - service_restart
+
+owner_email: chrhamme@redhat.com
+ai_analysis_enabled: true
+groq_api_key: YOUR_GROQ_API_KEY_HERE
+
