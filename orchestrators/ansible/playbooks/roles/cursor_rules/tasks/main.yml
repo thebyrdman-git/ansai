@@ -1,0 +1,58 @@
+---
+# Cursor Rules Role - Main Tasks
+# Deploys cursor rules and personas to target projects
+
+- name: Ensure cursor.rules repo exists
+  ansible.builtin.git:
+    repo: "git@github.com:{{ cursor_rules_github_repo }}.git"
+    dest: "{{ cursor_rules_source_repo }}"
+    update: true
+  tags:
+    - cursor_rules
+    - sync
+
+- name: Create personas directory structure
+  ansible.builtin.file:
+    path: "{{ cursor_rules_source_repo }}/personas/{{ item.key }}"
+    state: directory
+    mode: '0755'
+  loop: "{{ personas | dict2items }}"
+  when: item.value.enabled
+  tags:
+    - cursor_rules
+    - personas
+
+- name: Deploy persona templates
+  ansible.builtin.template:
+    src: "{{ item.key }}-persona.yaml.j2"
+    dest: "{{ cursor_rules_source_repo }}/personas/{{ item.key }}/{{ item.key }}-persona.yaml"
+    mode: '0644'
+  loop: "{{ personas | dict2items }}"
+  when: item.value.enabled
+  notify: sync_cursor_rules_to_github
+  tags:
+    - cursor_rules
+    - personas
+
+- name: Deploy cursor rules to target projects
+  ansible.builtin.template:
+    src: "cursorrules.j2"
+    dest: "{{ item.path }}/.cursorrules"
+    mode: '0644'
+    backup: "{{ cursor_rules_backup }}"
+  loop: "{{ cursor_rules_targets }}"
+  when: cursor_rules_targets | length > 0
+  tags:
+    - cursor_rules
+    - deploy
+
+- name: Update README with personas
+  ansible.builtin.template:
+    src: "README.md.j2"
+    dest: "{{ cursor_rules_source_repo }}/README.md"
+    mode: '0644'
+  notify: sync_cursor_rules_to_github
+  tags:
+    - cursor_rules
+    - docs
+

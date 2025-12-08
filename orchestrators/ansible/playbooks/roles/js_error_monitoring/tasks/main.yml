@@ -1,0 +1,193 @@
+---
+# JavaScript Error Monitoring Deployment
+
+- name: Create JS validation directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /usr/local/bin
+    - /var/log/js-validation
+    - /var/log/js-runtime-errors
+    - /etc/systemd/system
+
+- name: Deploy JavaScript validator script
+  template:
+    src: js-validator.sh.j2
+    dest: /usr/local/bin/js-validator.sh
+    mode: '0755'
+  register: validator_deployed
+
+- name: Deploy runtime error monitor script
+  template:
+    src: runtime-error-monitor.sh.j2
+    dest: /usr/local/bin/runtime-error-monitor.sh
+    mode: '0755'
+  register: monitor_deployed
+
+- name: Deploy error logger JavaScript
+  template:
+    src: error-logger.js.j2
+    dest: "{{ item.app_path }}/static/js/error-logger.js"
+  loop: "{{ monitored_apps }}"
+  register: error_logger_deployed
+
+- name: Create systemd service for JS validation
+  copy:
+    dest: /etc/systemd/system/js-validation.service
+    content: |
+      [Unit]
+      Description=JavaScript Template Validation
+      After=network.target
+
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/local/bin/js-validator.sh
+      StandardOutput=journal
+      StandardError=journal
+      User=root
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: '0644'
+
+- name: Create systemd timer for JS validation
+  copy:
+    dest: /etc/systemd/system/js-validation.timer
+    content: |
+      [Unit]
+      Description=JavaScript Template Validation Timer
+      
+      [Timer]
+      OnBootSec=5min
+      OnUnitActiveSec={{ validation_schedule }}
+      Persistent=true
+      
+      [Install]
+      WantedBy=timers.target
+    mode: '0644'
+
+- name: Create systemd service for runtime error monitoring
+  copy:
+    dest: /etc/systemd/system/js-runtime-monitor.service
+    content: |
+      [Unit]
+      Description=JavaScript Runtime Error Monitor
+      After=network.target
+
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/local/bin/runtime-error-monitor.sh
+      StandardOutput=journal
+      StandardError=journal
+      User=root
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: '0644'
+
+- name: Create systemd timer for runtime error monitoring
+  copy:
+    dest: /etc/systemd/system/js-runtime-monitor.timer
+    content: |
+      [Unit]
+      Description=JavaScript Runtime Error Monitor Timer
+      
+      [Timer]
+      OnBootSec=2min
+      OnUnitActiveSec={{ runtime_check_schedule }}
+      Persistent=true
+      
+      [Install]
+      WantedBy=timers.target
+    mode: '0644'
+
+- name: Reload systemd daemon
+  systemd:
+    daemon_reload: yes
+
+- name: Enable and start JS validation timer
+  systemd:
+    name: js-validation.timer
+    enabled: yes
+    state: started
+
+- name: Enable and start runtime error monitor timer
+  systemd:
+    name: js-runtime-monitor.timer
+    enabled: yes
+    state: started
+
+- name: Run initial validation
+  command: /usr/local/bin/js-validator.sh
+  register: initial_validation
+  ignore_errors: yes
+
+- name: Display initial validation results
+  debug:
+    msg: "{{ initial_validation.stdout_lines }}"
+  when: initial_validation.stdout_lines is defined
+
+- name: Create Flask error logging endpoint template
+  copy:
+    dest: /tmp/js_error_endpoint.py
+    content: |
+      # Add this to your Flask app.py
+      from flask import request, jsonify
+      import json
+      import logging
+      from datetime import datetime
+
+      # Configure error logging
+      js_error_logger = logging.getLogger('js_errors')
+      js_error_handler = logging.FileHandler('/var/log/js-runtime-errors/APP_NAME_errors.log')
+      js_error_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
+      js_error_logger.addHandler(js_error_handler)
+      js_error_logger.setLevel(logging.INFO)
+
+      @app.route('/api/log-js-error', methods=['POST'])
+      def log_js_error():
+          """Endpoint to receive JavaScript errors from frontend"""
+          try:
+              data = request.get_json()
+              errors = data.get('errors', [])
+              
+              for error in errors:
+                  js_error_logger.error(json.dumps(error))
+              
+              return jsonify({'status': 'ok', 'received': len(errors)}), 200
+          except Exception as e:
+              app.logger.error(f"Failed to log JS error: {e}")
+              return jsonify({'status': 'error', 'message': str(e)}), 500
+
+      # Add error logger script to all templates
+      # Add this to your base template's <head> section:
+      # <script src="/static/js/error-logger.js"></script>
+    mode: '0644'
+
+- name: Display deployment summary
+  debug:
+    msg:
+      - "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      - "✅ JavaScript Error Monitoring Deployed"
+      - "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      - ""
+      - "📊 MONITORING ACTIVE:"
+      - "  • Template Validation: Every {{ validation_schedule }}"
+      - "  • Runtime Monitoring: Every {{ runtime_check_schedule }}"
+      - "  • Email Alerts: {{ owner_email }}"
+      - ""
+      - "🔧 MANUAL COMMANDS:"
+      - "  • Run validator: sudo /usr/local/bin/js-validator.sh"
+      - "  • Check runtime errors: sudo /usr/local/bin/runtime-error-monitor.sh"
+      - "  • View validation log: sudo journalctl -u js-validation.service"
+      - "  • View monitor log: sudo journalctl -u js-runtime-monitor.service"
+      - ""
+      - "📝 NEXT STEPS:"
+      - "  1. Add Flask endpoint to each app (see /tmp/js_error_endpoint.py)"
+      - "  2. Add error-logger.js to base templates"
+      - "  3. Test by introducing a JS error and checking alerts"
+      - ""
+      - "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+

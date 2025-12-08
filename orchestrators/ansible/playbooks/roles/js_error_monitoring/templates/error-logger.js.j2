@@ -1,0 +1,138 @@
+/**
+ * JavaScript Runtime Error Logger
+ * Catches and reports frontend JavaScript errors
+ * Part of the miraclemax self-healing infrastructure
+ */
+
+(function() {
+    'use strict';
+    
+    // Error buffer to batch reports
+    const errorBuffer = [];
+    const MAX_BUFFER_SIZE = 10;
+    const REPORT_INTERVAL = 30000; // 30 seconds
+    
+    // Error reporting endpoint
+    const REPORT_ENDPOINT = '/api/log-js-error';
+    
+    // Session info
+    const sessionInfo = {
+        userAgent: navigator.userAgent,
+        url: window.location.href,
+        timestamp: new Date().toISOString(),
+        viewport: {
+            width: window.innerWidth,
+            height: window.innerHeight
+        }
+    };
+    
+    /**
+     * Capture error details
+     */
+    function captureError(error, source) {
+        const errorData = {
+            message: error.message || String(error),
+            stack: error.stack || 'No stack trace available',
+            source: source,
+            url: window.location.href,
+            timestamp: new Date().toISOString(),
+            lineNumber: error.lineno || null,
+            columnNumber: error.colno || null,
+            filename: error.filename || null,
+            session: sessionInfo
+        };
+        
+        errorBuffer.push(errorData);
+        
+        // Log to console for debugging
+        console.error('🚨 JS Error Captured:', errorData);
+        
+        // Send immediately if buffer is full
+        if (errorBuffer.length >= MAX_BUFFER_SIZE) {
+            sendErrors();
+        }
+    }
+    
+    /**
+     * Send errors to backend
+     */
+    function sendErrors() {
+        if (errorBuffer.length === 0) return;
+        
+        const errors = [...errorBuffer];
+        errorBuffer.length = 0; // Clear buffer
+        
+        // Use sendBeacon for reliability (works even on page unload)
+        const payload = JSON.stringify({ errors: errors });
+        
+        if (navigator.sendBeacon) {
+            navigator.sendBeacon(REPORT_ENDPOINT, payload);
+        } else {
+            // Fallback to fetch
+            fetch(REPORT_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: payload,
+                keepalive: true
+            }).catch(err => {
+                console.error('Failed to report errors:', err);
+            });
+        }
+    }
+    
+    /**
+     * Global error handler
+     */
+    window.addEventListener('error', function(event) {
+        captureError({
+            message: event.message,
+            filename: event.filename,
+            lineno: event.lineno,
+            colno: event.colno,
+            stack: event.error ? event.error.stack : null
+        }, 'window.onerror');
+        
+        // Don't prevent default error handling
+        return false;
+    });
+    
+    /**
+     * Unhandled promise rejection handler
+     */
+    window.addEventListener('unhandledrejection', function(event) {
+        captureError({
+            message: event.reason ? event.reason.message : String(event.reason),
+            stack: event.reason ? event.reason.stack : null
+        }, 'unhandledrejection');
+    });
+    
+    /**
+     * Console error interceptor
+     */
+    const originalConsoleError = console.error;
+    console.error = function(...args) {
+        // Call original console.error
+        originalConsoleError.apply(console, args);
+        
+        // Capture error if it's an Error object
+        if (args[0] instanceof Error) {
+            captureError(args[0], 'console.error');
+        } else if (typeof args[0] === 'string' && args[0].includes('Uncaught')) {
+            captureError({ message: args.join(' ') }, 'console.error');
+        }
+    };
+    
+    /**
+     * Send errors periodically
+     */
+    setInterval(sendErrors, REPORT_INTERVAL);
+    
+    /**
+     * Send any remaining errors before page unload
+     */
+    window.addEventListener('beforeunload', sendErrors);
+    
+    // Log initialization
+    console.log('✅ JS Error Logger initialized');
+})();
+

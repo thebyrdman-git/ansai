@@ -1,0 +1,40 @@
+---
+# CSS Error Monitoring Configuration
+
+# Email configuration for alerts
+owner_email: your-email@example.com
+smtp_server: smtp.gmail.com
+smtp_port: 587
+smtp_user: your-email@example.com
+smtp_password: "{{ lookup('env', 'ANSAI_SMTP_PASSWORD') }}"
+
+# Applications to monitor
+monitored_apps:
+  - name: my-flask-app
+    app_path: /var/www/my-app
+    template_dirs:
+      - /var/www/my-app/templates
+    static_dirs:
+      - /var/www/my-app/static/css
+    port: 5000
+    domain: app.example.com
+    
+  - name: my-api
+    app_path: /var/www/my-api
+    template_dirs:
+      - /var/www/my-api/templates
+    static_dirs:
+      - /var/www/my-api/static/css
+    port: 5001
+    domain: api.example.com
+
+# Validation schedule (cron format)
+validation_schedule: "*/30 * * * *"  # Every 30 minutes
+
+# Runtime error check schedule
+runtime_check_schedule: "*/15 * * * *"  # Every 15 minutes
+
+# Error thresholds
+max_errors_before_alert: 3
+error_lookback_minutes: 60
+

@@ -1,0 +1,18 @@
+[Unit]
+Description=Self-Healing for {{ service.name }}
+Documentation=https://github.com/jbyrd/miraclemax-infrastructure
+After={{ service.name }}.service
+# Rate limiting: allow up to 5 starts per 5 minutes
+StartLimitBurst=5
+StartLimitIntervalSec=300
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/self-heal/{{ service.name }}-self-heal.sh
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier={{ service.name }}-self-heal
+
+[Install]
+WantedBy=multi-user.target
+

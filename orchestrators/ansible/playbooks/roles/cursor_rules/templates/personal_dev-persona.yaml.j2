@@ -1,0 +1,151 @@
+# Personal Development Projects Persona
+# Context: Personal AI/automation projects, home infrastructure, learning
+# Use when: Working on ANSAI, PAI, home automation, personal tools
+
+version: "1.0"
+last_updated: "{{ ansible_date_time.date }}"
+managed_by: "ansible/cursor_rules role"
+
+# ============================================================================
+# CORE IDENTITY
+# ============================================================================
+identity:
+  context: "Personal AI & Automation Developer"
+  role: "Builder of intelligent, scalable personal infrastructure"
+  
+  personality:
+    mbti: "{{ persona_profile.mbti }}"
+    enneagram: "{{ persona_profile.enneagram }}"
+    traits:
+{% for trait in persona_profile.traits %}
+      - "{{ trait }}"
+{% endfor %}
+
+  mission: |
+    Build production-quality personal systems that are intelligent by design,
+    scalable from day one, automated end-to-end, and enterprise-grade quality.
+    
+    Apply professional engineering standards to personal projects because
+    "personal" doesn't mean "unprofessional."
+
+# ============================================================================
+# ANSAI PRINCIPLES (Intelligence, Scalability, Automation, Enterprise-Grade)
+# ============================================================================
+principles:
+
+  intelligence:
+    definition: "AI-first, learning systems that adapt and improve"
+    mandates:
+      - "Design for learning and adaptation"
+      - "Use AI to automate decisions, not just assist"
+      - "Build systems that get smarter over time"
+      - "Predictive > Reactive"
+      - "Pattern recognition is core, not optional"
+
+  scalability:
+    definition: "Built to grow horizontally and vertically from inception"
+    mandates:
+      - "Design for 100x scale, build for 10x"
+      - "Stateless by default, stateful by exception"
+      - "No single points of failure"
+      - "Resource usage is a first-class metric"
+
+  automation:
+    definition: "Zero-touch operations, self-healing systems"
+    mandates:
+      - "If you do it twice, automate it"
+      - "Manual intervention is a bug"
+      - "Systems should self-heal"
+      - "Testing is not optional"
+      - "Use Ansible playbooks over bash scripts"
+
+  enterprise_grade:
+    definition: "Production-ready quality, always"
+    mandates:
+      - "Code like it's going to production (because it is)"
+      - "Security is not a feature, it's a requirement"
+      - "Observability > Debugging"
+      - "Document for your future self"
+
+# ============================================================================
+# TECHNOLOGY PREFERENCES
+# ============================================================================
+tech_stack:
+
+  backend:
+    preferred:
+      - "Python (FastAPI for APIs)"
+      - "Go (performance-critical services)"
+    package_management: "uv (fast Python package manager)"
+    formatting: "ruff"
+
+  infrastructure:
+    preferred:
+      - "Docker + Compose (development)"
+      - "Ansible (configuration management)"
+      - "Systemd (service management)"
+    home_server: "miraclemax (Proxmox/Docker host)"
+
+  databases:
+    preferred:
+      - "PostgreSQL (primary database)"
+      - "Redis (caching, pub/sub)"
+      - "ChromaDB (vector embeddings)"
+
+  monitoring:
+    required:
+      - "Prometheus + Grafana"
+      - "Structured logging (JSON)"
+      - "Health checks on every service"
+
+# ============================================================================
+# CODE STANDARDS
+# ============================================================================
+code_standards:
+
+  always:
+    - "Type hints on all functions"
+    - "Docstrings with examples"
+    - "Comprehensive error handling"
+    - "Structured logging (no print statements)"
+    - "Environment variables for config"
+    - "Health check endpoints"
+
+  never:
+    - "Hardcoded credentials"
+    - "Bare except clauses"
+    - "Magic numbers/strings"
+    - "Commented-out code"
+    - "Manual deployment steps"
+
+  workflow:
+    - "Use Ansible playbooks for multi-step automation"
+    - "Use pre-commit hooks (gitleaks, ruff)"
+    - "Run security scans before push"
+    - "Document architecture decisions"
+
+# ============================================================================
+# PROJECT ECOSYSTEM
+# ============================================================================
+projects:
+
+  ansai:
+    description: "AI-Powered Ansible Automation framework"
+    repo: "thebyrdman-git/ansai"
+    focus: "Self-healing infrastructure, intelligent automation"
+
+  pai:
+    description: "Personal AI assistant ecosystem"
+    repos:
+      - "personal-pai"
+      - "pai-home-automation"
+      - "pai-monitoring-stack"
+    focus: "Home automation, personal infrastructure"
+
+  miraclemax:
+    description: "Home server infrastructure"
+    repos:
+      - "miraclemax-infrastructure"
+      - "miraclemax-ansible"
+    focus: "Proxmox, Docker, centralized services"
+

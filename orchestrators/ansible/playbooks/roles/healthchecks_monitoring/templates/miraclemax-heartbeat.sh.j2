@@ -1,0 +1,90 @@
+#!/bin/bash
+# MiracleMax Healthchecks.io Heartbeat
+# Dead Man's Switch - pings healthchecks.io every {{ healthcheck_interval / 60 }} minutes
+# If this stops, you get an alert
+
+set -e
+
+LOG_FILE="/var/log/healthcheck-heartbeat.log"
+PING_URL="{{ healthcheck_ping_url }}"
+HOSTNAME="{{ inventory_hostname }}"
+
+# Function to log with timestamp
+log() {
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG_FILE"
+}
+
+# Function to get system health summary
+get_health_summary() {
+    local summary=""
+    
+    # Check critical services
+    local services_ok=0
+    local services_failed=0
+    
+    {% for service in healthcheck_services %}
+    if systemctl is-active --quiet {{ service }}; then
+        ((services_ok++))
+    else
+        ((services_failed++))
+        summary="${summary}{{ service }}:DOWN "
+    fi
+    {% endfor %}
+    
+    # System stats
+    local load=$(uptime | awk -F'load average:' '{print $2}' | cut -d',' -f1 | xargs)
+    local mem=$(free | awk '/^Mem:/ {printf "%.0f%%", $3/$2*100}')
+    local disk=$(df -h / | awk 'NR==2 {print $5}')
+    
+    # Build summary
+    if [ $services_failed -eq 0 ]; then
+        summary="✅ ALL_OK services:${services_ok} load:${load} mem:${mem} disk:${disk}"
+    else
+        summary="⚠️ ISSUES services_down:${services_failed} ${summary}load:${load} mem:${mem} disk:${disk}"
+    fi
+    
+    echo "$summary"
+}
+
+# Main execution
+main() {
+    log "🫀 Heartbeat check for $HOSTNAME"
+    
+    # Check if ping URL is configured
+    if [ -z "$PING_URL" ] || [ "$PING_URL" = "" ]; then
+        log "❌ ERROR: Healthcheck ping URL not configured!"
+        log "   Please set healthcheck_ping_url in Ansible configuration"
+        log "   Sign up at https://healthchecks.io and create a check"
+        exit 1
+    fi
+    
+    # Get health summary
+    HEALTH_SUMMARY=$(get_health_summary)
+    log "$HEALTH_SUMMARY"
+    
+    # Ping healthchecks.io with health data
+    # The /fail endpoint will be used if there are issues
+    if echo "$HEALTH_SUMMARY" | grep -q "⚠️ ISSUES"; then
+        # Report issues but still ping (we're alive, just degraded)
+        log "⚠️  System has issues, sending degraded status"
+        RESPONSE=$(curl -fsS --retry 3 --max-time 10 \
+            --data-raw "$HEALTH_SUMMARY" \
+            "${PING_URL}/fail" 2>&1 || echo "CURL_FAILED")
+    else
+        # All good, send success ping
+        RESPONSE=$(curl -fsS --retry 3 --max-time 10 \
+            --data-raw "$HEALTH_SUMMARY" \
+            "$PING_URL" 2>&1 || echo "CURL_FAILED")
+    fi
+    
+    if [ "$RESPONSE" = "CURL_FAILED" ]; then
+        log "❌ Failed to ping healthchecks.io (network issue?)"
+        exit 1
+    else
+        log "✅ Heartbeat sent successfully"
+    fi
+}
+
+# Execute
+main
+

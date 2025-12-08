@@ -25,7 +25,7 @@
           - "═══════════════════════════════════════"
           - ""
           - "Target: {{ inventory_hostname }}"
-          - "Services: {{ monitored_services | default([]) | map(attribute='name') | list | join(', ') | default('(using role defaults)') }}"
+          - "Services: {{ (monitored_services | default([])) if (monitored_services is iterable and monitored_services is not string) else '(using role defaults)' }}"
           - "Owner: {{ owner_email | default('(not set)') }}"
           - ""
     
