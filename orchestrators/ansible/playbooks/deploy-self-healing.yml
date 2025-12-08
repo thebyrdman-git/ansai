@@ -1,32 +1,28 @@
 ---
-# Deploy Universal Self-Healing System
+# Deploy Universal Self-Healing to ALL Services on MiracleMax
 #
 # Usage:
-#   ansible-playbook playbooks/deploy-self-healing.yml -i inventory/hosts.yml
-#   ansible-playbook playbooks/deploy-self-healing.yml -i inventory/hosts.yml --check --diff  # Dry run
-#
-# With custom services:
-#   ansible-playbook playbooks/deploy-self-healing.yml -i inventory/hosts.yml \
-#     -e 'monitored_services=[{"name": "nginx", "port": 80, "critical": true}]'
+#   ansible-playbook playbooks/deploy-self-healing.yml
+#   ansible-playbook playbooks/deploy-self-healing.yml --check --diff  # Dry run
 #
 # Philosophy: Ansai - Self-Healing, Observable, Config-as-Code
 
 - name: Deploy Universal Self-Healing System
-  hosts: "{{ target_hosts | default('all') }}"
-  become: true
+  hosts: miraclemax
+  become: yes
   
   pre_tasks:
     - name: Display deployment banner
       debug:
         msg:
           - "🤖 ═══════════════════════════════════════"
-          - "   ANSAI Universal Self-Healing"
+          - "   MiracleMax Universal Self-Healing"
           - "   Deployment Starting..."
           - "═══════════════════════════════════════"
           - ""
           - "Target: {{ inventory_hostname }}"
-          - "Services: {{ monitored_services | default([]) | map(attribute='name') | list | join(', ') | default('(using role defaults)') }}"
-          - "Owner: {{ owner_email | default('(not set)') }}"
+          - "Services: {{ (monitored_services | map(attribute='name') | list | join(', ')) if (monitored_services is defined and monitored_services is iterable and monitored_services is not string) else '(using role defaults)' }}"
+          - "Owner: {{ owner_email | default('(not configured)') }}"
           - ""
     
     - name: Verify target host is reachable
@@ -50,32 +46,34 @@
     - name: Verify self-healing deployment
       stat:
         path: "/usr/local/bin/self-heal/{{ item.name }}-self-heal.sh"
-      loop: "{{ monitored_services | default([]) }}"
+      loop: "{{ monitored_services }}"
       register: heal_scripts
-      when: monitored_services is defined and monitored_services | length > 0
+      failed_when: not heal_scripts.stat.exists
     
     - name: Display deployment summary
       debug:
         msg:
           - ""
           - "✅ ═══════════════════════════════════════"
-          - "   ANSAI Universal Self-Healing Deployed!"
+          - "   Universal Self-Healing Deployed!"
           - "═══════════════════════════════════════"
           - ""
           - "📊 Configuration:"
-          - "   • Monitored services: {{ monitored_services | default([]) | length }}"
-          - "   • Self-healing: {{ 'ENABLED' if (self_healing_enabled | default(true)) else 'DISABLED' }}"
-          - "   • Alert email: {{ owner_email | default('(not configured)') }}"
-          - "   • Failure threshold: {{ failure_threshold | default(3) }}"
+          - "   • Monitored services: {{ monitored_services | length }}"
+          - "   • Self-healing: {{ 'ENABLED' if self_healing_enabled else 'DISABLED' }}"
+          - "   • Alert email: {{ owner_email }}"
+          - "   • Failure threshold: {{ failure_threshold }}"
           - ""
           - "🔧 Commands:"
-          - "   • View logs: journalctl -t ansai-self-heal"
-          - "   • Test healing: sudo systemctl stop <service-name>"
+          - "   • View status: miraclemax-status"
+          - "   • View logs: journalctl -t miraclemax-self-heal"
+          - "   • Test healing: sudo systemctl stop story-stages"
           - ""
-          - "📧 Alerts (if email configured):"
-          - "   • Service fails and is automatically healed"
-          - "   • Healing fails and manual intervention needed"
+          - "📧 You will receive emails when:"
+          - "   • A service fails and is automatically healed"
+          - "   • Healing fails and manual intervention is needed"
+          - "   • Any critical service experiences issues"
           - ""
-          - "🤖 Self-healing is now active!"
+          - "🤖 Self-healing is now active for all services!"
           - ""
 
