@@ -8,7 +8,7 @@ monitored_services:
     healing_strategies:
       - service_restart
 
-owner_email: chrhamme@redhat.com
+owner_email: user@example.com
 ai_analysis_enabled: true
 groq_api_key: YOUR_GROQ_API_KEY_HERE
 
