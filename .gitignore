@@ -36,6 +36,7 @@ host_vars/*/vault.yml
 host_vars/*/vault.yaml
 *.vault
 inventory/**/vault*
+orchestrators/ansible/inventory/hosts.yml
 
 # ============================================
 # Temporary & Generated Files
