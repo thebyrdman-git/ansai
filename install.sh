@@ -336,12 +336,12 @@ case $AI_CHOICE in
             brew install fabric-ai
             print_success "Fabric installed via Homebrew"
         elif command_exists go; then
-            go install github.com/danielmiessler/fabric@latest
+            GO111MODULE=on go install github.com/danielmiessler/fabric/cmd/fabric@latest
             print_success "Fabric installed via Go"
         else
             print_warning "Fabric requires Homebrew (macOS) or Go to install"
             print_info "macOS: brew install fabric-ai"
-            print_info "Linux: Install Go, then: go install github.com/danielmiessler/fabric@latest"
+            print_info "Linux: Install Go, then: go install github.com/danielmiessler/fabric/cmd/fabric@latest"
             print_info "Or download binary: https://github.com/danielmiessler/fabric/releases"
         fi
         ;;
@@ -355,19 +355,19 @@ case $AI_CHOICE in
             brew install fabric-ai
             print_success "Fabric installed via Homebrew"
         elif command_exists go; then
-            go install github.com/danielmiessler/fabric@latest
+            GO111MODULE=on go install github.com/danielmiessler/fabric/cmd/fabric@latest
             print_success "Fabric installed via Go"
         else
             print_warning "Fabric requires Homebrew (macOS) or Go to install"
             print_info "macOS: brew install fabric-ai"
-            print_info "Linux: go install github.com/danielmiessler/fabric@latest"
+            print_info "Linux: go install github.com/danielmiessler/fabric/cmd/fabric@latest"
         fi
         ;;
     4)
         print_info "Skipping AI dependencies. Install later with:"
         echo -e "   ${CYAN}LiteLLM: python3 -m pip install 'litellm[proxy]'${NC}"
         echo -e "   ${CYAN}Fabric:  brew install fabric-ai (macOS)${NC}"
-        echo -e "   ${CYAN}         go install github.com/danielmiessler/fabric@latest (Linux)${NC}"
+        echo -e "   ${CYAN}         go install github.com/danielmiessler/fabric/cmd/fabric@latest (Linux)${NC}"
         ;;
     *)
         print_warning "Invalid choice. Skipping AI dependencies."
