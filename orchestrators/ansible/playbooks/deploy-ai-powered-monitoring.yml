@@ -33,9 +33,11 @@
       - name: "sshd"
         description: "SSH daemon"
         critical: true
+        port: 22
       - name: "cron"
         description: "Cron scheduler"
         critical: false
+        port: 0
     
     # AI configuration
     ai_enabled: true

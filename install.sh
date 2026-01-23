@@ -306,7 +306,7 @@ export ANSAI_CONFIG_DIR="$HOME/.config/ansai"
 export PATH="$ANSAI_DIR/bin:$PATH"
 
 # AI dependencies installation
-print_header "Step 5: AI Dependencies (Optional)"
+print_header "Step 5: AI Dependencies"
 
 echo -e "${BOLD}ANSAI requires AI capabilities to be useful.${NC}"
 echo -e "Choose your AI backend:\n"
@@ -319,76 +319,58 @@ echo -e "     ${YELLOW}Note: Requires Go or Homebrew to install${NC}"
 echo -e ""
 echo -e "  ${CYAN}3) Both${NC} - Full AI capabilities (recommended)"
 echo -e ""
-echo -e "  ${CYAN}4) Skip${NC} - I'll install manually later"
-echo -e ""
 
-AI_CHOICE=$(prompt_choice "Choose option (1-4):" "4")
+AI_CHOICE=$(prompt_choice "Choose option (1-3):" "3")
+
+install_litellm() {
+    print_step "Installing LiteLLM..."
+    run_pip install --user 'litellm[proxy]'
+    print_success "LiteLLM installed"
+}
+
+install_fabric() {
+    print_step "Installing Fabric..."
+    if command_exists brew; then
+        brew install fabric-ai
+        print_success "Fabric installed via Homebrew"
+    elif command_exists go; then
+        GO111MODULE=on go install github.com/danielmiessler/fabric/cmd/fabric@latest
+        print_success "Fabric installed via Go"
+    else
+        print_warning "Fabric requires Homebrew (macOS) or Go to install"
+        print_info "macOS: brew install fabric-ai"
+        print_info "Linux: Install Go, then: go install github.com/danielmiessler/fabric/cmd/fabric@latest"
+        print_info "Or download binary: https://github.com/danielmiessler/fabric/releases"
+    fi
+}
 
 case $AI_CHOICE in
     1)
-        print_step "Installing LiteLLM..."
-        run_pip install --user 'litellm[proxy]'
-        print_success "LiteLLM installed"
+        install_litellm
         ;;
     2)
-        print_step "Installing Fabric..."
-        if command_exists brew; then
-            brew install fabric-ai
-            print_success "Fabric installed via Homebrew"
-        elif command_exists go; then
-            GO111MODULE=on go install github.com/danielmiessler/fabric/cmd/fabric@latest
-            print_success "Fabric installed via Go"
-        else
-            print_warning "Fabric requires Homebrew (macOS) or Go to install"
-            print_info "macOS: brew install fabric-ai"
-            print_info "Linux: Install Go, then: go install github.com/danielmiessler/fabric/cmd/fabric@latest"
-            print_info "Or download binary: https://github.com/danielmiessler/fabric/releases"
-        fi
+        install_fabric
         ;;
     3)
-        print_step "Installing LiteLLM..."
-        run_pip install --user 'litellm[proxy]'
-        print_success "LiteLLM installed"
-        
-        print_step "Installing Fabric..."
-        if command_exists brew; then
-            brew install fabric-ai
-            print_success "Fabric installed via Homebrew"
-        elif command_exists go; then
-            GO111MODULE=on go install github.com/danielmiessler/fabric/cmd/fabric@latest
-            print_success "Fabric installed via Go"
-        else
-            print_warning "Fabric requires Homebrew (macOS) or Go to install"
-            print_info "macOS: brew install fabric-ai"
-            print_info "Linux: go install github.com/danielmiessler/fabric/cmd/fabric@latest"
-        fi
-        ;;
-    4)
-        print_info "Skipping AI dependencies. Install later with:"
-        echo -e "   ${CYAN}LiteLLM: python3 -m pip install 'litellm[proxy]'${NC}"
-        echo -e "   ${CYAN}Fabric:  brew install fabric-ai (macOS)${NC}"
-        echo -e "   ${CYAN}         go install github.com/danielmiessler/fabric/cmd/fabric@latest (Linux)${NC}"
+        install_litellm
+        install_fabric
         ;;
     *)
-        print_warning "Invalid choice. Skipping AI dependencies."
+        print_warning "Invalid choice. Installing both AI dependencies."
+        install_litellm
+        install_fabric
         ;;
 esac
 
 # Ansible installation
-print_header "Step 6: Ansible (Optional but Recommended)"
+print_header "Step 6: Ansible (Required)"
 
 if ! command_exists ansible; then
-    echo -e "${YELLOW}Ansible not found.${NC}"
-    echo -e "Ansible is ${BOLD}highly recommended${NC} for ANSAI automation."
-    echo -e ""
-    if prompt_yn "Install Ansible now? (y/n)" "n"; then
-        print_step "Installing Ansible..."
-        run_pip install --user ansible
-        print_success "Ansible installed"
-    else
-        print_info "Skipping Ansible. Install later with:"
-        echo -e "   ${CYAN}python3 -m pip install ansible${NC}"
-    fi
+    print_step "Installing Ansible..."
+    run_pip install --user ansible
+    print_success "Ansible installed"
+else
+    print_success "Ansible already installed"
 fi
 
 # Create example config files
