@@ -181,13 +181,55 @@ else
     MISSING_DEPS+=("git")
 fi
 
-# Check Python
 if command_exists python3; then
     PYTHON_VERSION=$(python3 --version | cut -d' ' -f2)
     print_success "Python installed ($PYTHON_VERSION)"
 else
     print_error "Python 3 not found"
     MISSING_DEPS+=("python3")
+fi
+
+# Check pip
+install_pip() {
+    print_step "Installing pip..."
+    if python3 -m ensurepip --upgrade >/dev/null 2>&1; then
+        print_success "pip installed via ensurepip"
+        return 0
+    fi
+
+    if [ -f /etc/os-release ]; then
+        source /etc/os-release
+        case "$ID" in
+            ubuntu|debian)
+                sudo apt update
+                sudo apt install -y python3-pip
+                ;;
+            fedora|rhel|centos)
+                sudo dnf install -y python3-pip
+                ;;
+            *)
+                return 1
+                ;;
+        esac
+        return 0
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" >/tmp/brew-install.log 2>&1
+        brew install python@3 >/tmp/brew-python.log 2>&1
+        return 0
+    fi
+    return 1
+}
+
+if command_exists pip3 || command_exists pip; then
+    print_success "pip installed"
+else
+    print_warning "pip not found"
+    if install_pip; then
+        print_success "pip installed"
+    else
+        print_error "Failed to install pip automatically"
+        MISSING_DEPS+=("python3-pip")
+    fi
 fi
 
 # Check Ansible (optional but recommended)
@@ -409,6 +451,13 @@ echo -e "2. Click \"Create new secret key\" and copy it."
 echo -e "3. Export: ${BOLD}export OPENAI_API_KEY=\"sk-…\"${NC}"
 echo -e "4. Save to your shell profile so it persists across sessions."
 echo -e "For Anthropic/Groq, set ${BOLD}ANTHROPIC_API_KEY${NC} or ${BOLD}GROQ_API_KEY${NC}, or configure ${BOLD}~/.config/ansai/litellm_config.yaml${NC} for local models."
+echo -e ""
+echo -e "${BOLD}Install commands per AI backend:${NC}"
+echo -e "- ${BOLD}LiteLLM (Python proxy):${NC} ${CYAN}pip3 install 'litellm[proxy]'${NC}"
+echo -e "- ${BOLD}Fabric (wildcard text transformer):${NC} ${CYAN}go install github.com/danielmiessler/fabric/cmd/fabric@latest${NC}"
+echo -e "- ${BOLD}OpenAI direct:${NC} set ${CYAN}OPENAI_API_KEY${NC} and call the CLI via LiteLLM or your own client"
+echo -e "- ${BOLD}Anthropic:${NC} set ${CYAN}ANTHROPIC_API_KEY${NC} or configure via LiteLLM proxy list"
+echo -e "- ${BOLD}Groq:${NC} set ${CYAN}GROQ_API_KEY${NC} or provide HTTP endpoint with ${CYAN}litellm_config${NC}"
 
 # Ansible installation
 print_header "Step 6: Ansible (Required)"
