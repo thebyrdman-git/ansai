@@ -38,6 +38,8 @@ Before you start, you'll need:
 curl -sSL https://ansai.dev/install.sh | bash
 ```
 
+**Tip:** Run `./prereqs.sh` first to validate Git, Python, pip, curl, SSH, and Ansible before the installer runs.
+
 **Or manual install:**
 
 ```bash

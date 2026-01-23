@@ -17,6 +17,14 @@ BOLD='\033[1m'
 ANSAI_DIR="${ANSAI_DIR:-$HOME/.ansai}"
 ANSAI_CONFIG="$HOME/.config/ansai"
 ANSAI_REPO="https://github.com/thebyrdman-git/ansai.git"
+CHECK_PREREQS_ONLY=0
+for arg in "$@"; do
+    case $arg in
+        --check-prereqs)
+            CHECK_PREREQS_ONLY=1
+            ;;
+    esac
+done
 
 # Function to print colored output
 print_header() {
@@ -64,6 +72,9 @@ prompt_yn() {
     if can_prompt; then
         read -p "$prompt " -n 1 -r < /dev/tty
         echo "" > /dev/tty
+        if [[ -z "$REPLY" ]]; then
+            REPLY="$default"
+        fi
         [[ $REPLY =~ ^[Yy]$ ]]
     else
         # Non-interactive: show prompt and use default
@@ -80,6 +91,9 @@ prompt_choice() {
     if can_prompt; then
         read -p "$prompt " -n 1 -r < /dev/tty
         echo "" > /dev/tty
+        if [[ -z "$REPLY" ]]; then
+            REPLY="$default"
+        fi
         echo "$REPLY"
     else
         # Non-interactive: use default (prompt goes to stderr, value to stdout)
@@ -195,6 +209,14 @@ else
     MISSING_DEPS+=("curl or wget")
 fi
 
+# Check SSH client
+if command_exists ssh; then
+    print_success "SSH client available ($(ssh -V 2>&1 | head -n1))"
+else
+    print_error "SSH client not found"
+    MISSING_DEPS+=("ssh")
+fi
+
 # Exit if missing critical dependencies
 if [ ${#MISSING_DEPS[@]} -gt 0 ]; then
     print_error "Missing required dependencies: ${MISSING_DEPS[*]}"
@@ -226,6 +248,11 @@ if [ ${#MISSING_DEPS[@]} -gt 0 ]; then
 fi
 
 print_success "All prerequisites met!"
+
+if [ "$CHECK_PREREQS_ONLY" -eq 1 ]; then
+    print_info "Prerequisite check complete."
+    exit 0
+fi
 
 # Clone ANSAI repository
 print_header "Step 2: Installing ANSAI"
