@@ -322,6 +322,11 @@ fi
 
 if [ -d "$ANSAI_DIR" ]; then
     print_warning "ANSAI directory already exists: $ANSAI_DIR"
+    echo ""
+    echo "→ Removing it will delete the existing installation, configurations, and playbooks."
+    echo "   A fresh install will re-clone everything and reset the environment."
+    echo "   If you have custom configs you care about, back them up before answering."
+    echo ""
     if prompt_yn "Remove and reinstall? (y/n)" "y"; then
         # If running from within ANSAI, copy script to /tmp first
         if [ "$RUNNING_FROM_ANSAI" = true ]; then
