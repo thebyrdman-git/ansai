@@ -47,6 +47,11 @@ Route to OpenAI, Claude, Groq, or local models. AI picks the best model for the 
 Talk to your infrastructure. Ask questions. Give commands.
 **AI understands context and intent.**
 
+### How ANSAI differs from Cursor
+- **Cursor** is your AI companion inside the IDE: it helps you write code, prompts, and docs interactively while you develop.
+- **ANSAI** runs on your infrastructure: it installs the monitoring/self-healing playbooks, runs them via Ansible, and calls LLMs (LiteLLM/Fabric/OpenAI/Claude/Groq/Ollama) to analyze failures and take remediation actions.
+Use Cursor to author automation and prompts, then run them through ANSAI to keep services resilient.
+
 ## 🚀 Quick Start
 
 ### One-Line Installation
