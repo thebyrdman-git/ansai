@@ -197,6 +197,19 @@ if command_exists ansible; then
 else
     print_warning "Ansible not found (recommended for automation)"
     echo -e "   ${CYAN}Install with: python3 -m pip install ansible${NC}"
+    if [[ "${OSTYPE}" == "darwin"* ]]; then
+        print_info "Running on macOS: installing Homebrew to satisfy prerequisites..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" >/tmp/brew-install.log 2>&1
+        print_success "Homebrew installed (log at /tmp/brew-install.log)"
+        print_step "Installing Ansible via brew..."
+        brew install ansible
+        print_success "Ansible installed via Homebrew"
+        print_step "Installing curl (if missing)..."
+        brew install curl
+        print_success "curl installed via Homebrew"
+        print_info "Please re-open your terminal so brew is in PATH and rerun the installer."
+        exit 0
+    fi
 fi
 
 # Check curl or wget

@@ -55,7 +55,7 @@ Talk to your infrastructure. Ask questions. Give commands.
 curl -sSL https://ansai.dev/install.sh | bash
 ```
 
-You can also run `./prereqs.sh` to verify prerequisites (Git, Python, Ansible, SSH, curl) before launching the installer.
+You can also run `./prereqs.sh` to verify prerequisites (Git, Python, Ansible, SSH, curl) before launching the installer. On macOS this helper will install Homebrew if it’s missing so you have the required tooling.
 
 Or from GitHub directly:
 ```bash
