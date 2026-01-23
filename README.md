@@ -70,6 +70,7 @@ You can also run `./prereqs.sh` to verify prerequisites (Git, Python, Ansible, S
 - OpenAI key: `export OPENAI_API_KEY="sk-..."`
 - Anthropic key: `export ANTHROPIC_API_KEY="sk-..."`
 - Groq key: `export GROQ_API_KEY="key..."`
+- Ollama (local models, no API key): `curl -fsSL https://ollama.ai/install.sh | sh`, then `ollama pull llama3` and point LiteLLM at `http://localhost:11434`.
 
 Or from GitHub directly:
 ```bash

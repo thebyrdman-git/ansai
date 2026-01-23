@@ -109,6 +109,17 @@ curl http://localhost:4000/health
 ### Option B: Fabric (Text Processing Patterns)
 
 **Best for:** Log analysis, text transformation
+### Install commands per AI backend
+
+| Backend | Command | Notes |
+| --- | --- | --- |
+| LiteLLM | `pip3 install 'litellm[proxy]'` | Multi-model proxy (OpenAI, Claude, Groq, local). |
+| Fabric | `go install github.com/danielmiessler/fabric/cmd/fabric@latest` | Go-based text-processing engine. |
+| OpenAI | `export OPENAI_API_KEY="sk-..."` | Use with LiteLLM or Fabric to call OpenAI models. |
+| Anthropic | `export ANTHROPIC_API_KEY="sk-..."` | Configure LiteLLM to route to Claude. |
+| Groq | `export GROQ_API_KEY="key..."` | Configure LiteLLM with Groq API endpoint. |
+| Ollama | `curl -fsSL https://ollama.ai/install.sh | sh` | Local models, no API key required; configure LiteLLM with `local-llama3`. |
+
 
 ```bash
 # Install Fabric (Go binary)
