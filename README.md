@@ -63,6 +63,14 @@ You can also run `./prereqs.sh` to verify prerequisites (Git, Python, Ansible, S
 - `curl -sSL https://ansai.dev/install.sh | bash` now performs the prerequisite check (Git, Python, pip, curl/wget, SSH, Ansible) before cloning the repo.
 - Mac hosts automatically install Homebrew via the helper when Ansible is missing, ensuring the required tooling is present before the install continues.
 
+### AI backend install commands
+
+- LiteLLM (multi-model proxy): `pip3 install 'litellm[proxy]'`
+- Fabric (text processing CLI): `go install github.com/danielmiessler/fabric/cmd/fabric@latest`
+- OpenAI key: `export OPENAI_API_KEY="sk-..."`
+- Anthropic key: `export ANTHROPIC_API_KEY="sk-..."`
+- Groq key: `export GROQ_API_KEY="key..."`
+
 Or from GitHub directly:
 ```bash
 curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
