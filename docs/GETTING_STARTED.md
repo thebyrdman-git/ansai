@@ -152,6 +152,20 @@ litellm --config ~/.config/ansai/litellm_config.yaml --port 4000 &
 
 **✅ You should see:** AI backend running at http://localhost:4000
 
+### Getting an OpenAI API Key
+
+1. Sign into [https://platform.openai.com](https://platform.openai.com) (create an account if you don't have one).
+2. Navigate to **API Keys** and click **Create new secret key**.
+3. Copy the generated key and store it securely. Then export it:
+
+```bash
+export OPENAI_API_KEY="sk-..."
+```
+
+4. To persist it, add the export line to your shell profile (`~/.bashrc`/`~/.zshrc`) or include it in `~/.ansai/orchestrators/ansible/playbooks/vars/your-vars.yml` so automation picks it up automatically.
+
+Refer to https://platform.openai.com/account/api-keys for additional management options.
+
 ---
 
 ## ⚙️ Step 3: Configure Environment (1 minute)

@@ -98,6 +98,15 @@ cd ~/.ansai/orchestrators/ansible
 ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
 ```
 
+### Notes on OpenAI credentials
+
+- Head to https://platform.openai.com/account/api-keys to create a secret key.
+- Export it before running LiteLLM/Fabric or storing it in `~/.ansai/orchestrators/ansible/playbooks/vars/your-vars.yml`:
+
+```bash
+export OPENAI_API_KEY="sk-..."
+```
+
 **That's it.** Your AI-powered automation is thinking for you.
 
 **[📚 Full Getting Started Guide](https://ansai.dev/GETTING_STARTED/)** (0 to AI in 5 minutes)
