@@ -4,6 +4,16 @@
 
 Stop scripting. Start thinking. Your infrastructure makes intelligent decisions.
 
+## 🤔 What is ANSAI?
+
+ANSAI (Ansible-Native System Automation Infrastructure) is an open-source framework that adds AI intelligence to your infrastructure automation.
+
+Traditional automation says: "Your service crashed. I restarted it."
+
+ANSAI says: "Your service crashed because the database connection pool was exhausted. I restarted it and cleared stuck connections. To prevent this: add pool_timeout=30 to your config. Here's why this happened and how to fix it permanently."
+
+The difference: Traditional automation is blind. ANSAI understands.
+
 ## 🎯 Why ANSAI?
 
 **Without AI, it's just Ansible.** With ANSAI, your automation:
