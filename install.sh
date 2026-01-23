@@ -402,6 +402,14 @@ case $AI_CHOICE in
         ;;
 esac
 
+print_header "AI API Keys"
+echo -e "ANSAI talks to OpenAI, Claude, Groq, or local models. Create secrets before running AI workflows:"
+echo -e "1. Open https://platform.openai.com/account/api-keys"
+echo -e "2. Click \"Create new secret key\" and copy it."
+echo -e "3. Export: ${BOLD}export OPENAI_API_KEY=\"sk-…\"${NC}"
+echo -e "4. Save to your shell profile so it persists across sessions."
+echo -e "For Anthropic/Groq, set ${BOLD}ANTHROPIC_API_KEY${NC} or ${BOLD}GROQ_API_KEY${NC}, or configure ${BOLD}~/.config/ansai/litellm_config.yaml${NC} for local models."
+
 # Ansible installation
 print_header "Step 6: Ansible (Required)"
 
