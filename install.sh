@@ -17,6 +17,14 @@ BOLD='\033[1m'
 ANSAI_DIR="${ANSAI_DIR:-$HOME/.ansai}"
 ANSAI_CONFIG="$HOME/.config/ansai"
 ANSAI_REPO="https://github.com/thebyrdman-git/ansai.git"
+CHECK_PREREQS_ONLY=0
+for arg in "$@"; do
+    case $arg in
+        --check-prereqs)
+            CHECK_PREREQS_ONLY=1
+            ;;
+    esac
+done
 
 # Function to print colored output
 print_header() {
@@ -64,6 +72,9 @@ prompt_yn() {
     if can_prompt; then
         read -p "$prompt " -n 1 -r < /dev/tty
         echo "" > /dev/tty
+        if [[ -z "$REPLY" ]]; then
+            REPLY="$default"
+        fi
         [[ $REPLY =~ ^[Yy]$ ]]
     else
         # Non-interactive: show prompt and use default
@@ -80,6 +91,9 @@ prompt_choice() {
     if can_prompt; then
         read -p "$prompt " -n 1 -r < /dev/tty
         echo "" > /dev/tty
+        if [[ -z "$REPLY" ]]; then
+            REPLY="$default"
+        fi
         echo "$REPLY"
     else
         # Non-interactive: use default (prompt goes to stderr, value to stdout)
@@ -183,6 +197,19 @@ if command_exists ansible; then
 else
     print_warning "Ansible not found (recommended for automation)"
     echo -e "   ${CYAN}Install with: python3 -m pip install ansible${NC}"
+    if [[ "${OSTYPE}" == "darwin"* ]]; then
+        print_info "Running on macOS: installing Homebrew to satisfy prerequisites..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" >/tmp/brew-install.log 2>&1
+        print_success "Homebrew installed (log at /tmp/brew-install.log)"
+        print_step "Installing Ansible via brew..."
+        brew install ansible
+        print_success "Ansible installed via Homebrew"
+        print_step "Installing curl (if missing)..."
+        brew install curl
+        print_success "curl installed via Homebrew"
+        print_info "Please re-open your terminal so brew is in PATH and rerun the installer."
+        exit 0
+    fi
 fi
 
 # Check curl or wget
@@ -193,6 +220,14 @@ elif command_exists wget; then
 else
     print_error "Neither curl nor wget found"
     MISSING_DEPS+=("curl or wget")
+fi
+
+# Check SSH client
+if command_exists ssh; then
+    print_success "SSH client available ($(ssh -V 2>&1 | head -n1))"
+else
+    print_error "SSH client not found"
+    MISSING_DEPS+=("ssh")
 fi
 
 # Exit if missing critical dependencies
@@ -226,6 +261,11 @@ if [ ${#MISSING_DEPS[@]} -gt 0 ]; then
 fi
 
 print_success "All prerequisites met!"
+
+if [ "$CHECK_PREREQS_ONLY" -eq 1 ]; then
+    print_info "Prerequisite check complete."
+    exit 0
+fi
 
 # Clone ANSAI repository
 print_header "Step 2: Installing ANSAI"
@@ -361,6 +401,14 @@ case $AI_CHOICE in
         install_fabric
         ;;
 esac
+
+print_header "AI API Keys"
+echo -e "ANSAI talks to OpenAI, Claude, Groq, or local models. Create secrets before running AI workflows:"
+echo -e "1. Open https://platform.openai.com/account/api-keys"
+echo -e "2. Click \"Create new secret key\" and copy it."
+echo -e "3. Export: ${BOLD}export OPENAI_API_KEY=\"sk-…\"${NC}"
+echo -e "4. Save to your shell profile so it persists across sessions."
+echo -e "For Anthropic/Groq, set ${BOLD}ANTHROPIC_API_KEY${NC} or ${BOLD}GROQ_API_KEY${NC}, or configure ${BOLD}~/.config/ansai/litellm_config.yaml${NC} for local models."
 
 # Ansible installation
 print_header "Step 6: Ansible (Required)"
