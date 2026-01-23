@@ -25,10 +25,8 @@ Before you start, you'll need:
 - **Python 3.9+** (`python3 --version`)
 - **Git** (`git --version`)
 - **SSH access** to a server (for deployment)
-
-**Optional but recommended:**
-- Ansible (`pip3 install ansible`)
-- At least one API key: OpenAI, Anthropic, Groq, or local Ollama
+- **Ansible** (`pip3 install ansible`) – ANSAI uses Ansible playbooks as its automation core
+- **At least one AI backend** (OpenAI, Anthropic, Groq, or local Ollama) or plan to run LiteLLM/Fabric
 
 ---
 

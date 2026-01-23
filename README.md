@@ -63,7 +63,7 @@ curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh
 **The installer:**
 - ✅ Installs ANSAI to `~/.ansai`
 - ✅ Adds ANSAI to your PATH
-- ✅ Optionally installs AI dependencies (LiteLLM, Fabric)
+- ✅ Installs required components (Ansible plus LiteLLM/Fabric AI backends)
 - ✅ Creates config directories
 - ✅ Prompts for AI backend setup
 
