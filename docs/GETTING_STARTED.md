@@ -25,10 +25,8 @@ Before you start, you'll need:
 - **Python 3.9+** (`python3 --version`)
 - **Git** (`git --version`)
 - **SSH access** to a server (for deployment)
-
-**Optional but recommended:**
-- Ansible (`pip3 install ansible`)
-- At least one API key: OpenAI, Anthropic, Groq, or local Ollama
+- **Ansible** (`pip3 install ansible`) – ANSAI uses Ansible playbooks as its automation core
+- **At least one AI backend** (OpenAI, Anthropic, Groq, or local Ollama) or plan to run LiteLLM/Fabric
 
 ---
 
@@ -39,6 +37,14 @@ Before you start, you'll need:
 ```bash
 curl -sSL https://ansai.dev/install.sh | bash
 ```
+
+**Tip:** Run `./prereqs.sh` first to validate Git, Python, pip, curl, SSH, and Ansible before the installer runs. The helper mirrors the installer's checks and exits once everything is ready. macOS users: it installs Homebrew automatically when Ansible is missing so you don’t have to do this manually.
+
+### Installer behavior highlights
+
+- Prompts now accept Enter to proceed with the default answers so you can quickly move through the guided flow.
+- The installer runs the prerequisite checker before cloning `~/.ansai`; if something is missing it suggests OS-specific install commands, and on macOS it can install Homebrew + Ansible for you.
+- If you prefer to verify prerequisites separately, run `./prereqs.sh` anytime—each check logs the required dependency and, on macOS, bootstraps Homebrew when needed before you rerun the installer.
 
 **Or manual install:**
 
@@ -103,6 +109,17 @@ curl http://localhost:4000/health
 ### Option B: Fabric (Text Processing Patterns)
 
 **Best for:** Log analysis, text transformation
+### Install commands per AI backend
+
+| Backend | Command | Notes |
+| --- | --- | --- |
+| LiteLLM | `pip3 install 'litellm[proxy]'` | Multi-model proxy (OpenAI, Claude, Groq, local). |
+| Fabric | `go install github.com/danielmiessler/fabric/cmd/fabric@latest` | Go-based text-processing engine. |
+| OpenAI | `export OPENAI_API_KEY="sk-..."` | Use with LiteLLM or Fabric to call OpenAI models. |
+| Anthropic | `export ANTHROPIC_API_KEY="sk-..."` | Configure LiteLLM to route to Claude. |
+| Groq | `export GROQ_API_KEY="key..."` | Configure LiteLLM with Groq API endpoint. |
+| Ollama | `curl -fsSL https://ollama.ai/install.sh | sh` | Local models, no API key required; configure LiteLLM with `local-llama3`. |
+
 
 ```bash
 # Install Fabric (Go binary)
@@ -145,6 +162,20 @@ litellm --config ~/.config/ansai/litellm_config.yaml --port 4000 &
 ```
 
 **✅ You should see:** AI backend running at http://localhost:4000
+
+### Getting an OpenAI API Key
+
+1. Sign into [https://platform.openai.com](https://platform.openai.com) (create an account if you don't have one).
+2. Navigate to **API Keys** and click **Create new secret key**.
+3. Copy the generated key and store it securely. Then export it:
+
+```bash
+export OPENAI_API_KEY="sk-..."
+```
+
+4. To persist it, add the export line to your shell profile (`~/.bashrc`/`~/.zshrc`) or include it in `~/.ansai/orchestrators/ansible/playbooks/vars/your-vars.yml` so automation picks it up automatically.
+
+Refer to https://platform.openai.com/account/api-keys for additional management options.
 
 ---
 

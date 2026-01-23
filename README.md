@@ -55,6 +55,23 @@ Talk to your infrastructure. Ask questions. Give commands.
 curl -sSL https://ansai.dev/install.sh | bash
 ```
 
+You can also run `./prereqs.sh` to verify prerequisites (Git, Python, Ansible, SSH, curl) before launching the installer. On macOS this helper automatically installs Homebrew (if needed) and installs missing dependencies so the installer can finish cleanly.
+
+### Installer updates
+
+- Prompts now accept Enter to confirm defaults so you can breeze through the guided experience.
+- `curl -sSL https://ansai.dev/install.sh | bash` now performs the prerequisite check (Git, Python, pip, curl/wget, SSH, Ansible) before cloning the repo.
+- Mac hosts automatically install Homebrew via the helper when Ansible is missing, ensuring the required tooling is present before the install continues.
+
+### AI backend install commands
+
+- LiteLLM (multi-model proxy): `pip3 install 'litellm[proxy]'`
+- Fabric (text processing CLI): `go install github.com/danielmiessler/fabric/cmd/fabric@latest`
+- OpenAI key: `export OPENAI_API_KEY="sk-..."`
+- Anthropic key: `export ANTHROPIC_API_KEY="sk-..."`
+- Groq key: `export GROQ_API_KEY="key..."`
+- Ollama (local models, no API key): `curl -fsSL https://ollama.ai/install.sh | sh`, then `ollama pull llama3` and point LiteLLM at `http://localhost:11434`.
+
 Or from GitHub directly:
 ```bash
 curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh | bash
@@ -63,7 +80,7 @@ curl -sSL https://raw.githubusercontent.com/thebyrdman-git/ansai/main/install.sh
 **The installer:**
 - ✅ Installs ANSAI to `~/.ansai`
 - ✅ Adds ANSAI to your PATH
-- ✅ Optionally installs AI dependencies (LiteLLM, Fabric)
+- ✅ Installs required components (Ansible plus LiteLLM/Fabric AI backends)
 - ✅ Creates config directories
 - ✅ Prompts for AI backend setup
 
@@ -88,6 +105,15 @@ EOF
 # 3. Deploy AI-powered monitoring
 cd ~/.ansai/orchestrators/ansible
 ansible-playbook playbooks/deploy-ai-powered-monitoring.yml
+```
+
+### Notes on OpenAI credentials
+
+- Head to https://platform.openai.com/account/api-keys to create a secret key.
+- Export it before running LiteLLM/Fabric or storing it in `~/.ansai/orchestrators/ansible/playbooks/vars/your-vars.yml`:
+
+```bash
+export OPENAI_API_KEY="sk-..."
 ```
 
 **That's it.** Your AI-powered automation is thinking for you.
