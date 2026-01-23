@@ -366,6 +366,13 @@ Congratulations! You now have:
 
 ---
 
+## 🔗 How ANSAI complements Cursor
+
+- **Cursor** boosts your IDE: it helps you write prompts, generate code, and navigate your repo interactively while you design automation.
+- **ANSAI** runs on infrastructure: install it via `ansai.dev/install.sh` and it executes those playbooks, heals services, and routes traffic intelligently using AI models.
+- Use Cursor to author the automation, then deploy it via ANSAI so the self-healing stack keeps working even when you close the IDE.
+
+
 ## 🚀 Next Steps
 
 ### 1. Customize Your Deployment
