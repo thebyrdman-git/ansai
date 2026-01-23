@@ -38,7 +38,13 @@ Before you start, you'll need:
 curl -sSL https://ansai.dev/install.sh | bash
 ```
 
-**Tip:** Run `./prereqs.sh` first to validate Git, Python, pip, curl, SSH, and Ansible before the installer runs. macOS users: the helper will install Homebrew if needed so you can satisfy the prerequisites automatically.
+**Tip:** Run `./prereqs.sh` first to validate Git, Python, pip, curl, SSH, and Ansible before the installer runs. The helper mirrors the installer's checks and exits once everything is ready. macOS users: it installs Homebrew automatically when Ansible is missing so you don’t have to do this manually.
+
+### Installer behavior highlights
+
+- Prompts now accept Enter to proceed with the default answers so you can quickly move through the guided flow.
+- The installer runs the prerequisite checker before cloning `~/.ansai`; if something is missing it suggests OS-specific install commands, and on macOS it can install Homebrew + Ansible for you.
+- If you prefer to verify prerequisites separately, run `./prereqs.sh` anytime—each check logs the required dependency and, on macOS, bootstraps Homebrew when needed before you rerun the installer.
 
 **Or manual install:**
 
