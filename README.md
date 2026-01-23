@@ -4,6 +4,16 @@
 
 Stop scripting. Start thinking. Your infrastructure makes intelligent decisions.
 
+## 🤔 What is ANSAI?
+
+ANSAI (Ansible-Native System Automation Infrastructure) is an open-source framework that adds AI intelligence to your infrastructure automation.
+
+Traditional automation says: "Your service crashed. I restarted it."
+
+ANSAI says: "Your service crashed because the database connection pool was exhausted. I restarted it and cleared stuck connections. To prevent this: add pool_timeout=30 to your config. Here's why this happened and how to fix it permanently."
+
+The difference: Traditional automation is blind. ANSAI understands.
+
 ## 🎯 Why ANSAI?
 
 **Without AI, it's just Ansible.** With ANSAI, your automation:
@@ -46,6 +56,11 @@ Route to OpenAI, Claude, Groq, or local models. AI picks the best model for the 
 ### 5. Natural Language Interface
 Talk to your infrastructure. Ask questions. Give commands.
 **AI understands context and intent.**
+
+### How ANSAI differs from Cursor
+- **Cursor** is your AI companion inside the IDE: it helps you write code, prompts, and docs interactively while you develop.
+- **ANSAI** runs on your infrastructure: it installs the monitoring/self-healing playbooks, runs them via Ansible, and calls LLMs (LiteLLM/Fabric/OpenAI/Claude/Groq/Ollama) to analyze failures and take remediation actions.
+Use Cursor to author automation and prompts, then run them through ANSAI to keep services resilient.
 
 ## 🚀 Quick Start
 
